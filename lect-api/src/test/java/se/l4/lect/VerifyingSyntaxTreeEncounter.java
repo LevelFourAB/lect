@@ -15,6 +15,9 @@ public class VerifyingSyntaxTreeEncounter
 
 	private boolean calledDone;
 
+	private Location location;
+	private Location locationBuffer;
+
 	public VerifyingSyntaxTreeEncounter(Locale locale)
 	{
 		this.locale = locale;
@@ -30,8 +33,15 @@ public class VerifyingSyntaxTreeEncounter
 	}
 
 	@Override
+	public Location location()
+	{
+		return location;
+	}
+
+	@Override
 	public void location(Location location)
 	{
+		this.location = location.copy();
 	}
 
 	@Override
@@ -52,9 +62,11 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(false, buffer.toString()));
+			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer));
 			buffer.setLength(0);
 		}
+
+		locationBuffer = location.copy();
 	}
 
 	@Override
@@ -69,14 +81,20 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(true, buffer.toString()));
+			data.add(new Data(true, buffer.toString(), locationBuffer));
 			buffer.setLength(0);
 		}
+
+		locationBuffer = null;
 	}
 
 	@Override
 	public void text(String text, String source)
 	{
+		if(locationBuffer == null)
+		{
+			locationBuffer = location.copy();
+		}
 		buffer.append(text);
 	}
 
@@ -90,14 +108,14 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(false, buffer.toString()));
+			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer));
 			buffer.setLength(0);
 		}
 
 		calledDone = true;
 	}
 
-	public void verifyParagraph(String text)
+	public void verifyParagraph(String text, Location location)
 	{
 		if(! calledDone) throw new AssertionError("done() was never called");
 		if(data.isEmpty()) throw new AssertionError("No more data, expected to find paragraph with text `" + text + "`");
@@ -112,9 +130,14 @@ public class VerifyingSyntaxTreeEncounter
 		{
 			throw new AssertionError("Expected a paragraph with text `" + text + "` but got `" + d.text + "`");
 		}
+
+		if(location != null && ! location.equals(d.location))
+		{
+			throw new AssertionError("Locations do not match, expected " + location + " but got " + d.location);
+		}
 	}
 
-	public void verifyWhitespace(String text)
+	public void verifyWhitespace(String text, Location location)
 	{
 		if(! calledDone) throw new AssertionError("done() was never called");
 		if(data.isEmpty()) throw new AssertionError("No more data, expected to find whitespace with value `" + text + "`");
@@ -128,6 +151,11 @@ public class VerifyingSyntaxTreeEncounter
 		if(! d.text.equals(text))
 		{
 			throw new AssertionError("Expected a whitespace with value `" + text + "` but got `" + d.text + "`");
+		}
+
+		if(location != null && ! location.equals(d.location))
+		{
+			throw new AssertionError("Locations do not match, expected " + location + " but got " + d.location);
 		}
 	}
 
@@ -143,11 +171,13 @@ public class VerifyingSyntaxTreeEncounter
 	{
 		private boolean paragraph;
 		private String text;
+		private Location location;
 
-		public Data(boolean paragraph, String text)
+		public Data(boolean paragraph, String text, Location location)
 		{
 			this.paragraph = paragraph;
-			this.text =text;
+			this.text = text;
+			this.location = location;
 		}
 	}
 }

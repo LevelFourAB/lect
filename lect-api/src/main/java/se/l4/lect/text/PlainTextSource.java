@@ -99,6 +99,9 @@ public class PlainTextSource
 		private int line;
 		private int column;
 
+		private TextLocation location;
+		private TextLocation lastLocation;
+
 		private State state;
 		private StringBuilder builder;
 
@@ -116,6 +119,10 @@ public class PlainTextSource
 		{
 			boolean lastWasCarriageReturn = false;
 
+			location = new TextLocation(0, 0, 0);
+			lastLocation = new TextLocation(0, 0, 0);
+			encounter.location(location);
+
 			int length;
 			CharBuffer buffer = CharBuffer.allocate(1024);
 			while((length = readable.read(buffer)) != -1)
@@ -127,9 +134,6 @@ public class PlainTextSource
 					if(c == '\r' || c == '\n' || c == '\u2028' || c == '\u2029' || c == '\u0085')
 					{
 						// This some form of line break
-						line++;
-						column = 0;
-
 						if(c == '\r')
 						{
 							lastWasCarriageReturn = true;
@@ -138,6 +142,7 @@ public class PlainTextSource
 						{
 							// Newline after carriage return should just be added to the buffer
 							lastWasCarriageReturn = false;
+							index++;
 							builder.append(c);
 							continue;
 						}
@@ -157,6 +162,11 @@ public class PlainTextSource
 							state = State.LINE_BREAK;
 						}
 
+						// Set the current position
+						line++;
+						column = 0;
+						index++;
+
 						// Append to the buffer
 						builder.append(c);
 					}
@@ -165,6 +175,7 @@ public class PlainTextSource
 						// This is some whitespace, always append to the buffer and do not switch state
 						builder.append(c);
 						column++;
+						index++;
 					}
 					else
 					{
@@ -177,11 +188,11 @@ public class PlainTextSource
 
 						if(! encounter.inParagraph())
 						{
-							encounter.location(new TextLocation(line, column));
 							encounter.startParagraph();
 						}
 
 						column++;
+						index++;
 						builder.append(c);
 					}
 				}
@@ -202,7 +213,6 @@ public class PlainTextSource
 
 				if(! encounter.inParagraph())
 				{
-					encounter.location(new TextLocation(line, column));
 					encounter.startParagraph();
 				}
 
@@ -216,6 +226,13 @@ public class PlainTextSource
 			}
 
 			encounter.done();
+		}
+
+		private void flushLocation()
+		{
+			location.moveTo(line, column, index);
+			lastLocation.copyFrom(location);
+			encounter.location(location);
 		}
 
 		private void flush()
@@ -237,7 +254,9 @@ public class PlainTextSource
 				String text = builder.substring(0, offset);
 				encounter.text(text, text);
 
-				// TODO: Set the proper location
+				// Update the location and end the paragraph
+				location.moveTo(lastLocation.getLine() + 1, 0, lastLocation.getIndex() + offset);
+				encounter.location(location);
 				encounter.endParagraph();
 
 				if(builder.length() > offset)
@@ -254,6 +273,8 @@ public class PlainTextSource
 				encounter.text(text, text);
 				builder.setLength(0);
 			}
+
+			flushLocation();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package se.l4.lect;
 
 /**
- * {@link Location} suitable for use with plain text formats.
+ * Mutable {@link Location} suitable for use with plain text formats.
  *
  * @author Andreas Holstenson
  *
@@ -9,8 +9,9 @@ package se.l4.lect;
 public class TextLocation
 	implements Location
 {
-	private final int line;
-	private final int column;
+	private int line;
+	private int column;
+	private int index;
 
 	/**
 	 * Create a new location representing the given line and column.
@@ -20,10 +21,11 @@ public class TextLocation
 	 * @param column
 	 *   zero-indexed column
 	 */
-	public TextLocation(int line, int column)
+	public TextLocation(int line, int column, int index)
 	{
 		this.line = line;
 		this.column = column;
+		this.index = index;
 	}
 
 	public int getLine()
@@ -34,6 +36,37 @@ public class TextLocation
 	public int getColumn()
 	{
 		return column;
+	}
+
+	public int getIndex()
+	{
+		return index;
+	}
+
+	public void moveTo(int line, int column, int index)
+	{
+		this.line = line;
+		this.column = column;
+		this.index = index;
+	}
+
+	public void copyFrom(TextLocation location)
+	{
+		this.line = location.line;
+		this.column = location.column;
+		this.index = location.index;
+	}
+
+	@Override
+	public Location copy()
+	{
+		return new TextLocation(line, column, index);
+	}
+
+	@Override
+	public Location moveTextIndex(int amount)
+	{
+		return new TextLocation(line, column + amount, index + amount);
 	}
 
 	@Override
@@ -57,6 +90,7 @@ public class TextLocation
 		int result = 1;
 		result = prime * result + column;
 		result = prime * result + line;
+		result = prime * result + index;
 		return result;
 	}
 
@@ -74,12 +108,14 @@ public class TextLocation
 			return false;
 		if(line != other.line)
 			return false;
+		if(index != other.index)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString()
 	{
-		return line + ":" + column;
+		return line + ":" + column + "(@" + index + ")";
 	}
 }

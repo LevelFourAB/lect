@@ -17,4 +17,32 @@ public interface Location
 	 */
 	@Override
 	String toString();
+
+	/**
+	 * Create a copy of this location.
+	 *
+	 * @return
+	 */
+	Location copy();
+
+	/**
+	 * Create a version of this {@link Location} that has moved a number of positions in a text.
+	 *
+	 * @param amount
+	 * @return
+	 */
+	Location moveTextIndex(int amount);
+
+	/**
+	 * Quickly create a new {@link TextLocation}.
+	 *
+	 * @param line
+	 * @param column
+	 * @param index
+	 * @return
+	 */
+	static TextLocation text(int line, int column, int index)
+	{
+		return new TextLocation(line, column, index);
+	}
 }

@@ -12,6 +12,13 @@ public interface SourceEncounter
 	Locale locale();
 
 	/**
+	 * Get the currently set location.
+	 *
+	 * @return
+	 */
+	Location location();
+
+	/**
 	 * Set the location of the next event.
 	 *
 	 * @param location
