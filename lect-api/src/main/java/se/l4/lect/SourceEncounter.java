@@ -57,6 +57,8 @@ public interface SourceEncounter
 	 * example a HTML parser will decode entities and will want update the source location as it does this.
 	 *
 	 * @param text
+	 * @param end
+	 *   the location at which the text ends
 	 */
-	void text(String text, String source);
+	void text(String text, Location end);
 }

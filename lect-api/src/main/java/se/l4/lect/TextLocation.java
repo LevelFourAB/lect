@@ -43,30 +43,71 @@ public class TextLocation
 		return index;
 	}
 
-	public void moveTo(int line, int column, int index)
+	public TextLocation moveTo(int line, int column, int index)
 	{
 		this.line = line;
 		this.column = column;
 		this.index = index;
+		return this;
 	}
 
-	public void copyFrom(TextLocation location)
+	public TextLocation copyFrom(TextLocation location)
 	{
 		this.line = location.line;
 		this.column = location.column;
 		this.index = location.index;
+		return this;
 	}
 
 	@Override
-	public Location copy()
+	public TextLocation copy()
 	{
 		return new TextLocation(line, column, index);
 	}
 
 	@Override
-	public Location moveTextIndex(int amount)
+	public TextLocation moveTextIndex(int amount)
 	{
 		return new TextLocation(line, column + amount, index + amount);
+	}
+
+	public TextLocation moveTextIndex(CharSequence sequence)
+	{
+		return moveTextIndex(sequence, 0, sequence.length());
+	}
+
+	public TextLocation moveTextIndex(CharSequence sequence, int offset, int length)
+	{
+		for(int i=offset, n=offset + length; i<n; i++)
+		{
+			char c = sequence.charAt(i);
+			if(c == '\r')
+			{
+				line++;
+				column = 0;
+				index++;
+				if(i + 1 < n && sequence.charAt(i + 1) == '\n')
+				{
+					// Consume \n after \r
+					index++;
+					i++;
+					continue;
+				}
+			}
+			else if(c == '\n' || c == '\u2028' || c == '\u2029' || c == '\u0085')
+			{
+				line++;
+				column = 0;
+				index++;
+			}
+			else
+			{
+				column++;
+				index++;
+			}
+		}
+
+		return this;
 	}
 
 	@Override

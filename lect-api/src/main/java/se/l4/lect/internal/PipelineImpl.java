@@ -145,9 +145,9 @@ public class PipelineImpl
 		}
 
 		@Override
-		public void text(String text, String source)
+		public void text(String text, Location end)
 		{
-			language.text(text, location, location.copy().moveTextIndex(source.length()));
+			language.text(text, location, end);
 		}
 
 		@Override

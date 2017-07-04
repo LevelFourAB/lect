@@ -252,7 +252,12 @@ public class PlainTextSource
 				}
 
 				String text = builder.substring(0, offset);
-				encounter.text(text, text);
+				TextLocation end = location.copy().moveTo(
+					lastLocation.getLine() + 1,
+					0,
+					lastLocation.getIndex() + offset
+				);
+				encounter.text(text, end);
 
 				// Update the location and end the paragraph
 				location.moveTo(lastLocation.getLine() + 1, 0, lastLocation.getIndex() + offset);
@@ -262,7 +267,8 @@ public class PlainTextSource
 				if(builder.length() > offset)
 				{
 					text = builder.substring(offset);
-					encounter.text(text, text);
+
+					encounter.text(text, lastLocation.copy().moveTextIndex(builder));
 				}
 
 				builder.setLength(0);
@@ -270,7 +276,7 @@ public class PlainTextSource
 			else if(builder.length() > 0)
 			{
 				String text = builder.toString();
-				encounter.text(text, text);
+				encounter.text(text, lastLocation.copy().moveTextIndex(builder));
 				builder.setLength(0);
 			}
 
