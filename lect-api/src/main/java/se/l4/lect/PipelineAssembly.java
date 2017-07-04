@@ -19,7 +19,7 @@ public interface PipelineAssembly<Self extends PipelineAssembly<Self>>
 	 * builder.language(ICULanguageParser.forLocale(Locale.ENGLISH))
 	 * </pre>
 	 *
-	 * @see ICULanguageParser#forLocale(java.util.Locale)
+	 * @see ICULanguage#forLocale(java.util.Locale)
 	 * @param parserCreator
 	 * @return
 	 */

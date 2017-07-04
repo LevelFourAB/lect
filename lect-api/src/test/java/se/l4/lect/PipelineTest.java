@@ -19,7 +19,7 @@ public class PipelineTest
 		throws IOException
 	{
 		List<Object> result = Pipeline.over(PlainTextSource.forString("Hello world!"))
-			.language(ICULanguageParser.forLocale(Locale.ENGLISH))
+			.language(ICULanguage.forLocale(Locale.ENGLISH))
 			.with(WordCountHandler::new)
 			.run();
 

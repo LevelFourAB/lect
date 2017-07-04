@@ -11,12 +11,12 @@ import com.ibm.icu.text.BreakIterator;
  * @author Andreas Holstenson
  *
  */
-public class ICULanguageParser
+public class ICULanguage
 	extends ChunkedLanguageParser
 {
 	private final Locale locale;
 
-	public ICULanguageParser(Locale locale, LanguageEncounter encounter)
+	public ICULanguage(Locale locale, LanguageEncounter encounter)
 	{
 		super(encounter);
 		this.locale = locale;
@@ -30,7 +30,7 @@ public class ICULanguageParser
 	 */
 	public static Function<LanguageEncounter, LanguageParser> forLocale(Locale locale)
 	{
-		return encounter -> new ICULanguageParser(locale, encounter);
+		return encounter -> new ICULanguage(locale, encounter);
 	}
 
 	@Override

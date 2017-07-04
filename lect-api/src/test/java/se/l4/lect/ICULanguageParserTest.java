@@ -10,7 +10,7 @@ public class ICULanguageParserTest
 	public void testSingleText()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("Hello world!", "Hello world!", Location.text(0, 0, 0));
 		parser.flush();
 
@@ -26,7 +26,7 @@ public class ICULanguageParserTest
 	public void testMultipleTextsNoGap()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("Hello", "Hello", Location.text(0, 0, 0));
 		parser.text(" world!", " world!", Location.text(0, 5, 5));
 		parser.flush();
@@ -43,7 +43,7 @@ public class ICULanguageParserTest
 	public void testMultipleTextsGapBetweenTokens()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("Hello", "Hello", Location.text(0, 0, 0));
 		parser.text(" world!", " world!", Location.text(0, 10, 10));
 		parser.flush();
@@ -60,7 +60,7 @@ public class ICULanguageParserTest
 	public void testMultipleTextsGapInToken()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("Hel", "Hel", Location.text(0, 0, 0));
 		parser.text("lo world!", "lo world!", Location.text(0, 10, 10));
 		parser.flush();
@@ -78,7 +78,7 @@ public class ICULanguageParserTest
 	public void testSingleTextWithSourceDiffGuessing()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("Hello world!", "&#072;ello world!", Location.text(0, 0, 0));
 		parser.flush();
 
@@ -94,7 +94,7 @@ public class ICULanguageParserTest
 	public void testSingleTextWithSourceDiffProper()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
-		ICULanguageParser parser = new ICULanguageParser(Locale.ENGLISH, encounter);
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
 		parser.text("H", "&#072;", Location.text(0, 0, 0));
 		parser.text("ello world!", "ello world!", Location.text(0, 6, 6));
 		parser.flush();
