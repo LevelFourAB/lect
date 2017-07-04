@@ -1,6 +1,7 @@
 package se.l4.lect;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 import com.ibm.icu.text.BreakIterator;
 
@@ -19,6 +20,23 @@ public class ICULanguageParser
 	{
 		super(encounter);
 		this.locale = locale;
+	}
+
+	/**
+	 * Get a factory that will create a language parser for the given {@link Locale}.
+	 *
+	 * @param locale
+	 * @return
+	 */
+	public static Function<LanguageEncounter, LanguageParser> forLocale(Locale locale)
+	{
+		return encounter -> new ICULanguageParser(locale, encounter);
+	}
+
+	@Override
+	public Locale locale()
+	{
+		return locale;
 	}
 
 	@Override

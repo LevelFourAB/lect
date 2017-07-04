@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import java.util.Locale;
+
 /**
  * Language parser used for parsing contents within paragraph-level content.
  *
@@ -8,6 +10,13 @@ package se.l4.lect;
  */
 public interface LanguageParser
 {
+	/**
+	 * Get the locale of this parser.
+	 *
+	 * @return
+	 */
+	Locale locale();
+
 	/**
 	 * Add some text that should be parsed.
 	 *
