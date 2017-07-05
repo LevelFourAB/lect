@@ -17,7 +17,7 @@ public class HTMLSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<p>Hello world!</p>").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 3),
+			Location.text(0, 0),
 			Location.text(0, 8), // After Hello
 			Location.text(0, 9), // After space,
 			Location.text(0, 15), // After world!
@@ -32,7 +32,7 @@ public class HTMLSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<p>Hell&ouml; world!</p>").parse(mock);
 		mock.verifyParagraph("Hellö world!",
-			Location.text(0, 3),
+			Location.text(0, 0),
 			Location.text(0, 7), // After Hell,
 			Location.text(0, 13), // After &ouml;
 			Location.text(0, 14), // After space,
@@ -48,7 +48,7 @@ public class HTMLSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<p>Hello\nworld!</p>").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 3),
+			Location.text(0, 0),
 			Location.text(0, 8), // After Hello
 			Location.text(1, 0), // After \n
 			Location.text(1, 6), // After world!
@@ -63,7 +63,7 @@ public class HTMLSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<p>\n  Hello world!\n</p>").parse(mock);
 		mock.verifyParagraph(" Hello world! ",
-			Location.text(0, 3),
+			Location.text(0, 0),
 			Location.text(1, 0), // After \n + space
 			Location.text(1, 7), // After Hello
 			Location.text(1, 8), // After space,
@@ -110,6 +110,36 @@ public class HTMLSourceTest
 	{
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("Hello world!").parse(mock);
+		mock.verifyParagraph("Hello world!",
+			Location.text(0, 0),
+			Location.text(0, 5), // After Hello
+			Location.text(0, 6), // After space
+			Location.text(0, 12), // After world!
+			Location.text(0, 12)
+		);
+	}
+
+	@Test
+	public void testParagraphWithInlineLinkWithSpaceAfter()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<p><a>Hello</a> world!</p>").parse(mock);
+		mock.verifyParagraph("Hello world!",
+			Location.text(0, 0),
+			Location.text(0, 11), // After Hello
+			Location.text(0, 16), // After space
+			Location.text(0, 22), // After world!
+			Location.text(0, 22)
+		);
+	}
+
+	//@Test
+	public void testInlineLinkWithSpaceAfter()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<a>Hello</a> world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
 			Location.text(0, 0),
 			Location.text(0, 5), // After Hello
@@ -170,12 +200,11 @@ public class HTMLSourceTest
 	{
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<br>Hello</br> world!").parse(mock);
-		mock.verifyParagraph("\nHello\n world!",
+		mock.verifyParagraph("\nHello world!",
 			Location.text(0, 0),
 			Location.text(0, 4), // After <br>
 			Location.text(0, 9), // After Hello
-			Location.text(0, 14), // After </br>
-			Location.text(0, 15), // After space
+			Location.text(0, 15), // After </br> + spae
 			Location.text(0, 21), // After world!
 			Location.text(0, 21)
 		);
