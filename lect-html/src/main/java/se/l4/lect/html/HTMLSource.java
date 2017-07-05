@@ -153,8 +153,8 @@ public class HTMLSource
 
 			state = State.UNKNOWN;
 
-			start = new TextLocation(0, 0, -1);
-			end = new TextLocation(0, 0, -1);
+			start = new TextLocation(0, 0);
+			end = new TextLocation(0, 0);
 
 			encounter.location(start);
 
@@ -181,15 +181,20 @@ public class HTMLSource
 		{
 			if(locator.getLineNumber() < 0) return;
 
-			start.moveTo(locator.getLineNumber() - 1, locator.getColumnNumber() - 1, -1);
-			encounter.location(start);
+			// Skip removing from column to indicate that the next start is after the current location
+			int line = locator.getLineNumber() - 1;
+			if(start.getLine() < line || (start.getLine() == line && start.getColumn() < locator.getColumnNumber()))
+			{
+				start.moveTo(locator.getLineNumber() - 1, locator.getColumnNumber());
+				encounter.location(start);
+			}
 		}
 
 		private void updateEnd()
 		{
 			if(locator.getLineNumber() < 0) return;
 
-			end.moveTo(locator.getLineNumber() - 1, locator.getColumnNumber() - 1, -1);
+			end.moveTo(locator.getLineNumber() - 1, locator.getColumnNumber());
 		}
 
 		private void startParagraph()
@@ -328,38 +333,98 @@ public class HTMLSource
 				pushState();
 			}
 
-			// TODO: White-space shouldn't be collapsed at all times
+			/*
+			 * First check if this a decoded entity in which case we use an improved output that creates a token
+			 * that spans the entire entity.
+			 */
+			if(length == 1 && locator.getColumnNumber() != this.start.getColumn() + length)
+			{
+				// Got a single character and it we moved more than that
+				updateEnd();
+				encounter.text(Character.toString(ch[0]), end);
+				updateStart();
+				return;
+			}
 
-			StringBuilder cleaned = new StringBuilder(length);
+			/*
+			 * In many cases the spaces in HTML should be folded into a single space, so tokenize and output spaces
+			 * as their own tokens. We do this to ensure that locations are tracked correctly.
+			 *
+			 * White-space is always collapsed into a space character.
+			 *
+			 * TODO: Take inline elements into account
+			 */
+
+			// Set end location to equal start as it will be moved manually
+			this.end.copyFrom(this.start);
+
+			StringBuilder buffer = new StringBuilder(length);
 			for(int i=start, n=start+length; i<n; i++)
 			{
 				char c = ch[i];
-				if(Character.isWhitespace(c))
+				if(c == '\u0020' || c == '\u0009' || c == '\n' || c == '\u000c' || c == '\r')
 				{
-					if(c == '\u00a0' || c == '\u202f' || c == '\ufeff')
+					if(! lastWasSpace && buffer.length() > 0)
 					{
-						// These are non-breaking spaces, push them onto the result
-						lastWasSpace = true;
-						cleaned.append(' ');
+						encounter.location(this.start);
+						encounter.text(buffer, end);
+						buffer.setLength(0);
+						this.start.copyFrom(end);
+					}
+
+					// Collapse into a single space character
+					if(c == '\r')
+					{
+						this.end.moveTo(this.end.getLine() + 1, 0);
+
+						// Carriage return needs to consume any following \n and move the location
+						if(i + 1 < n && ch[i+1] == '\n')
+						{
+							// Consume \n after \r
+							i++;
+							this.end.moveTextIndex(1);
+						}
+					}
+					else if(c == '\n')
+					{
+						this.end.moveTo(this.end.getLine() + 1, 0);
 					}
 					else
 					{
-						// Normal space, skip if last was a space
-						if(lastWasSpace) continue;
+						this.end.moveTextIndex(1);
+					}
 
+					if(! lastWasSpace)
+					{
+						encounter.text(" ", this.end);
 						lastWasSpace = true;
-						cleaned.append(' ');
 					}
 				}
 				else
 				{
-					cleaned.append(c);
+					if(lastWasSpace)
+					{
+						// Set the start location to be the end of the white-space
+						this.start.copyFrom(this.end);
+						encounter.location(this.start);
+						lastWasSpace = false;
+					}
+
+					this.end.moveTextIndex(1);
+					buffer.append(c);
 				}
 			}
 
-			updateEnd();
-			encounter.text(cleaned, end);
+			this.start.copyFrom(this.end);
+			encounter.location(this.start);
+
+			if(buffer.length() > 0)
+			{
+				encounter.text(buffer, end);
+			}
+
 			updateStart();
+			updateEnd();
 		}
 
 		@Override

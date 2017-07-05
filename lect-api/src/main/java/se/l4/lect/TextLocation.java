@@ -59,7 +59,8 @@ public class TextLocation
 	@Override
 	public TextLocation moveTextIndex(int amount)
 	{
-		return new TextLocation(line, column + amount);
+		this.column += amount;
+		return this;
 	}
 
 	public TextLocation moveTextIndex(CharSequence sequence)
