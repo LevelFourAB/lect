@@ -34,9 +34,9 @@ public abstract class ChunkedLanguageParser
 	}
 
 	@Override
-	public void text(String text, Location start, Location end)
+	public void text(CharSequence text, Location start, Location end)
 	{
-		Node node = new Node(text, start.copy(), end.copy());
+		Node node = new Node(text.toString(), start.copy(), end.copy());
 		node.appendTo(head);
 	}
 

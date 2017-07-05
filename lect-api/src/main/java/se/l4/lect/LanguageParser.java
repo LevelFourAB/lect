@@ -22,7 +22,7 @@ public interface LanguageParser
 	 *
 	 * @param text
 	 */
-	void text(String text, Location start, Location end);
+	void text(CharSequence text, Location start, Location end);
 
 	/**
 	 * Indicate that the current paragraph-level content is finished and that parsed sentences and words need to be

@@ -60,5 +60,5 @@ public interface SourceEncounter
 	 * @param end
 	 *   the location at which the text ends
 	 */
-	void text(String text, Location end);
+	void text(CharSequence text, Location end);
 }

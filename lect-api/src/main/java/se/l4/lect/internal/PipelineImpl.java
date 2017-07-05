@@ -145,7 +145,7 @@ public class PipelineImpl
 		}
 
 		@Override
-		public void text(String text, Location end)
+		public void text(CharSequence text, Location end)
 		{
 			language.text(text, location, end);
 		}

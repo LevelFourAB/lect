@@ -91,7 +91,7 @@ public class VerifyingSyntaxTreeEncounter
 	}
 
 	@Override
-	public void text(String text, Location end)
+	public void text(CharSequence text, Location end)
 	{
 		if(locationBuffer == null)
 		{
