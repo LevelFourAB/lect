@@ -11,7 +11,6 @@ public class TextLocation
 {
 	private int line;
 	private int column;
-	private int index;
 
 	/**
 	 * Create a new location representing the given line and column.
@@ -21,11 +20,10 @@ public class TextLocation
 	 * @param column
 	 *   zero-indexed column
 	 */
-	public TextLocation(int line, int column, int index)
+	public TextLocation(int line, int column)
 	{
 		this.line = line;
 		this.column = column;
-		this.index = index;
 	}
 
 	public int getLine()
@@ -38,16 +36,10 @@ public class TextLocation
 		return column;
 	}
 
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public TextLocation moveTo(int line, int column, int index)
+	public TextLocation moveTo(int line, int column)
 	{
 		this.line = line;
 		this.column = column;
-		this.index = index;
 		return this;
 	}
 
@@ -55,20 +47,19 @@ public class TextLocation
 	{
 		this.line = location.line;
 		this.column = location.column;
-		this.index = location.index;
 		return this;
 	}
 
 	@Override
 	public TextLocation copy()
 	{
-		return new TextLocation(line, column, index);
+		return new TextLocation(line, column);
 	}
 
 	@Override
 	public TextLocation moveTextIndex(int amount)
 	{
-		return new TextLocation(line, column + amount, index + amount);
+		return new TextLocation(line, column + amount);
 	}
 
 	public TextLocation moveTextIndex(CharSequence sequence)
@@ -85,11 +76,9 @@ public class TextLocation
 			{
 				line++;
 				column = 0;
-				index++;
 				if(i + 1 < n && sequence.charAt(i + 1) == '\n')
 				{
 					// Consume \n after \r
-					index++;
 					i++;
 					continue;
 				}
@@ -98,12 +87,10 @@ public class TextLocation
 			{
 				line++;
 				column = 0;
-				index++;
 			}
 			else
 			{
 				column++;
-				index++;
 			}
 		}
 
@@ -131,7 +118,6 @@ public class TextLocation
 		int result = 1;
 		result = prime * result + column;
 		result = prime * result + line;
-		result = prime * result + index;
 		return result;
 	}
 
@@ -149,14 +135,12 @@ public class TextLocation
 			return false;
 		if(line != other.line)
 			return false;
-		if(index != other.index)
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString()
 	{
-		return line + ":" + column + "(@" + index + ")";
+		return line + ":" + column;
 	}
 }

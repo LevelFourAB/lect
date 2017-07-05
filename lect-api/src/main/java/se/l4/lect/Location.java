@@ -38,11 +38,10 @@ public interface Location
 	 *
 	 * @param line
 	 * @param column
-	 * @param index
 	 * @return
 	 */
-	static TextLocation text(int line, int column, int index)
+	static TextLocation text(int line, int column)
 	{
-		return new TextLocation(line, column, index);
+		return new TextLocation(line, column);
 	}
 }
