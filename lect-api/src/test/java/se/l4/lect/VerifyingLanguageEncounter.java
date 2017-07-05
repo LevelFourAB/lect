@@ -8,27 +8,19 @@ public class VerifyingLanguageEncounter
 {
 	private final LinkedList<Data> data;
 
-	private Location location;
-
 	public VerifyingLanguageEncounter()
 	{
 		data = new LinkedList<>();
 	}
 
 	@Override
-	public void location(Location location)
-	{
-		this.location = location;
-	}
-
-	@Override
-	public void startSentence()
+	public void startSentence(Location location)
 	{
 		data.add(new Data(Type.START_SENTENCE, location.copy()));
 	}
 
 	@Override
-	public void endSentence()
+	public void endSentence(Location location)
 	{
 		data.add(new Data(Type.END_SENTENCE, location.copy()));
 	}

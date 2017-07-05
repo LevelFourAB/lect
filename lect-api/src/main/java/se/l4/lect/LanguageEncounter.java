@@ -9,21 +9,14 @@ package se.l4.lect;
 public interface LanguageEncounter
 {
 	/**
-	 * Set the location of the next event.
-	 *
-	 * @param location
-	 */
-	void location(Location location);
-
-	/**
 	 * Start a new sentence.
 	 */
-	void startSentence();
+	void startSentence(Location location);
 
 	/**
 	 * End the current sentence.
 	 */
-	void endSentence();
+	void endSentence(Location location);
 
 	void token(Token token);
 }

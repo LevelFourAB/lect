@@ -151,21 +151,31 @@ public class PipelineImpl
 		}
 
 		@Override
-		public void startSentence()
+		public void startSentence(Location location)
 		{
+			Location old = this.location;
+			this.location = location;
+
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
 				handlers[i].startSentence();
 			}
+
+			this.location = old;
 		}
 
 		@Override
-		public void endSentence()
+		public void endSentence(Location location)
 		{
+			Location old = this.location;
+			this.location = location;
+
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
 				handlers[i].endSentence();
 			}
+
+			this.location = old;
 		}
 
 		@Override

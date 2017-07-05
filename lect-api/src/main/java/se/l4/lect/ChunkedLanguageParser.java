@@ -142,7 +142,6 @@ public abstract class ChunkedLanguageParser
 		if(eventType != null)
 		{
 			token.update(eventType, start, end, scratch.toString());
-			encounter.location(start);
 			encounter.token(token);
 		}
 
@@ -164,8 +163,7 @@ public abstract class ChunkedLanguageParser
 	protected void startSentence(int offset)
 	{
 		emitWhitespace(offset);
-		encounter.location(start);
-		encounter.startSentence();
+		encounter.startSentence(start);
 	}
 
 	/**
@@ -176,8 +174,7 @@ public abstract class ChunkedLanguageParser
 	protected void endSentence(int offset)
 	{
 		emitWhitespace(offset);
-		encounter.location(start);
-		encounter.endSentence();
+		encounter.endSentence(start);
 	}
 
 	protected void emitToken(int offset, Token.Type type, String value)
