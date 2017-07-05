@@ -1,23 +1,28 @@
 package se.l4.lect;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class VerifyingSyntaxTreeEncounter
 	implements SourceEncounter
 {
+	private static final Location[] EMTPY = new Location[0];
+
 	private final Locale locale;
 
 	private boolean inParagraph;
 
 	private LinkedList<Data> data;
 	private StringBuilder buffer;
+	private List<Location> stops;
 
 	private boolean calledDone;
 
 	private Location location;
 	private Location locationBuffer;
-	private Location locationEnd;
 
 	public VerifyingSyntaxTreeEncounter(Locale locale)
 	{
@@ -25,6 +30,7 @@ public class VerifyingSyntaxTreeEncounter
 
 		data = new LinkedList<>();
 		buffer = new StringBuilder();
+		stops = new ArrayList<>();
 	}
 
 	@Override
@@ -63,7 +69,9 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer, locationEnd));
+			stops.add(location);
+			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer, stops.toArray(EMTPY)));
+			stops.clear();
 			buffer.setLength(0);
 		}
 
@@ -82,11 +90,12 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(true, buffer.toString(), locationBuffer, locationEnd));
+			stops.add(location);
+			data.add(new Data(true, buffer.toString(), locationBuffer, stops.toArray(EMTPY)));
+			stops.clear();
 			buffer.setLength(0);
 		}
 
-		locationEnd = location;
 		locationBuffer = null;
 	}
 
@@ -97,8 +106,8 @@ public class VerifyingSyntaxTreeEncounter
 		{
 			locationBuffer = location.copy();
 		}
-		locationEnd = end;
 		buffer.append(text);
+		stops.add(end.copy());
 	}
 
 	@Override
@@ -111,14 +120,15 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(buffer.length() > 0)
 		{
-			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer, locationEnd));
+			stops.add(location.copy());
+			data.add(new Data(false, buffer.toString(), locationBuffer == null ? location : locationBuffer, stops.toArray(EMTPY)));
 			buffer.setLength(0);
 		}
 
 		calledDone = true;
 	}
 
-	public void verifyParagraph(String text, Location start, Location end)
+	public void verifyParagraph(String text, Location start, Location... stops)
 	{
 		if(! calledDone) throw new AssertionError("done() was never called");
 		if(data.isEmpty()) throw new AssertionError("No more data, expected to find paragraph with text `" + text + "`");
@@ -139,13 +149,21 @@ public class VerifyingSyntaxTreeEncounter
 			throw new AssertionError("Start does not match, expected " + start + " but got " + d.location);
 		}
 
-		if(end != null && ! end.equals(d.end))
+		if(stops.length != d.stops.length)
 		{
-			throw new AssertionError("End does not match, expected " + end + " but got " + d.end);
+			throw new AssertionError("Number of stops differ, expected " + stops.length + ", but got " + Arrays.toString(d.stops));
+		}
+
+		for(int i=0, n=stops.length; i<n; i++)
+		{
+			if(! stops[i].equals(d.stops[i]))
+			{
+				throw new AssertionError("Stop " + i + " does not match, expected " + stops[i] + " but got " + d.stops[i]);
+			}
 		}
 	}
 
-	public void verifyWhitespace(String text, Location start, Location end)
+	public void verifyWhitespace(String text, Location start, Location... stops)
 	{
 		if(! calledDone) throw new AssertionError("done() was never called");
 		if(data.isEmpty()) throw new AssertionError("No more data, expected to find whitespace with value `" + text + "`");
@@ -166,9 +184,17 @@ public class VerifyingSyntaxTreeEncounter
 			throw new AssertionError("Start does not match, expected " + start + " but got " + d.location);
 		}
 
-		if(end != null && ! end.equals(d.end))
+		if(stops.length != d.stops.length)
 		{
-			throw new AssertionError("End does not match, expected " + end + " but got " + d.end);
+			throw new AssertionError("Number of stops differ, got: " + Arrays.toString(d.stops));
+		}
+
+		for(int i=0, n=stops.length; i<n; i++)
+		{
+			if(! stops[i].equals(d.stops[i]))
+			{
+				throw new AssertionError("Stop " + i + " does not match, expected " + stops[i] + " but got " + d.stops[i]);
+			}
 		}
 	}
 
@@ -185,14 +211,14 @@ public class VerifyingSyntaxTreeEncounter
 		private boolean paragraph;
 		private String text;
 		private Location location;
-		private Location end;
+		private Location[] stops;
 
-		public Data(boolean paragraph, String text, Location location, Location end)
+		public Data(boolean paragraph, String text, Location location, Location[] stops)
 		{
 			this.paragraph = paragraph;
 			this.text = text;
 			this.location = location;
-			this.end = end;
+			this.stops = stops;
 		}
 	}
 }
