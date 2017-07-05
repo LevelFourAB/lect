@@ -21,6 +21,7 @@
 
 	<modules>
 		<module>lect-api</module>
+		<module>lect-html</module>
  	</modules>
  	
  	<dependencies>

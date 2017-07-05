@@ -11,38 +11,28 @@
 		<relativePath>..</relativePath>
 	</parent>
 	
-	<artifactId>lect-api</artifactId>
+	<artifactId>lect-html</artifactId>
 	<name>${project.artifactId}</name>
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.ibm.icu</groupId>
-			<artifactId>icu4j</artifactId>
-			<version>59.1</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>lect-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.21</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>lect-api</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>nu.validator.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
