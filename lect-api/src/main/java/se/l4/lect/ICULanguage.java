@@ -49,7 +49,13 @@ public class ICULanguage
 		sentences.setText(string);
 		words.setText(string);
 
-		int lastOffset = 0;
+		int lastOffset = sentences.first();
+		if(lastOffset > 0)
+		{
+			// Emit whitespace between sentences
+			emitToken(0, Token.Type.WHITESPACE, string.substring(0, lastOffset));
+		}
+
 		while(sentences.next() != BreakIterator.DONE)
 		{
 			int offset = sentences.current();
@@ -57,6 +63,12 @@ public class ICULanguage
 
 			words.preceding(lastOffset);
 			int startOfWord = words.current();
+			while(startOfWord < lastOffset)
+			{
+				startOfWord = words.next();
+			}
+
+			boolean endedSentence = false;
 			while(words.next() != BreakIterator.DONE)
 			{
 				int endOfWord = words.current();
@@ -67,6 +79,13 @@ public class ICULanguage
 				if(isWhitespace(value))
 				{
 					type = Token.Type.WHITESPACE;
+
+					if(endOfWord == offset)
+					{
+						// If this is some whitespace at the end of the sentence, treat it as outside the sentence
+						endSentence(startOfWord);
+						endedSentence = true;
+					}
 				}
 				else if(isSymbol(value))
 				{
@@ -77,7 +96,10 @@ public class ICULanguage
 				startOfWord = endOfWord;
 			}
 
-			endSentence(offset);
+			if(! endedSentence)
+			{
+				endSentence(offset);
+			}
 			lastOffset = offset;
 		}
 	}

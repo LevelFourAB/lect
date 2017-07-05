@@ -64,6 +64,9 @@ public abstract class ChunkedLanguageParser
 		}
 
 		handleChunk(builder);
+
+		head.next = head;
+		head.prev = head;
 	}
 
 	private String consume(int offset, Token.Type eventType)

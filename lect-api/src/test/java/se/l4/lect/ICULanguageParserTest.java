@@ -106,4 +106,24 @@ public class ICULanguageParserTest
 		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 16, 16), Location.text(0, 17, 17), "!");
 		encounter.verifySentenceEnd(Location.text(0, 17, 17));
 	}
+
+	@Test
+	public void testMultipleSentences()
+	{
+		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
+		parser.text("Hello world! Hello", "Hello world! Hello", Location.text(0, 0, 0));
+		parser.flush();
+
+		encounter.verifySentenceStart(Location.text(0, 0, 0));
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0, 0), Location.text(0, 5, 5), "Hello");
+		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5, 5), Location.text(0, 6, 6), " ");
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6, 6), Location.text(0, 11, 11), "world");
+		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11, 11), Location.text(0, 12, 12),  "!");
+		encounter.verifySentenceEnd(Location.text(0, 12, 12));
+		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 12, 12), Location.text(0, 13, 13), " ");
+		encounter.verifySentenceStart(Location.text(0, 13, 13));
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13, 13), Location.text(0, 18, 18), "Hello");
+		encounter.verifySentenceEnd(Location.text(0, 18, 18));
+	}
 }
