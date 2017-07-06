@@ -142,6 +142,7 @@ public class HTMLSource
 
 									// Update the end location and emit a line break
 									updateEnd(segment);
+									encounter.location(start);
 									encounter.text("\n", end);
 									break;
 								case "hr":
@@ -154,8 +155,20 @@ public class HTMLSource
 							}
 							break;
 						case IGNORE:
+							// Nothing special to do for ignore
+							break;
 						case EXPLICIT:
-							// Nothing special to do for other states
+							// Explicit <br> creates a line break
+							if("br".equals(name))
+							{
+								updateStart(segment);
+								startParagraph();
+
+								// Update the end location and emit a line break
+								updateEnd(segment);
+								encounter.location(start);
+								encounter.text("\n", end);
+							}
 					}
 
 					pushState();
@@ -203,6 +216,7 @@ public class HTMLSource
 
 					buffer.setLength(0);
 					ref.appendCharTo(buffer);
+					encounter.location(this.start);
 					encounter.text(buffer, end);
 				}
 				else
@@ -257,6 +271,7 @@ public class HTMLSource
 
 							if(! lastWasSpace)
 							{
+								encounter.location(this.start);
 								encounter.text(" ", this.end);
 								lastWasSpace = true;
 							}
@@ -276,14 +291,14 @@ public class HTMLSource
 						}
 					}
 
-					this.start.copyFrom(this.end);
-					updateEnd(segment);
-
 					if(buffer.length() > 0)
 					{
 						encounter.location(this.start);
 						encounter.text(buffer, end);
 					}
+
+					// Set the start location so the end of paragraph is correct for implicit paragraphs
+					this.start.copyFrom(end);
 				}
 			}
 
