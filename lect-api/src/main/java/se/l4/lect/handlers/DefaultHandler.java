@@ -1,6 +1,7 @@
 package se.l4.lect.handlers;
 
 import se.l4.lect.Handler;
+import se.l4.lect.Location;
 import se.l4.lect.Token;
 
 /**
@@ -14,22 +15,22 @@ public abstract class DefaultHandler
 {
 
 	@Override
-	public void startParagraph()
+	public void startParagraph(Location location)
 	{
 	}
 
 	@Override
-	public void endParagraph()
+	public void endParagraph(Location location)
 	{
 	}
 
 	@Override
-	public void startSentence()
+	public void startSentence(Location location)
 	{
 	}
 
 	@Override
-	public void endSentence()
+	public void endSentence(Location location)
 	{
 	}
 

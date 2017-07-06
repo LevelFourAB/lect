@@ -11,22 +11,22 @@ public interface Handler
 	/**
 	 * A new paragraph has been started.
 	 */
-	void startParagraph();
+	void startParagraph(Location location);
 
 	/**
 	 * A paragraph has ended.
 	 */
-	void endParagraph();
+	void endParagraph(Location location);
 
 	/**
 	 * The start of a sentence has been found.
 	 */
-	void startSentence();
+	void startSentence(Location location);
 
 	/**
 	 * The end of a sentence has been found.
 	 */
-	void endSentence();
+	void endSentence(Location location);
 
 	/**
 	 * Token has been found, can either be whitespace, symbol or word.

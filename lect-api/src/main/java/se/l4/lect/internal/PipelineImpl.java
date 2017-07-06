@@ -116,7 +116,7 @@ public class PipelineImpl
 
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
-				handlers[i].startParagraph();
+				handlers[i].startParagraph(location);
 			}
 		}
 
@@ -129,7 +129,7 @@ public class PipelineImpl
 
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
-				handlers[i].endParagraph();
+				handlers[i].endParagraph(location);
 			}
 		}
 
@@ -158,7 +158,7 @@ public class PipelineImpl
 
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
-				handlers[i].startSentence();
+				handlers[i].startSentence(location);
 			}
 
 			this.location = old;
@@ -172,7 +172,7 @@ public class PipelineImpl
 
 			for(int i=0, n=handlers.length; i<n; i++)
 			{
-				handlers[i].endSentence();
+				handlers[i].endSentence(location);
 			}
 
 			this.location = old;
