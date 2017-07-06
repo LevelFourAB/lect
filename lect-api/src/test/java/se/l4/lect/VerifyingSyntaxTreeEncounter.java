@@ -107,6 +107,7 @@ public class VerifyingSyntaxTreeEncounter
 			locationBuffer = location.copy();
 		}
 		buffer.append(text);
+		stops.add(location);
 		stops.add(end.copy());
 	}
 
