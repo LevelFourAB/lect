@@ -108,7 +108,7 @@ public class ICULanguageParserTest
 	}
 
 	@Test
-	public void testMultipleSentences()
+	public void testMultipleSentences1()
 	{
 		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
 		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
@@ -125,5 +125,28 @@ public class ICULanguageParserTest
 		encounter.verifySentenceStart(Location.text(0, 13));
 		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
 		encounter.verifySentenceEnd(Location.text(0, 18));
+	}
+
+	@Test
+	public void testMultipleSentences2()
+	{
+		VerifyingLanguageEncounter encounter = new VerifyingLanguageEncounter();
+		ICULanguage parser = new ICULanguage(Locale.ENGLISH, encounter);
+		parser.text("Hello world! Hello cookies.", "Hello world! Hello cookies.", Location.text(0, 0));
+		parser.flush();
+
+		encounter.verifySentenceStart(Location.text(0, 0));
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
+		encounter.verifySentenceEnd(Location.text(0, 12));
+		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
+		encounter.verifySentenceStart(Location.text(0, 13));
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
+		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 18), Location.text(0, 19), " ");
+		encounter.verifyToken(Token.Type.WORD, Location.text(0, 19), Location.text(0, 26), "cookies");
+		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 26), Location.text(0, 27), ".");
+		encounter.verifySentenceEnd(Location.text(0, 27));
 	}
 }
