@@ -53,7 +53,7 @@ public class ICULanguage
 		if(lastOffset > 0)
 		{
 			// Emit whitespace between sentences
-			emitToken(0, Token.Type.WHITESPACE, string.substring(0, lastOffset));
+			emitToken(0, TokenType.WHITESPACE, string.substring(0, lastOffset));
 		}
 
 		while(sentences.next() != BreakIterator.DONE)
@@ -74,11 +74,11 @@ public class ICULanguage
 				int endOfWord = words.current();
 				if(endOfWord > offset) break;
 
-				Token.Type type = Token.Type.WORD;
+				TokenType type = TokenType.WORD;
 				String value = string.substring(startOfWord, endOfWord);
 				if(isWhitespace(value))
 				{
-					type = Token.Type.WHITESPACE;
+					type = TokenType.WHITESPACE;
 
 					if(endOfWord == offset)
 					{
@@ -89,7 +89,7 @@ public class ICULanguage
 				}
 				else if(isSymbol(value))
 				{
-					type = Token.Type.SYMBOL;
+					type = TokenType.SYMBOL;
 				}
 				emitToken(startOfWord, type, value);
 

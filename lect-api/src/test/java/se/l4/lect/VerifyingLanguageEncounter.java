@@ -63,7 +63,7 @@ public class VerifyingLanguageEncounter
 		}
 	}
 
-	public void verifyToken(Token.Type type, Location start, Location end, String text)
+	public void verifyToken(TokenType type, Location start, Location end, String text)
 	{
 		if(data.isEmpty()) throw new AssertionError("No more data, expected to find token " + type + " with text `" + text + "`");
 

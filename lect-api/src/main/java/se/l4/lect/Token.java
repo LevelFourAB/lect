@@ -8,21 +8,12 @@ package se.l4.lect;
  */
 public interface Token
 {
-	enum Type
-	{
-		WORD,
-
-		SYMBOL,
-
-		WHITESPACE
-	}
-
 	/**
 	 * Get the type of token.
 	 *
 	 * @return
 	 */
-	Type getType();
+	TokenType getType();
 
 	/**
 	 * Get the text of the token.

@@ -15,10 +15,10 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
 		encounter.verifySentenceEnd(Location.text(0, 12));
 	}
 
@@ -32,10 +32,10 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 12), "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 11), Location.text(0, 12), "!");
 		encounter.verifySentenceEnd(Location.text(0, 12));
 	}
 
@@ -49,10 +49,10 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 10), Location.text(0, 11), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 11), Location.text(0, 16), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 16), Location.text(0, 17), "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 10), Location.text(0, 11), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 11), Location.text(0, 16), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 16), Location.text(0, 17), "!");
 		encounter.verifySentenceEnd(Location.text(0, 17));
 	}
 
@@ -67,10 +67,10 @@ public class ICULanguageParserTest
 
 		// TODO: This should verify the end of the token
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD,Location.text(0, 0), Location.text(0, 12), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13), Location.text(0, 18), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 18), Location.text(0, 19), "!");
+		encounter.verifyToken(TokenType.WORD,Location.text(0, 0), Location.text(0, 12), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 13), Location.text(0, 18), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 18), Location.text(0, 19), "!");
 		encounter.verifySentenceEnd(Location.text(0, 19));
 	}
 
@@ -83,10 +83,10 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 17),  "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 11), Location.text(0, 17),  "!");
 		encounter.verifySentenceEnd(Location.text(0, 17));
 	}
 
@@ -100,10 +100,10 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 10), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 10), Location.text(0, 11), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 11), Location.text(0, 16), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 16), Location.text(0, 17), "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 10), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 10), Location.text(0, 11), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 11), Location.text(0, 16), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 16), Location.text(0, 17), "!");
 		encounter.verifySentenceEnd(Location.text(0, 17));
 	}
 
@@ -116,14 +116,14 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
 		encounter.verifySentenceEnd(Location.text(0, 12));
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
 		encounter.verifySentenceStart(Location.text(0, 13));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
 		encounter.verifySentenceEnd(Location.text(0, 18));
 	}
 
@@ -136,17 +136,17 @@ public class ICULanguageParserTest
 		parser.flush();
 
 		encounter.verifySentenceStart(Location.text(0, 0));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 6), Location.text(0, 11), "world");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 0), Location.text(0, 5), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 5), Location.text(0, 6), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 6), Location.text(0, 11), "world");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 11), Location.text(0, 12),  "!");
 		encounter.verifySentenceEnd(Location.text(0, 12));
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 12), Location.text(0, 13), " ");
 		encounter.verifySentenceStart(Location.text(0, 13));
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
-		encounter.verifyToken(Token.Type.WHITESPACE, Location.text(0, 18), Location.text(0, 19), " ");
-		encounter.verifyToken(Token.Type.WORD, Location.text(0, 19), Location.text(0, 26), "cookies");
-		encounter.verifyToken(Token.Type.SYMBOL, Location.text(0, 26), Location.text(0, 27), ".");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 13), Location.text(0, 18), "Hello");
+		encounter.verifyToken(TokenType.WHITESPACE, Location.text(0, 18), Location.text(0, 19), " ");
+		encounter.verifyToken(TokenType.WORD, Location.text(0, 19), Location.text(0, 26), "cookies");
+		encounter.verifyToken(TokenType.SYMBOL, Location.text(0, 26), Location.text(0, 27), ".");
 		encounter.verifySentenceEnd(Location.text(0, 27));
 	}
 }

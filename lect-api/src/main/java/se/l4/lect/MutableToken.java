@@ -3,12 +3,12 @@ package se.l4.lect;
 public class MutableToken
 	implements Token
 {
-	private Type type;
+	private TokenType type;
 	private String text;
 	private Location start;
 	private Location end;
 
-	public void update(Type type, Location start, Location end, String text)
+	public void update(TokenType type, Location start, Location end, String text)
 	{
 		this.type = type;
 		this.text = text;
@@ -17,12 +17,12 @@ public class MutableToken
 	}
 
 	@Override
-	public Type getType()
+	public TokenType getType()
 	{
 		return type;
 	}
 
-	public void setType(Type type)
+	public void setType(TokenType type)
 	{
 		this.type = type;
 	}

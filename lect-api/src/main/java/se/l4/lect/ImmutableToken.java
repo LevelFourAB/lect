@@ -3,12 +3,12 @@ package se.l4.lect;
 public class ImmutableToken
 	implements Token
 {
-	private final Type type;
+	private final TokenType type;
 	private final String text;
 	private final Location start;
 	private final Location end;
 
-	public ImmutableToken(Type type, Location start, Location end, String text)
+	public ImmutableToken(TokenType type, Location start, Location end, String text)
 	{
 		this.type = type;
 		this.start = start.copy();
@@ -17,7 +17,7 @@ public class ImmutableToken
 	}
 
 	@Override
-	public Type getType()
+	public TokenType getType()
 	{
 		return type;
 	}

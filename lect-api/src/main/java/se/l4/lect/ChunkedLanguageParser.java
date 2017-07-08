@@ -69,7 +69,7 @@ public abstract class ChunkedLanguageParser
 		head.prev = head;
 	}
 
-	private String consume(int offset, Token.Type eventType)
+	private String consume(int offset, TokenType eventType)
 	{
 		// Sanity check that we never go backwards
 		if(offset < lastOffset) throw new AssertionError("Going backwards in processing of paragraph-level content, language implementation probably broken");
@@ -155,7 +155,7 @@ public abstract class ChunkedLanguageParser
 
 	private void emitWhitespace(int offset)
 	{
-		consume(offset, Token.Type.WHITESPACE);
+		consume(offset, TokenType.WHITESPACE);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public abstract class ChunkedLanguageParser
 		encounter.endSentence(start);
 	}
 
-	protected void emitToken(int offset, Token.Type type, String value)
+	protected void emitToken(int offset, TokenType type, String value)
 	{
 		emitWhitespace(offset);
 
@@ -189,7 +189,7 @@ public abstract class ChunkedLanguageParser
 
 	/**
 	 * Handle the given sequence of characters. This method should go through the sequence and in order emit events
-	 * via {@link #startSentence(int)}, {@link #emitToken(int, se.l4.lect.Token.Type, String)} and
+	 * via {@link #startSentence(int)}, {@link #emitToken(int, se.l4.lect.Token.TokenType, String)} and
 	 * {@link #endSentence(int)}.
 	 *
 	 * @param sequence
