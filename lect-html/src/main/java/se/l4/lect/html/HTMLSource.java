@@ -177,6 +177,9 @@ public class HTMLSource
 				{
 					depth--;
 
+					// Protect against docs that have end tags without start tags
+					if(depth < 0) depth = 0;
+
 					// Restore the state
 					State oldState = state;
 					state = stateHistory[depth];
