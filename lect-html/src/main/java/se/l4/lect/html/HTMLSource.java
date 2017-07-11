@@ -124,6 +124,7 @@ public class HTMLSource
 									state = State.EXPLICIT;
 									updateStart(segment);
 									startParagraph();
+									lastWasSpace = true;
 									break;
 								case "script":
 								case "style":

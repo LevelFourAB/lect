@@ -62,9 +62,9 @@ public class HTMLSourceTest
 	{
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		HTMLSource.forString("<p>\n  Hello world!\n</p>").parse(mock);
-		mock.verifyParagraph(" Hello world! ",
+		mock.verifyParagraph("Hello world! ",
 			Location.text(0, 0),
-			Location.text(0, 3), Location.text(1, 0), // After \n + space
+			//Location.text(0, 3), Location.text(1, 0), // After \n + space
 			Location.text(1, 2), Location.text(1, 7), // After Hello
 			Location.text(1, 7), Location.text(1, 8), // After space,
 			Location.text(1, 8), Location.text(1, 14), // After world!
