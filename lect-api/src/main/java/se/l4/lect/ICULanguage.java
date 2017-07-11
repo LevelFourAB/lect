@@ -68,32 +68,66 @@ public class ICULanguage
 				startOfWord = words.next();
 			}
 
+			TokenType previous = null;
+			int tokenStart = -1;
 			boolean endedSentence = false;
 			while(words.next() != BreakIterator.DONE)
 			{
 				int endOfWord = words.current();
 				if(endOfWord > offset) break;
 
+				boolean canMerge = false;
+
 				TokenType type = TokenType.WORD;
 				String value = string.substring(startOfWord, endOfWord);
 				if(isWhitespace(value))
 				{
 					type = TokenType.WHITESPACE;
-
-					if(endOfWord == offset)
-					{
-						// If this is some whitespace at the end of the sentence, treat it as outside the sentence
-						endSentence(startOfWord);
-						endedSentence = true;
-					}
+					canMerge = previous == TokenType.WHITESPACE;
 				}
 				else if(isSymbol(value))
 				{
 					type = TokenType.SYMBOL;
 				}
-				emitToken(startOfWord, type, value);
 
+				if(! canMerge)
+				{
+					// This boundary starts a new token, flush the previous one
+					if(tokenStart >= 0)
+					{
+						if(previous == TokenType.WHITESPACE)
+						{
+							if(startOfWord == offset)
+							{
+								// If this is some whitespace at the end of the sentence, treat it as outside the sentence
+								endSentence(tokenStart);
+								endedSentence = true;
+							}
+						}
+
+						emitToken(tokenStart, previous, string.substring(tokenStart, startOfWord));
+					}
+
+					tokenStart = startOfWord;
+				}
+
+				previous = type;
 				startOfWord = endOfWord;
+			}
+
+			if(tokenStart >= 0)
+			{
+				if(previous == TokenType.WHITESPACE)
+				{
+					if(startOfWord == offset)
+					{
+						// If this is some whitespace at the end of the sentence, treat it as outside the sentence
+						endSentence(tokenStart);
+						endedSentence = true;
+					}
+				}
+
+				emitToken(tokenStart, previous, string.substring(tokenStart, startOfWord));
 			}
 
 			if(! endedSentence)
@@ -117,7 +151,11 @@ public class ICULanguage
 	{
 		for(int i=0, n=value.length(); i<n; i++)
 		{
-			if(! Character.isWhitespace(value.charAt(i))) return false;
+			char c = value.charAt(i);
+			if(! Character.isWhitespace(c) && c != '\u00A0')
+			{
+				return false;
+			}
 		}
 		return true;
 	}
