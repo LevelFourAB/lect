@@ -154,6 +154,23 @@ public class HTMLSourceTest
 	}
 
 	@Test
+	public void testParagraphWithBreakFollowedByNewline()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<p>Hello cookies.<br>\nTest.</p>").parse(mock);
+		mock.verifyParagraph("Hello cookies.\nTest.",
+			Location.text(0, 0),
+			Location.text(0, 3), Location.text(0, 8), // After Hello
+			Location.text(0, 8), Location.text(0, 9), // After space
+			Location.text(0, 9), Location.text(0, 17), // After cookies.
+			Location.text(0, 17), Location.text(0, 21), // After <br>
+			Location.text(1, 0), Location.text(1, 5), // After Test.
+			Location.text(1, 5)
+		);
+	}
+
+	@Test
 	public void testParagraphWithInlineLinkWithSpaceAfter()
 		throws IOException
 	{

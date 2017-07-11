@@ -168,6 +168,8 @@ public class HTMLSource
 								updateEnd(segment);
 								encounter.location(start);
 								encounter.text("\n", end);
+
+								lastWasSpace = true;
 							}
 					}
 
