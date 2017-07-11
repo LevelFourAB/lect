@@ -205,6 +205,8 @@ public class HTMLSource
 						updateEnd(segment);
 						endParagraph();
 					}
+
+					lastWasSpace = false;
 				}
 				else if(segment instanceof CharacterReference)
 				{
@@ -227,14 +229,6 @@ public class HTMLSource
 				}
 				else
 				{
-					if(state == State.UNKNOWN)
-					{
-						updateStart(segment);
-						startParagraph();
-						state = State.IMPLICIT;
-						pushState();
-					}
-
 					updateStart(segment);
 					this.end.copyFrom(this.start);
 
@@ -284,6 +278,13 @@ public class HTMLSource
 						}
 						else
 						{
+							if(state == State.UNKNOWN)
+							{
+								startParagraph();
+								state = State.IMPLICIT;
+								pushState();
+							}
+
 							if(lastWasSpace)
 							{
 								// Set the start location to be the end of the white-space

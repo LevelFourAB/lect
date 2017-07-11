@@ -185,6 +185,49 @@ public class HTMLSourceTest
 		);
 	}
 
+	@Test
+	public void testParagraphFollowedByParagraph()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<p>Hello</p><p>World</p>").parse(mock);
+		mock.verifyParagraph("Hello",
+			Location.text(0, 0),
+			Location.text(0, 3), Location.text(0, 8), // After Hello
+			Location.text(0, 8)
+		);
+		mock.verifyParagraph("World",
+			Location.text(0, 12),
+			Location.text(0, 15), Location.text(0, 20), // After Hello
+			Location.text(0, 20)
+		);
+		mock.verifyEmpty();
+	}
+
+	@Test
+	public void testParagraphFollowedBySpaceAndParagraph()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<p>Hello</p>\n<p>World</p>").parse(mock);
+		mock.verifyParagraph("Hello",
+			Location.text(0, 0),
+			Location.text(0, 3), Location.text(0, 8), // After Hello
+			Location.text(0, 8)
+		);
+		mock.verifyWhitespace(" ",
+			Location.text(0, 12),
+			Location.text(0, 12), Location.text(1, 0), // After space
+			Location.text(1, 0)
+		);
+		mock.verifyParagraph("World",
+			Location.text(1, 0),
+			Location.text(1, 3), Location.text(1, 8), // After World
+			Location.text(1, 8)
+		);
+		mock.verifyEmpty();
+	}
+
 	//@Test
 	public void testInlineLinkWithSpaceAfter()
 		throws IOException

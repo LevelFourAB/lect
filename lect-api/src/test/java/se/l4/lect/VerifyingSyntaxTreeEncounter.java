@@ -187,7 +187,7 @@ public class VerifyingSyntaxTreeEncounter
 
 		if(stops.length != d.stops.length)
 		{
-			throw new AssertionError("Number of stops differ, got: " + Arrays.toString(d.stops));
+			throw new AssertionError("Number of stops differ, expected " + stops.length + ", but got " + d.stops.length + " with values " + Arrays.toString(d.stops));
 		}
 
 		for(int i=0, n=stops.length; i<n; i++)
