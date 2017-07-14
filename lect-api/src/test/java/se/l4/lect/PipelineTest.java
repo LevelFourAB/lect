@@ -6,9 +6,11 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
 
+import se.l4.lect.handlers.DefaultHandler;
 import se.l4.lect.text.PlainTextSource;
 
 public class PipelineTest
@@ -25,5 +27,32 @@ public class PipelineTest
 
 		assertThat(result, notNullValue());
 		assertThat(result.get(), is(2));
+	}
+
+	@Test
+	public void testExampleFromReadme()
+		throws IOException
+	{
+		Source source = PlainTextSource.forString("Simple plain text");
+
+		AtomicInteger wordCount = Pipeline.over(source)
+			.language(ICULanguage.forLocale(Locale.ENGLISH))
+			.collector(new AtomicInteger())
+			.with(encounter -> new DefaultHandler() {
+				private int count = 0;
+
+				@Override
+				public void word(Token token) {
+					count++;
+				}
+
+				@Override
+				public void done() {
+					encounter.collector().set(count);
+				}
+			})
+			.run();
+
+		System.out.println(wordCount + " words");
 	}
 }
