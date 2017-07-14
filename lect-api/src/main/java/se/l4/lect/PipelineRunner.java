@@ -1,8 +1,6 @@
 package se.l4.lect;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -11,11 +9,12 @@ import java.util.function.Function;
  * @author Andreas Holstenson
  *
  */
-public class PipelineRunner
-	implements PipelineAssembly<PipelineRunner>
+public class PipelineRunner<Collector>
+	implements PipelineAssembly<Collector, PipelineRunner<Collector>>
 {
 	private final Source source;
-	private final PipelineBuilder builder;
+	private final PipelineBuilder<Collector> builder;
+	private Collector collector;
 
 	public PipelineRunner(Source source)
 	{
@@ -24,36 +23,38 @@ public class PipelineRunner
 		builder = Pipeline.newBuilder();
 	}
 
+	public <NewCollector> PipelineRunner<NewCollector> collector(NewCollector collector)
+	{
+		PipelineRunner<NewCollector> castedSelf = (PipelineRunner) this;
+		castedSelf.collector = collector;
+		return castedSelf;
+	}
+
 	@Override
-	public PipelineRunner language(Function<LanguageEncounter, LanguageParser> parserCreator)
+	public PipelineRunner<Collector> language(Function<LanguageEncounter, LanguageParser> parserCreator)
 	{
 		builder.language(parserCreator);
 		return this;
 	}
 
 	@Override
-	public PipelineRunner with(Handler handler)
+	public PipelineRunner<Collector> with(Handler handler)
 	{
 		builder.with(handler);
 		return this;
 	}
 
 	@Override
-	public PipelineRunner with(Function<Encounter, Handler> handler)
+	public PipelineRunner<Collector> with(Function<Encounter<Collector>, Handler> handler)
 	{
 		builder.with(handler);
 		return this;
 	}
 
-	public List<Object> run()
-		throws IOException
-	{
-		return builder.build().run(source);
-	}
-
-	public void collect(Consumer<Object> collector)
+	public Collector run()
 		throws IOException
 	{
 		builder.build().run(source, collector);
+		return collector;
 	}
 }

@@ -7,13 +7,13 @@ package se.l4.lect;
  * @author Andreas Holstenson
  *
  */
-public interface PipelineBuilder
-	extends PipelineAssembly<PipelineBuilder>
+public interface PipelineBuilder<Collector>
+	extends PipelineAssembly<Collector, PipelineBuilder<Collector>>
 {
 	/**
 	 * Build the instance of {@link Pipeline}.
 	 *
 	 * @return
 	 */
-	Pipeline build();
+	Pipeline<Collector> build();
 }

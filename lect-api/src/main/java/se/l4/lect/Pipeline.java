@@ -1,8 +1,6 @@
 package se.l4.lect;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.function.Consumer;
 
 import se.l4.lect.internal.PipelineBuilderImpl;
 
@@ -12,7 +10,7 @@ import se.l4.lect.internal.PipelineBuilderImpl;
  * @author Andreas Holstenson
  *
  */
-public interface Pipeline
+public interface Pipeline<Collector>
 {
 	/**
 	 * Run this pipeline on the given source.
@@ -20,7 +18,7 @@ public interface Pipeline
 	 * @param source
 	 * @throws IOException
 	 */
-	List<Object> run(Source source)
+	void run(Source source)
 		throws IOException;
 
 	/**
@@ -30,7 +28,7 @@ public interface Pipeline
 	 * @param collector
 	 * @throws IOException
 	 */
-	void run(Source source, Consumer<Object> collector)
+	void run(Source source, Collector collector)
 		throws IOException;
 
 	/**
@@ -38,9 +36,9 @@ public interface Pipeline
 	 *
 	 * @return
 	 */
-	static PipelineBuilder newBuilder()
+	static <Collector> PipelineBuilder<Collector> newBuilder()
 	{
-		return new PipelineBuilderImpl();
+		return new PipelineBuilderImpl<>();
 	}
 
 	/**
@@ -49,8 +47,8 @@ public interface Pipeline
 	 * @param source
 	 * @return
 	 */
-	static PipelineRunner over(Source source)
+	static PipelineRunner<?> over(Source source)
 	{
-		return new PipelineRunner(source);
+		return new PipelineRunner<>(source);
 	}
 }

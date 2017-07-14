@@ -17,8 +17,8 @@ import se.l4.lect.PipelineBuilder;
  * @author Andreas Holstenson
  *
  */
-public class PipelineBuilderImpl
-	implements PipelineBuilder
+public class PipelineBuilderImpl<Collector>
+	implements PipelineBuilder<Collector>
 {
 	private final List<Function<Encounter, Handler>> handlers;
 	private Function<LanguageEncounter, LanguageParser> languageCreator;
@@ -29,29 +29,29 @@ public class PipelineBuilderImpl
 	}
 
 	@Override
-	public PipelineBuilder language(Function<LanguageEncounter, LanguageParser> parserCreator)
+	public PipelineBuilder<Collector> language(Function<LanguageEncounter, LanguageParser> parserCreator)
 	{
 		this.languageCreator = parserCreator;
 		return this;
 	}
 
 	@Override
-	public PipelineBuilder with(Handler handler)
+	public PipelineBuilder<Collector> with(Handler handler)
 	{
 		return with(encounter -> handler);
 	}
 
 	@Override
-	public PipelineBuilder with(Function<Encounter, Handler> handler)
+	public PipelineBuilder<Collector> with(Function<Encounter<Collector>, Handler> handler)
 	{
-		handlers.add(handler);
+		handlers.add((Function) handler);
 		return this;
 	}
 
 	@Override
-	public Pipeline build()
+	public Pipeline<Collector> build()
 	{
-		return new PipelineImpl(languageCreator, handlers);
+		return new PipelineImpl<>(languageCreator, handlers);
 	}
 
 }

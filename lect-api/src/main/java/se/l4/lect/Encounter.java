@@ -8,7 +8,7 @@ import java.util.Locale;
  * @author Andreas Holstenson
  *
  */
-public interface Encounter
+public interface Encounter<Collector>
 {
 	/**
 	 * Get the locale is being processed.
@@ -18,9 +18,9 @@ public interface Encounter
 	Locale locale();
 
 	/**
-	 * Add something to the collected results.
+	 * Get the object used to collect results from this execution.
 	 *
-	 * @param o
+	 * @return
 	 */
-	void add(Object o);
+	Collector collector();
 }

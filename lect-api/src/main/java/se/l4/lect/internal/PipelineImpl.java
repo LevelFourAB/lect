@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import se.l4.lect.Encounter;
@@ -23,8 +22,8 @@ import se.l4.lect.Token;
  * @author Andreas Holstenson
  *
  */
-public class PipelineImpl
-	implements Pipeline
+public class PipelineImpl<Collector>
+	implements Pipeline<Collector>
 {
 	private final Function<LanguageEncounter, LanguageParser> languageCreator;
 	private final List<Function<Encounter, Handler>> handlers;
@@ -38,16 +37,14 @@ public class PipelineImpl
 	}
 
 	@Override
-	public List<Object> run(Source source)
+	public void run(Source source)
 		throws IOException
 	{
-		List<Object> result = new ArrayList<>();
-		run(source, result::add);
-		return result;
+		run(source, null);
 	}
 
 	@Override
-	public void run(Source source, Consumer<Object> collector)
+	public void run(Source source, Collector collector)
 		throws IOException
 	{
 		Runner runner = new Runner(handlers, collector);
@@ -55,18 +52,20 @@ public class PipelineImpl
 	}
 
 	private class Runner
-		implements SourceEncounter, LanguageEncounter, Encounter
+		implements SourceEncounter, LanguageEncounter, Encounter<Collector>
 	{
-		private final Consumer<Object> collector;
+		private final Collector collector;
+
 		private final LanguageParser language;
 		private final Handler[] handlers;
 
 		private Location location;
 		private boolean inParagraph;
 
-		public Runner(List<Function<Encounter, Handler>> handlers, Consumer<Object> collector)
+		public Runner(List<Function<Encounter, Handler>> handlers, Collector collector)
 		{
 			this.collector = collector;
+
 			this.language = languageCreator.apply(this);
 
 			List<Handler> instances = new ArrayList<>(handlers.size());
@@ -78,15 +77,15 @@ public class PipelineImpl
 		}
 
 		@Override
-		public void add(Object o)
-		{
-			collector.accept(o);
-		}
-
-		@Override
 		public Locale locale()
 		{
 			return language.locale();
+		}
+
+		@Override
+		public Collector collector()
+		{
+			return collector;
 		}
 
 		@Override

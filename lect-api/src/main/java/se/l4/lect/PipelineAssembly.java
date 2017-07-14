@@ -9,7 +9,7 @@ import java.util.function.Function;
  *
  * @param <Self>
  */
-public interface PipelineAssembly<Self extends PipelineAssembly<Self>>
+public interface PipelineAssembly<Collector, Self extends PipelineAssembly<Collector, Self>>
 {
 	/**
 	 * Set the function used to create the parser. Usually gotten via a static method of the instance you wish
@@ -39,5 +39,5 @@ public interface PipelineAssembly<Self extends PipelineAssembly<Self>>
 	 * @param handler
 	 * @return
 	 */
-	Self with(Function<Encounter, Handler> handler);
+	Self with(Function<Encounter<Collector>, Handler> handler);
 }

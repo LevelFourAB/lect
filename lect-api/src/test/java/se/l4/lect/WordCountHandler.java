@@ -11,10 +11,10 @@ import se.l4.lect.handlers.DefaultHandler;
 public class WordCountHandler
 	extends DefaultHandler
 {
-	private final Encounter encounter;
+	private final Encounter<? extends PipelineTestCollector> encounter;
 	private int words;
 
-	public WordCountHandler(Encounter encounter)
+	public WordCountHandler(Encounter<? extends PipelineTestCollector> encounter)
 	{
 		this.encounter = encounter;
 	}
@@ -28,6 +28,6 @@ public class WordCountHandler
 	@Override
 	public void done()
 	{
-		encounter.add(words);
+		encounter.collector().set(words);
 	}
 }
