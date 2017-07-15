@@ -191,6 +191,13 @@ public abstract class ChunkedLanguageParser
 		consume(offset + value.length(), type);
 	}
 
+	protected void emitToken(int offset, TokenType type, int length)
+	{
+		emitWhitespace(offset);
+
+		consume(offset + length, type);
+	}
+
 	/**
 	 * Handle the given sequence of characters. This method should go through the sequence and in order emit events
 	 * via {@link #startSentence(int)}, {@link #emitToken(int, se.l4.lect.Token.TokenType, String)} and
