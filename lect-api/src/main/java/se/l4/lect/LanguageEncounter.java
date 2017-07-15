@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import se.l4.lect.location.Location;
+
 /**
  * Encounter used while using a {@link LanguageParser} to extract natural language details.
  *

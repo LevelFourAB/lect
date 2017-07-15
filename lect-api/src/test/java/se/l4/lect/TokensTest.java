@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import se.l4.lect.location.Location;
+
 /**
  * Test for {@link MutableToken} and {@link ImmutableToken}.
  *

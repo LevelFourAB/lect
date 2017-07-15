@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import se.l4.lect.location.Location;
+
 /**
  * Token containing some text that is either words, symbols or whitespace.
  *

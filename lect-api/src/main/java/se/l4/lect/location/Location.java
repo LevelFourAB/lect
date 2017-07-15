@@ -1,4 +1,6 @@
-package se.l4.lect;
+package se.l4.lect.location;
+
+import se.l4.lect.Source;
 
 /**
  * Virtual representation of the location of something in a {@link Source}. This interface exists so that sources
@@ -34,7 +36,7 @@ public interface Location
 	Location moveTextIndex(int amount);
 
 	/**
-	 * Quickly create a new {@link TextLocation}.
+	 * Quickly create a new {@link MutableTextLocation}.
 	 *
 	 * @param line
 	 * @param column
@@ -42,6 +44,6 @@ public interface Location
 	 */
 	static TextLocation text(int line, int column)
 	{
-		return new TextLocation(line, column);
+		return new MutableTextLocation(line, column);
 	}
 }

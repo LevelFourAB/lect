@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import se.l4.lect.location.Location;
+
 /**
  * Abstract implementation of {@link LanguageParser} that allows an implementation to handle a single
  * {@link CharSequence} without worrying about mapping to the correct location or original text in the source.

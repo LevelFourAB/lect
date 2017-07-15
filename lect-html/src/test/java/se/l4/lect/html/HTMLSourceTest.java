@@ -5,8 +5,8 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import se.l4.lect.Location;
 import se.l4.lect.VerifyingSyntaxTreeEncounter;
+import se.l4.lect.location.Location;
 
 public class HTMLSourceTest
 {

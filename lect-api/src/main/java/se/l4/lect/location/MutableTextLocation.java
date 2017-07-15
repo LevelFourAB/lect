@@ -1,13 +1,13 @@
-package se.l4.lect;
+package se.l4.lect.location;
 
 /**
- * Mutable {@link Location} suitable for use with plain text formats.
+ * Mutable {@link TextLocation} for use in cases where line and column is important.
  *
  * @author Andreas Holstenson
  *
  */
-public class TextLocation
-	implements Location
+public class MutableTextLocation
+	implements Location, TextLocation
 {
 	private int line;
 	private int column;
@@ -20,30 +20,33 @@ public class TextLocation
 	 * @param column
 	 *   zero-indexed column
 	 */
-	public TextLocation(int line, int column)
+	public MutableTextLocation(int line, int column)
 	{
 		this.line = line;
 		this.column = column;
 	}
 
+	@Override
 	public int getLine()
 	{
 		return line;
 	}
 
+	@Override
 	public int getColumn()
 	{
 		return column;
 	}
 
-	public TextLocation moveTo(int line, int column)
+	@Override
+	public MutableTextLocation moveTo(int line, int column)
 	{
 		this.line = line;
 		this.column = column;
 		return this;
 	}
 
-	public TextLocation copyFrom(TextLocation location)
+	public TextLocation copyFrom(MutableTextLocation location)
 	{
 		this.line = location.line;
 		this.column = location.column;
@@ -51,24 +54,26 @@ public class TextLocation
 	}
 
 	@Override
-	public TextLocation copy()
+	public MutableTextLocation copy()
 	{
-		return new TextLocation(line, column);
+		return new MutableTextLocation(line, column);
 	}
 
 	@Override
-	public TextLocation moveTextIndex(int amount)
+	public MutableTextLocation moveTextIndex(int amount)
 	{
 		this.column += amount;
 		return this;
 	}
 
-	public TextLocation moveTextIndex(CharSequence sequence)
+	@Override
+	public MutableTextLocation moveTextIndex(CharSequence sequence)
 	{
 		return moveTextIndex(sequence, 0, sequence.length());
 	}
 
-	public TextLocation moveTextIndex(CharSequence sequence, int offset, int length)
+	@Override
+	public MutableTextLocation moveTextIndex(CharSequence sequence, int offset, int length)
 	{
 		for(int i=offset, n=offset + length; i<n; i++)
 		{
@@ -101,15 +106,15 @@ public class TextLocation
 	@Override
 	public int compareTo(Location o)
 	{
-		if(! (o instanceof TextLocation))
+		if(! (o instanceof MutableTextLocation))
 		{
 			throw new IllegalArgumentException("Trying to compare to incompatible location: " + o);
 		}
 
-		int c = Integer.compare(line, ((TextLocation) o).line);
+		int c = Integer.compare(line, ((MutableTextLocation) o).line);
 		if(c != 0) return c;
 
-		return Integer.compare(column, ((TextLocation) o).column);
+		return Integer.compare(column, ((MutableTextLocation) o).column);
 	}
 
 	@Override
@@ -131,7 +136,7 @@ public class TextLocation
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
-		TextLocation other = (TextLocation) obj;
+		MutableTextLocation other = (MutableTextLocation) obj;
 		if(column != other.column)
 			return false;
 		if(line != other.line)

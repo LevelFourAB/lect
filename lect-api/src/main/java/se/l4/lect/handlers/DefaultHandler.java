@@ -1,8 +1,8 @@
 package se.l4.lect.handlers;
 
 import se.l4.lect.Handler;
-import se.l4.lect.Location;
 import se.l4.lect.Token;
+import se.l4.lect.location.Location;
 
 /**
  * Implementation of {@link Handler} that provides a starting point for implementing custom handlers.

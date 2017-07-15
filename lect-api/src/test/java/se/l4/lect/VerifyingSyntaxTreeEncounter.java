@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import se.l4.lect.location.Location;
+
 public class VerifyingSyntaxTreeEncounter
 	implements SourceEncounter
 {

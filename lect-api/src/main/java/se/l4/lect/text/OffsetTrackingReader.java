@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
 
-import se.l4.lect.TextLocation;
+import se.l4.lect.location.MutableTextLocation;
+import se.l4.lect.location.TextLocation;
 
 /**
  * {@link Reader} that tracks offsets and allows mapping between offset and line and column.
@@ -93,20 +94,20 @@ public class OffsetTrackingReader
 	}
 
 	/**
-	 * Resolve the {@link TextLocation} of a character offset.
+	 * Resolve the {@link MutableTextLocation} of a character offset.
 	 *
 	 * @param offset
 	 * @return
 	 */
 	public TextLocation offsetToLocation(int offset)
 	{
-		TextLocation loc = new TextLocation(0, 0);
+		TextLocation loc = new MutableTextLocation(0, 0);
 		offsetToLocation(offset, loc);
 		return loc;
 	}
 
 	/**
-	 * Resolve the {@link TextLocation} of a character offset and store it in the given target.
+	 * Resolve the {@link MutableTextLocation} of a character offset and store it in the given target.
 	 *
 	 * @param offset
 	 * @param target

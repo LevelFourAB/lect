@@ -3,6 +3,8 @@ package se.l4.lect;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import se.l4.lect.location.Location;
+
 public class VerifyingLanguageEncounter
 	implements LanguageEncounter
 {

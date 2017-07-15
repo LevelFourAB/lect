@@ -31,7 +31,8 @@ import com.vladsch.flexmark.util.options.MutableDataSet;
 
 import se.l4.lect.Source;
 import se.l4.lect.SourceEncounter;
-import se.l4.lect.TextLocation;
+import se.l4.lect.location.MutableTextLocation;
+import se.l4.lect.location.TextLocation;
 import se.l4.lect.text.OffsetTrackingReader;
 
 /**
@@ -97,15 +98,15 @@ public class MarkdownSource
 		private final SourceEncounter encounter;
 		private OffsetTrackingReader reader;
 
-		private TextLocation start;
-		private TextLocation end;
+		private MutableTextLocation start;
+		private MutableTextLocation end;
 
 		public Handler(SourceEncounter encounter)
 		{
 			this.encounter = encounter;
 
-			start = new TextLocation(0, 0);
-			end = new TextLocation(0, 0);
+			start = new MutableTextLocation(0, 0);
+			end = new MutableTextLocation(0, 0);
 
 			encounter.location(start);
 

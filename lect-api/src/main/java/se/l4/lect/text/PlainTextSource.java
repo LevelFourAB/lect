@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 
 import se.l4.lect.Source;
 import se.l4.lect.SourceEncounter;
-import se.l4.lect.TextLocation;
+import se.l4.lect.location.MutableTextLocation;
 
 /**
  * Source that parses plain text into a syntax tree.
@@ -99,8 +99,8 @@ public class PlainTextSource
 		private int line;
 		private int column;
 
-		private TextLocation location;
-		private TextLocation lastLocation;
+		private MutableTextLocation location;
+		private MutableTextLocation lastLocation;
 
 		private State state;
 		private StringBuilder builder;
@@ -119,8 +119,8 @@ public class PlainTextSource
 		{
 			boolean lastWasCarriageReturn = false;
 
-			location = new TextLocation(0, 0);
-			lastLocation = new TextLocation(0, 0);
+			location = new MutableTextLocation(0, 0);
+			lastLocation = new MutableTextLocation(0, 0);
 			encounter.location(location);
 
 			int length;
@@ -252,7 +252,7 @@ public class PlainTextSource
 				}
 
 				String text = builder.substring(0, offset);
-				TextLocation end = location.copy().moveTo(
+				MutableTextLocation end = location.copy().moveTo(
 					lastLocation.getLine() + 1,
 					0
 				);

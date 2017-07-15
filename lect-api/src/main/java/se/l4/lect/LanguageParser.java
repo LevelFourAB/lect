@@ -2,6 +2,8 @@ package se.l4.lect;
 
 import java.util.Locale;
 
+import se.l4.lect.location.Location;
+
 /**
  * Language parser used for parsing contents within paragraph-level content.
  *

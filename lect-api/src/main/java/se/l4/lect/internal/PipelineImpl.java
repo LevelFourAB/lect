@@ -10,11 +10,11 @@ import se.l4.lect.Encounter;
 import se.l4.lect.Handler;
 import se.l4.lect.LanguageEncounter;
 import se.l4.lect.LanguageParser;
-import se.l4.lect.Location;
 import se.l4.lect.Pipeline;
 import se.l4.lect.Source;
 import se.l4.lect.SourceEncounter;
 import se.l4.lect.Token;
+import se.l4.lect.location.Location;
 
 /**
  * Implementation of {@link Pipeline}.

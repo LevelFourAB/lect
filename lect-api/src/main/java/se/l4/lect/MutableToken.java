@@ -3,6 +3,8 @@ package se.l4.lect;
 import java.util.HashMap;
 import java.util.Map;
 
+import se.l4.lect.location.Location;
+
 public class MutableToken
 	implements Token
 {

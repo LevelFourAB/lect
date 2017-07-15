@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import se.l4.lect.location.Location;
+
 public class ICULanguageParserTest
 {
 	@Test

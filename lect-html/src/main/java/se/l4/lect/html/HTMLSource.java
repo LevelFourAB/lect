@@ -14,7 +14,7 @@ import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.StartTag;
 import se.l4.lect.Source;
 import se.l4.lect.SourceEncounter;
-import se.l4.lect.TextLocation;
+import se.l4.lect.location.MutableTextLocation;
 
 /**
  * {@link Source} that parses HTML.
@@ -76,8 +76,8 @@ public class HTMLSource
 		private State[] stateHistory;
 		private boolean lastWasSpace;
 
-		private TextLocation start;
-		private TextLocation end;
+		private MutableTextLocation start;
+		private MutableTextLocation end;
 
 		public Handler(SourceEncounter encounter)
 		{
@@ -85,8 +85,8 @@ public class HTMLSource
 
 			state = State.UNKNOWN;
 
-			start = new TextLocation(0, 0);
-			end = new TextLocation(0, 0);
+			start = new MutableTextLocation(0, 0);
+			end = new MutableTextLocation(0, 0);
 
 			encounter.location(start);
 
