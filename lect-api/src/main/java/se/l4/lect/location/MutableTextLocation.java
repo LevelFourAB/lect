@@ -106,15 +106,15 @@ public class MutableTextLocation
 	@Override
 	public int compareTo(Location o)
 	{
-		if(! (o instanceof MutableTextLocation))
+		if(! (o instanceof TextLocation))
 		{
 			throw new IllegalArgumentException("Trying to compare to incompatible location: " + o);
 		}
 
-		int c = Integer.compare(line, ((MutableTextLocation) o).line);
+		int c = Integer.compare(line, ((TextLocation) o).getLine());
 		if(c != 0) return c;
 
-		return Integer.compare(column, ((MutableTextLocation) o).column);
+		return Integer.compare(column, ((TextLocation) o).getColumn());
 	}
 
 	@Override
