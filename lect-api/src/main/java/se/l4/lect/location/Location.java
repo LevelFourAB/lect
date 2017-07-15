@@ -46,4 +46,15 @@ public interface Location
 	{
 		return new MutableTextLocation(line, column);
 	}
+
+	/**
+	 * Quickly create a new {@link MutableOffsetLocation}.
+	 *
+	 * @param index
+	 * @return
+	 */
+	static OffsetLocation offset(int index)
+	{
+		return new MutableOffsetLocation(index);
+	}
 }

@@ -134,12 +134,12 @@ public class MutableTextLocation
 			return true;
 		if(obj == null)
 			return false;
-		if(getClass() != obj.getClass())
+		if(!(obj instanceof TextLocation))
 			return false;
-		MutableTextLocation other = (MutableTextLocation) obj;
-		if(column != other.column)
+		TextLocation other = (TextLocation) obj;
+		if(column != other.getColumn())
 			return false;
-		if(line != other.line)
+		if(line != other.getLine())
 			return false;
 		return true;
 	}
