@@ -11,6 +11,8 @@ import se.l4.lect.tokens.Tokenizer;
 
 /**
  * Implementation of {@link LanguageParser} that uses {@link Tokenizer}s to split text into sentences and tokens.
+ * The tokenizers used should use {@link OffsetLocation} for its tokens so that the language can correctly map
+ * the locations of the tokens to the actual location in the {@link Source}.
  *
  * @author Andreas Holstenson
  *
@@ -19,20 +21,20 @@ public class TokenizingLanguage
 	extends ChunkedLanguageParser
 {
 	private final Locale locale;
+	private final TextTokenizerFactory paragraphTokenizers;
 	private final TextTokenizerFactory sentenceTokenizers;
-	private final TextTokenizerFactory wordTokenizers;
 
 	protected TokenizingLanguage(
 			Locale locale,
+			TextTokenizerFactory paragraphTokenizers,
 			TextTokenizerFactory sentenceTokenizers,
-			TextTokenizerFactory wordTokenizers,
 			LanguageEncounter encounter)
 	{
 		super(encounter);
 
 		this.locale = locale;
+		this.paragraphTokenizers = paragraphTokenizers;
 		this.sentenceTokenizers = sentenceTokenizers;
-		this.wordTokenizers = wordTokenizers;
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class TokenizingLanguage
 	protected void handleChunk(CharSequence sequence)
 	{
 		// Outer: Tokenize and find the sentences
-		Tokenizer sentences = sentenceTokenizers.create(sequence);
+		Tokenizer sentences = paragraphTokenizers.create(sequence);
 		while(sentences.hasNext())
 		{
 			Token sentence = sentences.next();
@@ -55,14 +57,14 @@ public class TokenizingLanguage
 			startSentence(offset);
 
 			// Inner: Tokenize all of the individual words/symbols/etc in the sentence
-			Tokenizer words = wordTokenizers.create(sentence);
-			while(words.hasNext())
+			Tokenizer tokens = sentenceTokenizers.create(sentence);
+			while(tokens.hasNext())
 			{
-				Token word = words.next();
+				Token token = tokens.next();
 
-				int start = toOffset(word.getStart());
-				int end = toOffset(word.getEnd());
-				emitToken(offset + start, word.getType(), end - start);
+				int start = toOffset(token.getStart());
+				int end = toOffset(token.getEnd());
+				emitToken(offset + start, token.getType(), end - start);
 			}
 
 			// End the sentence
@@ -84,32 +86,45 @@ public class TokenizingLanguage
 	 * Create an instance for the given locale and tokenizers.
 	 *
 	 * @param locale
+	 *   the {@link Locale} that the parser is for
+	 * @param paragraphTokenizers
+	 *   the tokenizer used to tokenize a paragraph into sentences. The tokenizer must use {@link OffsetLocation} for
+	 *   its tokens.
 	 * @param sentenceTokenizers
-	 * @param wordTokenizers
+	 *   the tokenizer used to tokenize a sentence into individual tokens. The tokenizer must use {@link OffsetLocation}
+	 *   for its tokens.
 	 * @param encounter
+	 *   the encounter that should receive results
 	 * @return
+	 *   instance of {@link TokenizingLanguage}
 	 */
 	public static LanguageParser create(
 			Locale locale,
+			TextTokenizerFactory paragraphTokenizers,
 			TextTokenizerFactory sentenceTokenizers,
-			TextTokenizerFactory wordTokenizers,
 			LanguageEncounter encounter)
 	{
-		return new TokenizingLanguage(locale, sentenceTokenizers, wordTokenizers, encounter);
+		return new TokenizingLanguage(locale, paragraphTokenizers, sentenceTokenizers, encounter);
 	}
 
 	/**
 	 * Create a {@link Function} that can create a parser for the given locale.
 	 *
 	 * @param locale
+	 *   the {@link Locale} that the parser is for
+	 * @param paragraphTokenizers
+	 *   the tokenizer used to tokenize a paragraph into sentences. The tokenizer must use {@link OffsetLocation} for
+	 *   its tokens.
 	 * @param sentenceTokenizers
-	 * @param wordTokenizers
+	 *   the tokenizer used to tokenize a sentence into individual tokens. The tokenizer must use {@link OffsetLocation}
+	 *   for its tokens.
 	 * @return
+	 *   function that creates a {@link TokenizingLanguage} for a given {@link LanguageEncounter}
 	 */
 	public static Function<LanguageEncounter, LanguageParser> create(Locale locale,
-			TextTokenizerFactory sentenceTokenizers,
-			TextTokenizerFactory wordTokenizers)
+			TextTokenizerFactory paragraphTokenizers,
+			TextTokenizerFactory sentenceTokenizers)
 	{
-		return encounter -> create(locale, sentenceTokenizers, wordTokenizers, encounter);
+		return encounter -> create(locale, paragraphTokenizers, sentenceTokenizers, encounter);
 	}
 }
