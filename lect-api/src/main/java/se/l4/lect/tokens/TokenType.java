@@ -1,4 +1,4 @@
-package se.l4.lect;
+package se.l4.lect.tokens;
 
 /**
  * Enumeration for the different types of tokens extracted from text. These are limited to four categories, white
@@ -9,6 +9,12 @@ package se.l4.lect;
  */
 public enum TokenType
 {
+	/**
+	 * The type of token is unknown. Usually used with a {@link Tokenizer} where the consumer should handle the
+	 * resolving the type of token.
+	 */
+	UNKNOWN,
+
 	/**
 	 * The token represents a word.
 	 */
