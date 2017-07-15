@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import java.util.Map;
+
 public class ImmutableToken
 	implements Token
 {
@@ -7,13 +9,15 @@ public class ImmutableToken
 	private final String text;
 	private final Location start;
 	private final Location end;
+	private final Map<String, Object> properties;
 
-	public ImmutableToken(TokenType type, Location start, Location end, String text)
+	public ImmutableToken(TokenType type, Location start, Location end, CharSequence text, Map<String, Object> properties)
 	{
 		this.type = type;
+		this.properties = properties;
 		this.start = start.copy();
 		this.end = end.copy();
-		this.text = text;
+		this.text = text.toString();
 	}
 
 	@Override
@@ -46,4 +50,19 @@ public class ImmutableToken
 		return this;
 	}
 
+	@Override
+	public <T> T get(TokenProperty<T> property)
+	{
+		if(properties == null)
+		{
+			return null;
+		}
+		return property.cast(properties.get(property.getId()));
+	}
+
+	@Override
+	public boolean has(TokenProperty<?> property)
+	{
+		return properties.containsKey(property.getId());
+	}
 }

@@ -20,7 +20,7 @@ public interface Token
 	 *
 	 * @return
 	 */
-	String getText();
+	CharSequence getText();
 
 	/**
 	 * Get where this token starts.
@@ -35,6 +35,21 @@ public interface Token
 	 * @return
 	 */
 	Location getEnd();
+
+	/**
+	 * Get some optional data for this token.
+	 *
+	 * @param property
+	 */
+	<T> T get(TokenProperty<T> property);
+
+	/**
+	 * Get if this token has the given data.
+	 *
+	 * @param property
+	 * @return
+	 */
+	boolean has(TokenProperty<?> property);
 
 	/**
 	 * Get a copy of this token that can be used
