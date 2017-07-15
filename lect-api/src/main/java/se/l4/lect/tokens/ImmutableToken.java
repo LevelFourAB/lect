@@ -1,4 +1,4 @@
-package se.l4.lect;
+package se.l4.lect.tokens;
 
 import java.util.Map;
 

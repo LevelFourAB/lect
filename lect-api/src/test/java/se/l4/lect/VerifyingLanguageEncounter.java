@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenType;
 
 public class VerifyingLanguageEncounter
 	implements LanguageEncounter

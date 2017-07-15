@@ -1,4 +1,4 @@
-package se.l4.lect;
+package se.l4.lect.tokens;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,11 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.ImmutableToken;
+import se.l4.lect.tokens.MutableToken;
+import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenProperty;
+import se.l4.lect.tokens.TokenType;
 
 /**
  * Test for {@link MutableToken} and {@link ImmutableToken}.

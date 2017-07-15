@@ -1,4 +1,7 @@
-package se.l4.lect;
+package se.l4.lect.tokens;
+
+import se.l4.lect.Handler;
+import se.l4.lect.LanguageParser;
 
 /**
  * Extended language data for a {@link Token} that a {@link LanguageParser} or {@link Handler} may enhance a token

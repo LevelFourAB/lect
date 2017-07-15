@@ -1,6 +1,8 @@
 package se.l4.lect;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.MutableToken;
+import se.l4.lect.tokens.TokenType;
 
 /**
  * Abstract implementation of {@link LanguageParser} that allows an implementation to handle a single

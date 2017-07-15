@@ -1,6 +1,7 @@
 package se.l4.lect;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.Token;
 
 /**
  * Handler that receives streaming events when processing a Lect syntax tree.

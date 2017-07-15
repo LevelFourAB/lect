@@ -1,6 +1,7 @@
 package se.l4.lect;
 
 import se.l4.lect.handlers.DefaultHandler;
+import se.l4.lect.tokens.Token;
 
 /**
  * Simple {@link Handler} that counts the number of words found.

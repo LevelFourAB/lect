@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.TokenType;
 
 public class ICULanguageParserTest
 {

@@ -5,6 +5,8 @@ import java.util.function.Function;
 
 import com.ibm.icu.text.BreakIterator;
 
+import se.l4.lect.tokens.TokenType;
+
 /**
  * {@link LanguageParser} that uses {@link BreakIterator} from ICU4J to split text into sentences and tokens.
  *

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import se.l4.lect.handlers.DefaultHandler;
 import se.l4.lect.text.PlainTextSource;
+import se.l4.lect.tokens.Token;
 
 public class PipelineTest
 {
