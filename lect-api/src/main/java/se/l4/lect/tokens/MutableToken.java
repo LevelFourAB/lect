@@ -37,6 +37,25 @@ public class MutableToken
 		}
 	}
 
+	/**
+	 * Copy data from another token into this one.
+	 *
+	 * @param other
+	 */
+	public void copyFrom(Token other)
+	{
+		this.type = other.getType();
+		this.start = other.getStart();
+		this.end = other.getEnd();
+		this.text = other.getText();
+
+		// TODO: Copy properties?
+		if(properties != null)
+		{
+			properties.clear();
+		}
+	}
+
 	@Override
 	public TokenType getType()
 	{
