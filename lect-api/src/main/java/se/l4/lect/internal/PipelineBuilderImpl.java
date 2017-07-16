@@ -6,8 +6,7 @@ import java.util.function.Function;
 
 import se.l4.lect.Encounter;
 import se.l4.lect.Handler;
-import se.l4.lect.LanguageEncounter;
-import se.l4.lect.LanguageParser;
+import se.l4.lect.LanguageFactory;
 import se.l4.lect.Pipeline;
 import se.l4.lect.PipelineBuilder;
 
@@ -21,7 +20,7 @@ public class PipelineBuilderImpl<Collector>
 	implements PipelineBuilder<Collector>
 {
 	private final List<Function<Encounter, Handler>> handlers;
-	private Function<LanguageEncounter, LanguageParser> languageCreator;
+	private LanguageFactory languageCreator;
 
 	public PipelineBuilderImpl()
 	{
@@ -29,9 +28,9 @@ public class PipelineBuilderImpl<Collector>
 	}
 
 	@Override
-	public PipelineBuilder<Collector> language(Function<LanguageEncounter, LanguageParser> parserCreator)
+	public PipelineBuilder<Collector> language(LanguageFactory factory)
 	{
-		this.languageCreator = parserCreator;
+		this.languageCreator = factory;
 		return this;
 	}
 

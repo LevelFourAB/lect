@@ -9,6 +9,7 @@ import java.util.function.Function;
 import se.l4.lect.Encounter;
 import se.l4.lect.Handler;
 import se.l4.lect.LanguageEncounter;
+import se.l4.lect.LanguageFactory;
 import se.l4.lect.LanguageParser;
 import se.l4.lect.Pipeline;
 import se.l4.lect.Source;
@@ -25,14 +26,14 @@ import se.l4.lect.tokens.Token;
 public class PipelineImpl<Collector>
 	implements Pipeline<Collector>
 {
-	private final Function<LanguageEncounter, LanguageParser> languageCreator;
+	private final LanguageFactory languageFactory;
 	private final List<Function<Encounter, Handler>> handlers;
 
 	public PipelineImpl(
-			Function<LanguageEncounter, LanguageParser> languageCreator,
+			LanguageFactory languageFactory,
 			List<Function<Encounter, Handler>> handlers)
 	{
-		this.languageCreator = languageCreator;
+		this.languageFactory = languageFactory;
 		this.handlers = handlers;
 	}
 
@@ -66,7 +67,7 @@ public class PipelineImpl<Collector>
 		{
 			this.collector = collector;
 
-			this.language = languageCreator.apply(this);
+			this.language = languageFactory.create(this);
 
 			List<Handler> instances = new ArrayList<>(handlers.size());
 			for(Function<Encounter, Handler> h : handlers)

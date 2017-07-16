@@ -20,10 +20,10 @@ public interface PipelineAssembly<Collector, Self extends PipelineAssembly<Colle
 	 * </pre>
 	 *
 	 * @see ICULanguage#forLocale(java.util.Locale)
-	 * @param parserCreator
+	 * @param factory
 	 * @return
 	 */
-	Self language(Function<LanguageEncounter, LanguageParser> parserCreator);
+	Self language(LanguageFactory factory);
 
 	/**
 	 * Add a handler to the pipeline.

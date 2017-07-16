@@ -1,10 +1,10 @@
 package se.l4.lect;
 
 import java.util.Locale;
-import java.util.function.Function;
 
 import com.ibm.icu.text.BreakIterator;
 
+import se.l4.lect.tokens.TextTokenization;
 import se.l4.lect.tokens.TokenType;
 
 /**
@@ -30,7 +30,7 @@ public class ICULanguage
 	 * @param locale
 	 * @return
 	 */
-	public static Function<LanguageEncounter, LanguageParser> forLocale(Locale locale)
+	public static LanguageFactory forLocale(Locale locale)
 	{
 		return encounter -> new ICULanguage(locale, encounter);
 	}
@@ -80,16 +80,11 @@ public class ICULanguage
 
 				boolean canMerge = false;
 
-				TokenType type = TokenType.WORD;
 				String value = string.substring(startOfWord, endOfWord);
-				if(isWhitespace(value))
+				TokenType type = TextTokenization.findBestTokenType(value);
+				if(type == TokenType.WHITESPACE)
 				{
-					type = TokenType.WHITESPACE;
 					canMerge = previous == TokenType.WHITESPACE;
-				}
-				else if(isSymbol(value))
-				{
-					type = TokenType.SYMBOL;
 				}
 
 				if(! canMerge)
@@ -138,27 +133,5 @@ public class ICULanguage
 			}
 			lastOffset = offset;
 		}
-	}
-
-	private boolean isSymbol(String value)
-	{
-		for(int i=0, n=value.length(); i<n; i++)
-		{
-			if(Character.isLetterOrDigit(value.charAt(i))) return false;
-		}
-		return true;
-	}
-
-	private boolean isWhitespace(String value)
-	{
-		for(int i=0, n=value.length(); i<n; i++)
-		{
-			char c = value.charAt(i);
-			if(! Character.isWhitespace(c) && c != '\u00A0')
-			{
-				return false;
-			}
-		}
-		return true;
 	}
 }

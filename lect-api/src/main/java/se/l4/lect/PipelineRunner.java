@@ -31,9 +31,9 @@ public class PipelineRunner<Collector>
 	}
 
 	@Override
-	public PipelineRunner<Collector> language(Function<LanguageEncounter, LanguageParser> parserCreator)
+	public PipelineRunner<Collector> language(LanguageFactory factory)
 	{
-		builder.language(parserCreator);
+		builder.language(factory);
 		return this;
 	}
 

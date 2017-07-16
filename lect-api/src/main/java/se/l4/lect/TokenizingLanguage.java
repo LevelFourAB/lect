@@ -121,7 +121,7 @@ public class TokenizingLanguage
 	 * @return
 	 *   function that creates a {@link TokenizingLanguage} for a given {@link LanguageEncounter}
 	 */
-	public static Function<LanguageEncounter, LanguageParser> create(Locale locale,
+	public static LanguageFactory create(Locale locale,
 			TextTokenizerFactory paragraphTokenizers,
 			TextTokenizerFactory sentenceTokenizers)
 	{
