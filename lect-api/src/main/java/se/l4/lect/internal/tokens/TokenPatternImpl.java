@@ -12,23 +12,25 @@ import se.l4.lect.tokens.TokenPattern;
 public class TokenPatternImpl
 	implements TokenPattern
 {
-	private MatcherNode node;
+	private final int flags;
+	private final MatcherNode node;
 
-	public TokenPatternImpl(MatcherNode node)
+	public TokenPatternImpl(int flags, MatcherNode node)
 	{
+		this.flags = flags;
 		this.node = node;
 	}
 
 	@Override
 	public TokenMatcher matcher()
 	{
-		return new TokenMatcherImpl(node);
+		return new TokenMatcherImpl(flags, node);
 	}
 
 
-	public static TokenPattern compile(String source)
+	public static TokenPattern compile(String source, int flags)
 	{
 		MatcherNode node = new TokenPatternParser(source).parse();
-		return new TokenPatternImpl(node);
+		return new TokenPatternImpl(flags, node);
 	}
 }

@@ -96,6 +96,18 @@ public interface TokenPattern
 	 */
 	static TokenPattern compile(String pattern)
 	{
-		return TokenPatternImpl.compile(pattern);
+		return compile(pattern, 0);
+	}
+
+	/**
+	 * Compile a pattern that can be used to match tokens.
+	 *
+	 * @param pattern
+	 * @param flags
+	 * @return
+	 */
+	static TokenPattern compile(String pattern, int flags)
+	{
+		return TokenPatternImpl.compile(pattern, flags);
 	}
 }

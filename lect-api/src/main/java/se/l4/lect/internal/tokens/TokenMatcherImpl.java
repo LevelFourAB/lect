@@ -5,24 +5,42 @@ import java.util.List;
 
 import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.TokenMatcher;
+import se.l4.lect.tokens.TokenPattern;
+import se.l4.lect.tokens.TokenType;
 
+/**
+ * Implementation of {@link TokenMatcher} that runs on top of {@link MatcherNode}s.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class TokenMatcherImpl
 	implements TokenMatcher
 {
 	private final MatcherNode root;
-	private List<MatcherNode> branches;
+	private final boolean ignoreWhitespace;
+
+	private final List<MatcherNode> branches;
+
 	private MatcherNode[] tempBranches;
 	private boolean matched;
 
-	public TokenMatcherImpl(MatcherNode root)
+	public TokenMatcherImpl(int flags, MatcherNode root)
 	{
 		this.root = root;
 		branches = new ArrayList<>();
+
+		ignoreWhitespace = (flags & TokenPattern.WITH_WHITESPACE) != TokenPattern.WITH_WHITESPACE;
 	}
 
 	@Override
 	public boolean add(Token token)
 	{
+		if(ignoreWhitespace && token.getType() == TokenType.WHITESPACE)
+		{
+			return false;
+		}
+
 		// Reset matched and add root to the active branches as it should always be matched
 		matched = false;
 		branches.add(root);
