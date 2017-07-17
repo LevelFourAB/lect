@@ -6,6 +6,12 @@ import java.util.function.Consumer;
 
 import se.l4.lect.tokens.Token;
 
+/**
+ * Node for negating the result of another node.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class NegateNode
 	extends MatcherNode
 {

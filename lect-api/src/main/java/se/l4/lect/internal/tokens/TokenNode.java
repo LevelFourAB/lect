@@ -8,6 +8,12 @@ import java.util.regex.Pattern;
 import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.TokenType;
 
+/**
+ * Node that checks that an individual token and its properties matches.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class TokenNode
 	extends MatcherNode
 {

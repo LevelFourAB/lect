@@ -5,6 +5,12 @@ import java.util.function.Consumer;
 
 import se.l4.lect.tokens.Token;
 
+/**
+ * Node that branches out and allows matches to be done in several branches.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class BranchNode
 	extends MatcherNode
 {

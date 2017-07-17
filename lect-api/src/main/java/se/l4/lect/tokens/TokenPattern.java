@@ -69,7 +69,7 @@ import se.l4.lect.internal.tokens.TokenPatternImpl;
  *
  * <pre>
  * // Use parenthesis to create an optional group of Mrs + period
- * TokenPattern.compile("?word,normalized='mrs' symbol,text='.',continuation)? word");
+ * TokenPattern.compile("(word,normalized='mrs' symbol,text='.',continuation)? word");
  * // Use brackets to create an OR between tokens or groups
  * TokenPattern.compile("[word,normalized='mrs' word,normalized='mr'] symbol,text='.',continuation?");
  * </pre>

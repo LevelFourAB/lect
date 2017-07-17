@@ -6,6 +6,12 @@ import java.util.function.Consumer;
 
 import se.l4.lect.tokens.Token;
 
+/**
+ * Node that checks that another node matches a number of times.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class RangeNode
 	extends MatcherNode
 {

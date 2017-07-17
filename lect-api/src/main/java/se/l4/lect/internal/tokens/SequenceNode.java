@@ -4,6 +4,12 @@ import java.util.function.Consumer;
 
 import se.l4.lect.tokens.Token;
 
+/**
+ * Node that checks that an entire sequence of nodes matches.
+ *
+ * @author Andreas Holstenson
+ *
+ */
 public class SequenceNode
 	extends MatcherNode
 {

@@ -104,6 +104,8 @@ if(matcher.add(token)) {
 }
 ```
 
+Many variants of patterns are supported:
+
 ```java
 // Match any token
 TokenPattern.compile("any");
@@ -122,7 +124,7 @@ TokenPattern.compile("word=/test/i");
 // Shortcut to match via regex for any type of token
 TokenPattern.compile("/test/i");
 // Use parenthesis to create an optional group of Mrs + period
-TokenPattern.compile("?word,normalized='mrs' symbol,text='.',continuation)? word");
+TokenPattern.compile("(word,normalized='mrs' symbol,text='.',continuation)? word");
 // Use brackets to create an OR between tokens or groups
 TokenPattern.compile("[word,normalized='mrs' word,normalized='mr'] symbol,text='.',continuation?");
 ```
