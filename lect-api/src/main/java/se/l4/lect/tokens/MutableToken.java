@@ -62,9 +62,10 @@ public class MutableToken
 		return type;
 	}
 
-	public void setType(TokenType type)
+	public MutableToken setType(TokenType type)
 	{
 		this.type = type;
+		return this;
 	}
 
 	@Override
@@ -73,9 +74,10 @@ public class MutableToken
 		return text;
 	}
 
-	public void setText(CharSequence text)
+	public MutableToken setText(CharSequence text)
 	{
 		this.text = text;
+		return this;
 	}
 
 	@Override
@@ -84,9 +86,10 @@ public class MutableToken
 		return start;
 	}
 
-	public void setStart(Location start)
+	public MutableToken setStart(Location start)
 	{
 		this.start = start;
+		return this;
 	}
 
 	@Override
@@ -95,9 +98,10 @@ public class MutableToken
 		return end;
 	}
 
-	public void setEnd(Location end)
+	public MutableToken setEnd(Location end)
 	{
 		this.end = end;
+		return this;
 	}
 
 	@Override
@@ -116,13 +120,15 @@ public class MutableToken
 		return properties.containsKey(property.getId());
 	}
 
-	public <T> void set(TokenProperty<T> property, T value)
+	public <T> MutableToken set(TokenProperty<T> property, T value)
 	{
 		if(properties == null)
 		{
 			properties = new HashMap<>();
 		}
 		properties.put(property.getId(), value);
+
+		return this;
 	}
 
 	@Override
@@ -135,5 +141,10 @@ public class MutableToken
 	public String toString()
 	{
 		return type + ": " + text + " (" + start + "-" + end + ")";
+	}
+
+	public static MutableToken ofType(TokenType type)
+	{
+		return new MutableToken(type, null, null, null);
 	}
 }
