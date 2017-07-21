@@ -12,8 +12,8 @@ import se.l4.lect.LanguageEncounter;
 import se.l4.lect.LanguageFactory;
 import se.l4.lect.LanguageParser;
 import se.l4.lect.Pipeline;
-import se.l4.lect.Source;
-import se.l4.lect.SourceEncounter;
+import se.l4.lect.TextSource;
+import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
 
@@ -38,14 +38,14 @@ public class PipelineImpl<Collector>
 	}
 
 	@Override
-	public void run(Source source)
+	public void run(TextSource source)
 		throws IOException
 	{
 		run(source, null);
 	}
 
 	@Override
-	public void run(Source source, Collector collector)
+	public void run(TextSource source, Collector collector)
 		throws IOException
 	{
 		Runner runner = new Runner(handlers, collector);
@@ -53,7 +53,7 @@ public class PipelineImpl<Collector>
 	}
 
 	private class Runner
-		implements SourceEncounter, LanguageEncounter, Encounter<Collector>
+		implements TextSourceEncounter, LanguageEncounter, Encounter<Collector>
 	{
 		private final Collector collector;
 

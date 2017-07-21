@@ -9,7 +9,7 @@ import java.util.Locale;
 import se.l4.lect.location.Location;
 
 public class VerifyingSyntaxTreeEncounter
-	implements SourceEncounter
+	implements TextSourceEncounter
 {
 	private static final Location[] EMTPY = new Location[0];
 

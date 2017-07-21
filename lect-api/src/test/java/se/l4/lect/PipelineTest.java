@@ -34,7 +34,7 @@ public class PipelineTest
 	public void testExampleFromReadme()
 		throws IOException
 	{
-		Source source = PlainTextSource.forString("Simple plain text");
+		TextSource source = PlainTextSource.forString("Simple plain text");
 
 		AtomicInteger wordCount = Pipeline.over(source)
 			.language(ICULanguage.forLocale(Locale.ENGLISH))

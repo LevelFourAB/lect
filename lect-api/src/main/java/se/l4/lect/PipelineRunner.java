@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.function.Function;
 
 /**
- * {@link PipelineAssembly Assembly} for a {@link Pipeline} to run a set of handlers over a single {@link Source}.
+ * {@link PipelineAssembly Assembly} for a {@link Pipeline} to run a set of handlers over a single {@link TextSource}.
  *
  * @author Andreas Holstenson
  *
@@ -12,11 +12,11 @@ import java.util.function.Function;
 public class PipelineRunner<Collector>
 	implements PipelineAssembly<Collector, PipelineRunner<Collector>>
 {
-	private final Source source;
+	private final TextSource source;
 	private final PipelineBuilder<Collector> builder;
 	private Collector collector;
 
-	public PipelineRunner(Source source)
+	public PipelineRunner(TextSource source)
 	{
 		this.source = source;
 

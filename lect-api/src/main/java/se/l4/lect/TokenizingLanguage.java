@@ -12,7 +12,7 @@ import se.l4.lect.tokens.Tokenizer;
 /**
  * Implementation of {@link LanguageParser} that uses {@link Tokenizer}s to split text into sentences and tokens.
  * The tokenizers used should use {@link OffsetLocation} for its tokens so that the language can correctly map
- * the locations of the tokens to the actual location in the {@link Source}.
+ * the locations of the tokens to the actual location in the {@link TextSource}.
  *
  * @author Andreas Holstenson
  *

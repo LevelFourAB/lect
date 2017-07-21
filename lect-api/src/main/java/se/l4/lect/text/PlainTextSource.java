@@ -8,8 +8,8 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
-import se.l4.lect.Source;
-import se.l4.lect.SourceEncounter;
+import se.l4.lect.TextSource;
+import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextLocation;
 
 /**
@@ -19,7 +19,7 @@ import se.l4.lect.location.MutableTextLocation;
  *
  */
 public class PlainTextSource
-	implements Source
+	implements TextSource
 {
 	private final Readable readable;
 
@@ -34,7 +34,7 @@ public class PlainTextSource
 	 * @param reader
 	 * @return
 	 */
-	public static Source forReader(Readable readable)
+	public static TextSource forReader(Readable readable)
 	{
 		return new PlainTextSource(readable);
 	}
@@ -47,7 +47,7 @@ public class PlainTextSource
 	 * @param charset
 	 * @return
 	 */
-	public static Source forStream(InputStream stream, Charset charset)
+	public static TextSource forStream(InputStream stream, Charset charset)
 	{
 		return forReader(new InputStreamReader(stream, charset));
 	}
@@ -58,13 +58,13 @@ public class PlainTextSource
 	 * @param text
 	 * @return
 	 */
-	public static Source forString(String text)
+	public static TextSource forString(String text)
 	{
 		return forReader(new StringReader(text));
 	}
 
 	@Override
-	public void parse(SourceEncounter encounter)
+	public void parse(TextSourceEncounter encounter)
 		throws IOException
 	{
 		new Parser(readable, encounter).parse();
@@ -93,7 +93,7 @@ public class PlainTextSource
 	private static class Parser
 	{
 		private final Readable readable;
-		private final SourceEncounter encounter;
+		private final TextSourceEncounter encounter;
 
 		private int index;
 		private int line;
@@ -105,7 +105,7 @@ public class PlainTextSource
 		private State state;
 		private StringBuilder builder;
 
-		public Parser(Readable readable, SourceEncounter encounter)
+		public Parser(Readable readable, TextSourceEncounter encounter)
 		{
 			this.readable = readable;
 			this.encounter = encounter;

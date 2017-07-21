@@ -3,13 +3,12 @@ package se.l4.lect;
 import java.io.IOException;
 
 /**
- * Source abstraction, used to support different formats such as
- * plain text and HTML.
+ * Abstraction over sources of text, used to support different formats such as plain text and HTML.
  *
  * @author Andreas Holstenson
  *
  */
-public interface Source
+public interface TextSource
 {
 	/**
 	 * Parse the source using the given encounter.
@@ -17,6 +16,6 @@ public interface Source
 	 * @param encounter
 	 * @throws IOException
 	 */
-	void parse(SourceEncounter encounter)
+	void parse(TextSourceEncounter encounter)
 		throws IOException;
 }

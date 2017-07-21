@@ -1,9 +1,9 @@
 package se.l4.lect.location;
 
-import se.l4.lect.Source;
+import se.l4.lect.TextSource;
 
 /**
- * Virtual representation of the location of something in a {@link Source}. This interface exists so that sources
+ * Virtual representation of the location of something in a {@link TextSource}. This interface exists so that sources
  * may potentially include location info that are not just suitable for plain text.
  *
  * @author Andreas Holstenson

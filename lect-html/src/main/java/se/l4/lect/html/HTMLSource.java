@@ -12,18 +12,18 @@ import net.htmlparser.jericho.EndTag;
 import net.htmlparser.jericho.RowColumnVector;
 import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.StartTag;
-import se.l4.lect.Source;
-import se.l4.lect.SourceEncounter;
+import se.l4.lect.TextSource;
+import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextLocation;
 
 /**
- * {@link Source} that parses HTML.
+ * {@link TextSource} that parses HTML.
  *
  * @author Andreas Holstenson
  *
  */
 public class HTMLSource
-	implements Source
+	implements TextSource
 {
 	static
 	{
@@ -37,18 +37,18 @@ public class HTMLSource
 		this.reader = reader;
 	}
 
-	public static Source forReader(Reader reader)
+	public static TextSource forReader(Reader reader)
 	{
 		return new HTMLSource(reader);
 	}
 
-	public static Source forString(String s)
+	public static TextSource forString(String s)
 	{
 		return new HTMLSource(new StringReader(s));
 	}
 
 	@Override
-	public void parse(SourceEncounter encounter)
+	public void parse(TextSourceEncounter encounter)
 		throws IOException
 	{
 		new Handler(encounter).parse();
@@ -67,7 +67,7 @@ public class HTMLSource
 
 	private class Handler
 	{
-		private final SourceEncounter encounter;
+		private final TextSourceEncounter encounter;
 		private net.htmlparser.jericho.Source source;
 
 		private int depth;
@@ -79,7 +79,7 @@ public class HTMLSource
 		private MutableTextLocation start;
 		private MutableTextLocation end;
 
-		public Handler(SourceEncounter encounter)
+		public Handler(TextSourceEncounter encounter)
 		{
 			this.encounter = encounter;
 

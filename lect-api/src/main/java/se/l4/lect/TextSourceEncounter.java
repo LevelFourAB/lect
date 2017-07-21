@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import se.l4.lect.location.Location;
 
-public interface SourceEncounter
+public interface TextSourceEncounter
 {
 	/**
 	 * Get the locale we are building the tree for.

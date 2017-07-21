@@ -5,7 +5,7 @@ import java.io.IOException;
 import se.l4.lect.internal.PipelineBuilderImpl;
 
 /**
- * Pipeline over a {@link Source} that will run {@link Handler}s on the text in the source.
+ * Pipeline over a {@link TextSource} that will run {@link Handler}s on the text in the source.
  *
  * @author Andreas Holstenson
  *
@@ -18,7 +18,7 @@ public interface Pipeline<Collector>
 	 * @param source
 	 * @throws IOException
 	 */
-	void run(Source source)
+	void run(TextSource source)
 		throws IOException;
 
 	/**
@@ -28,7 +28,7 @@ public interface Pipeline<Collector>
 	 * @param collector
 	 * @throws IOException
 	 */
-	void run(Source source, Collector collector)
+	void run(TextSource source, Collector collector)
 		throws IOException;
 
 	/**
@@ -47,7 +47,7 @@ public interface Pipeline<Collector>
 	 * @param source
 	 * @return
 	 */
-	static PipelineRunner<?> over(Source source)
+	static PipelineRunner<?> over(TextSource source)
 	{
 		return new PipelineRunner<>(source);
 	}

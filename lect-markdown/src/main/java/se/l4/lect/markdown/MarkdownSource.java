@@ -29,20 +29,20 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.html.Html5Entities;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
-import se.l4.lect.Source;
-import se.l4.lect.SourceEncounter;
+import se.l4.lect.TextSource;
+import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextLocation;
 import se.l4.lect.location.TextLocation;
 import se.l4.lect.text.OffsetTrackingReader;
 
 /**
- * {@link Source} that parses Markdown.
+ * {@link TextSource} that parses Markdown.
  *
  * @author Andreas Holstenson
  *
  */
 public class MarkdownSource
-	implements Source
+	implements TextSource
 {
 	private final Reader reader;
 	private CustomMarkdownFlavor flavor;
@@ -87,7 +87,7 @@ public class MarkdownSource
 	}
 
 	@Override
-	public void parse(SourceEncounter encounter)
+	public void parse(TextSourceEncounter encounter)
 		throws IOException
 	{
 		new Handler(encounter).parse();
@@ -95,13 +95,13 @@ public class MarkdownSource
 
 	private class Handler
 	{
-		private final SourceEncounter encounter;
+		private final TextSourceEncounter encounter;
 		private OffsetTrackingReader reader;
 
 		private MutableTextLocation start;
 		private MutableTextLocation end;
 
-		public Handler(SourceEncounter encounter)
+		public Handler(TextSourceEncounter encounter)
 		{
 			this.encounter = encounter;
 
