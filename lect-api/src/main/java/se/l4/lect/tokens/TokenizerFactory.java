@@ -6,7 +6,7 @@ package se.l4.lect.tokens;
  * @author Andreas Holstenson
  *
  */
-public interface TextTokenizerFactory
+public interface TokenizerFactory
 {
 	/**
 	 * Create a new {@link Tokenizer} for the given input text.

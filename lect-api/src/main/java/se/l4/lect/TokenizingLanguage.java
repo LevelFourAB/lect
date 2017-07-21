@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 import se.l4.lect.location.Location;
 import se.l4.lect.location.OffsetLocation;
-import se.l4.lect.tokens.TextTokenizerFactory;
+import se.l4.lect.tokens.TokenizerFactory;
 import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.Tokenizer;
 
@@ -21,13 +21,13 @@ public class TokenizingLanguage
 	extends ChunkedLanguageParser
 {
 	private final Locale locale;
-	private final TextTokenizerFactory paragraphTokenizers;
-	private final TextTokenizerFactory sentenceTokenizers;
+	private final TokenizerFactory paragraphTokenizers;
+	private final TokenizerFactory sentenceTokenizers;
 
 	protected TokenizingLanguage(
 			Locale locale,
-			TextTokenizerFactory paragraphTokenizers,
-			TextTokenizerFactory sentenceTokenizers,
+			TokenizerFactory paragraphTokenizers,
+			TokenizerFactory sentenceTokenizers,
 			LanguageEncounter encounter)
 	{
 		super(encounter);
@@ -100,8 +100,8 @@ public class TokenizingLanguage
 	 */
 	public static LanguageParser create(
 			Locale locale,
-			TextTokenizerFactory paragraphTokenizers,
-			TextTokenizerFactory sentenceTokenizers,
+			TokenizerFactory paragraphTokenizers,
+			TokenizerFactory sentenceTokenizers,
 			LanguageEncounter encounter)
 	{
 		return new TokenizingLanguage(locale, paragraphTokenizers, sentenceTokenizers, encounter);
@@ -122,8 +122,8 @@ public class TokenizingLanguage
 	 *   function that creates a {@link TokenizingLanguage} for a given {@link LanguageEncounter}
 	 */
 	public static LanguageFactory create(Locale locale,
-			TextTokenizerFactory paragraphTokenizers,
-			TextTokenizerFactory sentenceTokenizers)
+			TokenizerFactory paragraphTokenizers,
+			TokenizerFactory sentenceTokenizers)
 	{
 		return encounter -> create(locale, paragraphTokenizers, sentenceTokenizers, encounter);
 	}
