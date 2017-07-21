@@ -1,8 +1,11 @@
 package se.l4.lect.html;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -12,6 +15,8 @@ import net.htmlparser.jericho.EndTag;
 import net.htmlparser.jericho.RowColumnVector;
 import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.StartTag;
+import se.l4.commons.io.Bytes;
+import se.l4.commons.io.IoSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextLocation;
@@ -30,21 +35,82 @@ public class HTMLSource
 		Config.ConvertNonBreakingSpaces = false;
 	}
 
-	private final Reader reader;
+	private final IoSupplier<Reader> supplier;
 
-	private HTMLSource(Reader reader)
+	private HTMLSource(IoSupplier<Reader> supplier)
 	{
-		this.reader = reader;
+		this.supplier = supplier;
 	}
 
+	/**
+	 * Create a new source for the given {@link Reader}.
+	 *
+	 * @param reader
+	 * @return
+	 */
 	public static TextSource forReader(Reader reader)
 	{
-		return new HTMLSource(reader);
+		return forReader(() -> reader);
 	}
 
-	public static TextSource forString(String s)
+	/**
+	 * Create a new source that will use the given {@link IoSupplier} to open a {@link Reader}.
+	 *
+	 * @param supplier
+	 * @return
+	 */
+	public static TextSource forReader(IoSupplier<Reader> supplier)
 	{
-		return new HTMLSource(new StringReader(s));
+		return new HTMLSource(supplier);
+	}
+
+	/**
+	 * Create a new source for the given {@link InputStream} using the specified character set to decode it.
+	 *
+	 * @param stream
+	 * @param charset
+	 * @return
+	 */
+	public static TextSource forStream(InputStream stream, Charset charset)
+	{
+		return forReader(new InputStreamReader(stream, charset));
+	}
+
+	/**
+	 * Create a new source that uses the given {@link IoSupplier} to resolve the text content. The given {@link Charset}
+	 * will be used to decode the stream.
+	 *
+	 * @param stream
+	 * @param charset
+	 * @return
+	 */
+	public static TextSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	{
+		return forReader(() -> new InputStreamReader(stream.get(), charset));
+	}
+
+	/**
+	 * Create a new source for the given {@link String}.
+	 *
+	 * @param text
+	 * @return
+	 */
+	public static TextSource forString(String text)
+	{
+		return forReader(new StringReader(text));
+	}
+
+	/**
+	 * Create a new source using the given {@link Bytes} to resolve the text content. The given {@link Charset} will
+	 * be used to decode the content.
+	 *
+	 * @param bytes
+	 * @param charset
+	 * @return
+	 */
+	public static TextSource forBytes(Bytes bytes, Charset charset)
+	{
+		return forStream(bytes::asInputStream, charset);
 	}
 
 	@Override
@@ -97,7 +163,16 @@ public class HTMLSource
 		public void parse()
 			throws IOException
 		{
-			source = new net.htmlparser.jericho.Source(reader);
+			try(Reader reader = supplier.get())
+			{
+				source = new net.htmlparser.jericho.Source(reader);
+				parse0();
+			}
+		}
+
+		private void parse0()
+			throws IOException
+		{
 			Iterator<Segment> it = source.getNodeIterator();
 			StringBuilder buffer = new StringBuilder();
 			while(it.hasNext())

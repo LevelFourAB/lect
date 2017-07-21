@@ -8,6 +8,8 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
+import se.l4.commons.io.Bytes;
+import se.l4.commons.io.IoSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextLocation;
@@ -21,11 +23,11 @@ import se.l4.lect.location.MutableTextLocation;
 public class PlainTextSource
 	implements TextSource
 {
-	private final Readable readable;
+	private final IoSupplier<Reader> supplier;
 
-	private PlainTextSource(Readable readable)
+	private PlainTextSource(IoSupplier<Reader> supplier)
 	{
-		this.readable = readable;
+		this.supplier = supplier;
 	}
 
 	/**
@@ -34,14 +36,24 @@ public class PlainTextSource
 	 * @param reader
 	 * @return
 	 */
-	public static TextSource forReader(Readable readable)
+	public static TextSource forReader(Reader reader)
 	{
-		return new PlainTextSource(readable);
+		return forReader(() -> reader);
 	}
 
 	/**
-	 * Create a new source for the given {@link InputStream} using the specified
-	 * character set to decode it.
+	 * Create a new source that will use the given {@link IoSupplier} to open a {@link Reader}.
+	 *
+	 * @param supplier
+	 * @return
+	 */
+	public static TextSource forReader(IoSupplier<Reader> supplier)
+	{
+		return new PlainTextSource(supplier);
+	}
+
+	/**
+	 * Create a new source for the given {@link InputStream} using the specified character set to decode it.
 	 *
 	 * @param stream
 	 * @param charset
@@ -50,6 +62,19 @@ public class PlainTextSource
 	public static TextSource forStream(InputStream stream, Charset charset)
 	{
 		return forReader(new InputStreamReader(stream, charset));
+	}
+
+	/**
+	 * Create a new source that uses the given {@link IoSupplier} to resolve the text content. The given {@link Charset}
+	 * will be used to decode the stream.
+	 *
+	 * @param stream
+	 * @param charset
+	 * @return
+	 */
+	public static TextSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	{
+		return forReader(() -> new InputStreamReader(stream.get(), charset));
 	}
 
 	/**
@@ -63,11 +88,27 @@ public class PlainTextSource
 		return forReader(new StringReader(text));
 	}
 
+	/**
+	 * Create a new source using the given {@link Bytes} to resolve the text content. The given {@link Charset} will
+	 * be used to decode the content.
+	 *
+	 * @param bytes
+	 * @param charset
+	 * @return
+	 */
+	public static TextSource forBytes(Bytes bytes, Charset charset)
+	{
+		return forStream(bytes::asInputStream, charset);
+	}
+
 	@Override
 	public void parse(TextSourceEncounter encounter)
 		throws IOException
 	{
-		new Parser(readable, encounter).parse();
+		try(Reader reader = supplier.get())
+		{
+			new Parser(reader, encounter).parse();
+		}
 	}
 
 	private static boolean isWhitespace(StringBuilder builder)

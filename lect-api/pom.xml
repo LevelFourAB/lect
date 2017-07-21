@@ -16,6 +16,12 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>se.l4.commons</groupId>
+			<artifactId>commons-main</artifactId>
+			<version>0.4</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 			<version>59.1</version>
