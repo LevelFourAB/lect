@@ -1,5 +1,7 @@
 package se.l4.lect.tokens;
 
+import java.util.Map;
+
 import se.l4.lect.location.Location;
 
 /**
@@ -52,6 +54,13 @@ public interface Token
 	 * @return
 	 */
 	boolean has(TokenProperty<?> property);
+
+	/**
+	 * Get properties as a {@link Map}.
+	 *
+	 * @return
+	 */
+	Map<String, Object> getProperties();
 
 	/**
 	 * Get a copy of this token that can be used

@@ -67,4 +67,10 @@ public class ImmutableToken
 	{
 		return properties.containsKey(property.getId());
 	}
+
+	@Override
+	public Map<String, Object> getProperties()
+	{
+		return properties;
+	}
 }

@@ -73,6 +73,16 @@ public abstract class OffsetTokenizer
 
 	protected abstract boolean findNextToken(int previousEnd);
 
+	/**
+	 * Get the token that has been set by the last call to {@link #setNextToken(TokenType, int, CharSequence)}.
+	 *
+	 * @return
+	 */
+	protected MutableToken nextToken()
+	{
+		return pendingToken;
+	}
+
 	protected void setNextToken(TokenType type, int start, CharSequence text)
 	{
 		if(text.length() == 0)

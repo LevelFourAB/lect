@@ -1,5 +1,7 @@
 package se.l4.lect;
 
+import java.util.Map;
+
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.MutableToken;
 import se.l4.lect.tokens.TokenType;
@@ -73,7 +75,7 @@ public abstract class ChunkedLanguageParser
 		head.prev = head;
 	}
 
-	private String consume(int offset, TokenType eventType)
+	private String consume(int offset, TokenType eventType, Map<String, Object> properties)
 	{
 		// Sanity check that we never go backwards
 		if(offset < lastOffset) throw new AssertionError("Going backwards in processing of paragraph-level content, language implementation probably broken");
@@ -148,7 +150,7 @@ public abstract class ChunkedLanguageParser
 		String source = sourceScratch.toString();
 		if(eventType != null)
 		{
-			token.update(eventType, start, end, scratch.toString());
+			token.update(eventType, start, end, scratch.toString(), properties);
 			encounter.token(token);
 		}
 
@@ -159,7 +161,7 @@ public abstract class ChunkedLanguageParser
 
 	private void emitWhitespace(int offset)
 	{
-		consume(offset, TokenType.WHITESPACE);
+		consume(offset, TokenType.WHITESPACE, null);
 	}
 
 	/**
@@ -188,14 +190,21 @@ public abstract class ChunkedLanguageParser
 	{
 		emitWhitespace(offset);
 
-		consume(offset + value.length(), type);
+		consume(offset + value.length(), type, null);
 	}
 
 	protected void emitToken(int offset, TokenType type, int length)
 	{
 		emitWhitespace(offset);
 
-		consume(offset + length, type);
+		consume(offset + length, type, null);
+	}
+
+	protected void emitToken(int offset, TokenType type, int length, Map<String, Object> properties)
+	{
+		emitWhitespace(offset);
+
+		consume(offset + length, type, properties);
 	}
 
 	/**

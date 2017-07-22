@@ -5,9 +5,9 @@ import java.util.function.Function;
 
 import se.l4.lect.location.Location;
 import se.l4.lect.location.OffsetLocation;
-import se.l4.lect.tokens.TokenizerFactory;
 import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.Tokenizer;
+import se.l4.lect.tokens.TokenizerFactory;
 
 /**
  * Implementation of {@link LanguageParser} that uses {@link Tokenizer}s to split text into sentences and tokens.
@@ -64,7 +64,7 @@ public class TokenizingLanguage
 
 				int start = toOffset(token.getStart());
 				int end = toOffset(token.getEnd());
-				emitToken(offset + start, token.getType(), end - start);
+				emitToken(offset + start, token.getType(), end - start, token.getProperties());
 			}
 
 			// End the sentence

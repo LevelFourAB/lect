@@ -26,6 +26,11 @@ public class MutableToken
 
 	public void update(TokenType type, Location start, Location end, CharSequence text)
 	{
+		update(type, start, end, text, null);
+	}
+
+	public void update(TokenType type, Location start, Location end, CharSequence text, Map<String, Object> otherProperties)
+	{
 		this.type = type;
 		this.text = text;
 		this.start = start;
@@ -34,6 +39,16 @@ public class MutableToken
 		if(properties != null)
 		{
 			properties.clear();
+		}
+
+		if(otherProperties != null)
+		{
+			if(properties == null)
+			{
+				properties = new HashMap<>();
+			}
+
+			properties.putAll(otherProperties);
 		}
 	}
 
@@ -49,10 +64,20 @@ public class MutableToken
 		this.end = other.getEnd();
 		this.text = other.getText();
 
-		// TODO: Copy properties?
 		if(properties != null)
 		{
 			properties.clear();
+		}
+
+		Map<String, Object> otherProperties = other.getProperties();
+		if(otherProperties != null)
+		{
+			if(properties == null)
+			{
+				properties = new HashMap<>();
+			}
+
+			properties.putAll(otherProperties);
 		}
 	}
 
@@ -132,6 +157,12 @@ public class MutableToken
 	}
 
 	@Override
+	public Map<String, Object> getProperties()
+	{
+		return properties;
+	}
+
+	@Override
 	public Token copy()
 	{
 		return new ImmutableToken(type, start, end, text, properties == null ? null : new HashMap<>(properties));
@@ -140,7 +171,7 @@ public class MutableToken
 	@Override
 	public String toString()
 	{
-		return type + ": " + text + " (" + start + "-" + end + ")";
+		return type + ": " + text + " (" + start + "-" + end + ")" + (properties == null ? "" : " " + properties);
 	}
 
 	public static MutableToken ofType(TokenType type)
