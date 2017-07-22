@@ -17,9 +17,9 @@ public class ImmutableToken
 	{
 		this.type = type;
 		this.properties = properties;
-		this.start = start.copy();
-		this.end = end.copy();
-		this.text = text.toString();
+		this.start = start == null ? null : start.copy();
+		this.end = end == null ? null : end.copy();
+		this.text = text == null ? null : text.toString();
 	}
 
 	@Override
