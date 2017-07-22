@@ -12,6 +12,11 @@ import se.l4.lect.tokens.Token;
 public interface Handler
 {
 	/**
+	 * Processing is starting.
+	 */
+	void start();
+
+	/**
 	 * A new paragraph has been started.
 	 */
 	void startParagraph(Location location);

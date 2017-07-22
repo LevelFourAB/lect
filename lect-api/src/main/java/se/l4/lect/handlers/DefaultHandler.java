@@ -13,6 +13,10 @@ import se.l4.lect.tokens.Token;
 public abstract class DefaultHandler
 	implements Handler
 {
+	@Override
+	public void start()
+	{
+	}
 
 	@Override
 	public void startParagraph(Location location)

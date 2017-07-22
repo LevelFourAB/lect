@@ -14,6 +14,7 @@ import se.l4.lect.LanguageParser;
 import se.l4.lect.Pipeline;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
+import se.l4.lect.handlers.MultiStageHandler;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
 
@@ -49,7 +50,11 @@ public class PipelineImpl<Collector>
 		throws IOException
 	{
 		Runner runner = new Runner(handlers, collector);
-		source.parse(runner);
+		while(runner.hasMore())
+		{
+			runner.start();
+			source.parse(runner);
+		}
 	}
 
 	private class Runner
@@ -58,7 +63,9 @@ public class PipelineImpl<Collector>
 		private final Collector collector;
 
 		private final LanguageParser language;
-		private final Handler[] handlers;
+		private final List<Handler> handlers;
+
+		private Handler[] activeHandlers;
 
 		private Location location;
 		private boolean inParagraph;
@@ -74,7 +81,37 @@ public class PipelineImpl<Collector>
 			{
 				instances.add(h.apply(this));
 			}
-			this.handlers = instances.toArray(new Handler[instances.size()]);
+			this.handlers = instances;
+			this.activeHandlers = instances.toArray(new Handler[instances.size()]);
+		}
+
+		private void resolveActive()
+		{
+			List<Handler> active = new ArrayList<>();
+			for(Handler h : handlers)
+			{
+				if(h instanceof MultiStageHandler)
+				{
+					if(((MultiStageHandler) h).hasMoreStages())
+					{
+						active.add(h);
+					}
+				}
+			}
+			this.activeHandlers = active.isEmpty() ? null : active.toArray(new Handler[active.size()]);
+		}
+
+		private boolean hasMore()
+		{
+			return this.activeHandlers != null;
+		}
+
+		private void start()
+		{
+			for(int i=0, n=activeHandlers.length; i<n; i++)
+			{
+				activeHandlers[i].start();
+			}
 		}
 
 		@Override
@@ -114,9 +151,9 @@ public class PipelineImpl<Collector>
 
 			inParagraph = true;
 
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].startParagraph(location);
+				activeHandlers[i].startParagraph(location);
 			}
 		}
 
@@ -127,9 +164,9 @@ public class PipelineImpl<Collector>
 
 			inParagraph = false;
 
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].endParagraph(location);
+				activeHandlers[i].endParagraph(location);
 			}
 		}
 
@@ -138,10 +175,12 @@ public class PipelineImpl<Collector>
 		{
 			language.flush();
 
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].done();
+				activeHandlers[i].done();
 			}
+
+			resolveActive();
 		}
 
 		@Override
@@ -156,9 +195,9 @@ public class PipelineImpl<Collector>
 			Location old = this.location;
 			this.location = location;
 
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].startSentence(location);
+				activeHandlers[i].startSentence(location);
 			}
 
 			this.location = old;
@@ -170,9 +209,9 @@ public class PipelineImpl<Collector>
 			Location old = this.location;
 			this.location = location;
 
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].endSentence(location);
+				activeHandlers[i].endSentence(location);
 			}
 
 			this.location = old;
@@ -181,9 +220,9 @@ public class PipelineImpl<Collector>
 		@Override
 		public void token(Token token)
 		{
-			for(int i=0, n=handlers.length; i<n; i++)
+			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
-				handlers[i].token(token);
+				activeHandlers[i].token(token);
 			}
 		}
 	}

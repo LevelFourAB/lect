@@ -2,6 +2,7 @@ package se.l4.lect.internal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import se.l4.lect.Encounter;
@@ -50,6 +51,7 @@ public class PipelineBuilderImpl<Collector>
 	@Override
 	public Pipeline<Collector> build()
 	{
+		Objects.requireNonNull(languageCreator, "Factory for language must be provided");
 		return new PipelineImpl<>(languageCreator, handlers);
 	}
 
