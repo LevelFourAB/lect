@@ -53,6 +53,12 @@ public abstract class OffsetTokenizer
 			throw new IllegalStateException("No more tokens");
 		}
 
+		if(! init)
+		{
+			findNextToken(0);
+			init = true;
+		}
+
 		// Swap the tokens and location
 		int previousEnd = pendingEnd.get();
 		swap();
