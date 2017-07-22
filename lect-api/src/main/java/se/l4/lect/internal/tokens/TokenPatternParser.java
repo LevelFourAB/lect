@@ -131,7 +131,7 @@ public class TokenPatternParser
 					else
 					{
 						builder.append('\\');
-						builder.append(c);
+						builder.append(c2);
 					}
 				}
 				else
@@ -263,6 +263,9 @@ public class TokenPatternParser
 				return quickToken(readString());
 			case '/':
 				return quickToken(readRegex());
+			case '$':
+				consume('$');
+				return new ExactTokenNode(TokenMatcherImpl.END);
 			default:
 				return parseTokenWithType();
 		}
@@ -357,7 +360,7 @@ public class TokenPatternParser
 				value = readRegex();
 				break;
 			default:
-				value = consumeUntil(c -> c == ',' || c == ']' || c == ')' || Character.isWhitespace(c));
+				value = consumeUntil(this::isBoundary);
 				break;
 		}
 		return value;

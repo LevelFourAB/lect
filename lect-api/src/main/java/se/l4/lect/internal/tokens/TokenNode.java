@@ -29,6 +29,11 @@ public class TokenNode
 	@Override
 	boolean match(Token token, Consumer<MatcherNode> branchReceiver)
 	{
+		if(token == TokenMatcherImpl.START || token == TokenMatcherImpl.END)
+		{
+			return false;
+		}
+
 		if(type != null && token.getType() != type)
 		{
 			return false;

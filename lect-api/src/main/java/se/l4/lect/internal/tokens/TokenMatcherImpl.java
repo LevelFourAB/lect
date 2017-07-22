@@ -3,6 +3,7 @@ package se.l4.lect.internal.tokens;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.l4.lect.tokens.ImmutableToken;
 import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.TokenMatcher;
 import se.l4.lect.tokens.TokenPattern;
@@ -17,6 +18,9 @@ import se.l4.lect.tokens.TokenType;
 public class TokenMatcherImpl
 	implements TokenMatcher
 {
+	public static final Token START = new ImmutableToken(null, null, null, null, null);
+	public static final Token END = new ImmutableToken(null, null, null, null, null);
+
 	private final MatcherNode root;
 	private final boolean ignoreWhitespace;
 
@@ -79,6 +83,12 @@ public class TokenMatcherImpl
 		}
 
 		return matched;
+	}
+
+	@Override
+	public boolean end()
+	{
+		return add(END);
 	}
 
 	@Override

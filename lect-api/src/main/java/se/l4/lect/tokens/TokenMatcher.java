@@ -34,8 +34,18 @@ public interface TokenMatcher
 	 *
 	 * @param token
 	 * @return
+	 *   if the pattern now matches
 	 */
 	boolean add(Token token);
+
+	/**
+	 * Indicate that this is the end of the current match sequence. This method should be called to properly match
+	 * against {@code $} if used. In many cases this would be called at the end of a sentence by a {@link Handler}.
+	 *
+	 * @return
+	 *   if the pattern now matches
+	 */
+	boolean end();
 
 	/**
 	 * Reset the matching, for when tokens are no longer logically connected, such as when new sentence has been

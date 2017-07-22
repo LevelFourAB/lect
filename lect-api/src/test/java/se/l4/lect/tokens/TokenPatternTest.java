@@ -612,4 +612,38 @@ public class TokenPatternTest
 			throw new AssertionError("Matcher matched at optional token");
 		}
 	}
+
+	@Test
+	public void testEndOfSequence()
+	{
+		TokenPattern pattern = TokenPattern.compile("symbol $");
+		TokenMatcher matcher = pattern.matcher();
+
+		if(matcher.add(MutableToken.ofType(TokenType.SYMBOL)))
+		{
+			throw new AssertionError("Matched to early");
+		}
+
+		if(! matcher.end())
+		{
+			throw new AssertionError("Did not match end of sequence");
+		}
+	}
+
+	@Test
+	public void testEndOfSequenceNoMatch()
+	{
+		TokenPattern pattern = TokenPattern.compile("symbol $");
+		TokenMatcher matcher = pattern.matcher();
+
+		if(matcher.add(MutableToken.ofType(TokenType.WORD)))
+		{
+			throw new AssertionError("Matched for wrong token");
+		}
+
+		if(matcher.end())
+		{
+			throw new AssertionError("Invalid sequence");
+		}
+	}
 }
