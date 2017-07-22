@@ -85,7 +85,7 @@ public class PlainTextSource
 	 */
 	public static TextSource forString(String text)
 	{
-		return forReader(new StringReader(text));
+		return forReader(() -> new StringReader(text));
 	}
 
 	/**
