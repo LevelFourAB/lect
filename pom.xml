@@ -20,7 +20,7 @@
 	</properties>
 
 	<modules>
-		<module>lect-api</module>
+		<module>lect-engine</module>
 		<module>lect-html</module>
 		<module>lect-markdown</module>
  	</modules>
