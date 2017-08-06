@@ -3,10 +3,9 @@ package se.l4.lect.internal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
-import se.l4.lect.Encounter;
 import se.l4.lect.Handler;
+import se.l4.lect.HandlerFactory;
 import se.l4.lect.LanguageFactory;
 import se.l4.lect.Pipeline;
 import se.l4.lect.PipelineBuilder;
@@ -20,7 +19,7 @@ import se.l4.lect.PipelineBuilder;
 public class PipelineBuilderImpl<Collector>
 	implements PipelineBuilder<Collector>
 {
-	private final List<Function<Encounter, Handler>> handlers;
+	private final List<HandlerFactory<?>> handlers;
 	private LanguageFactory languageCreator;
 
 	public PipelineBuilderImpl()
@@ -42,9 +41,9 @@ public class PipelineBuilderImpl<Collector>
 	}
 
 	@Override
-	public PipelineBuilder<Collector> with(Function<Encounter<Collector>, Handler> handler)
+	public PipelineBuilder<Collector> with(HandlerFactory<Collector> handler)
 	{
-		handlers.add((Function) handler);
+		handlers.add(handler);
 		return this;
 	}
 

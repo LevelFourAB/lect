@@ -1,7 +1,5 @@
 package se.l4.lect;
 
-import java.util.function.Function;
-
 /**
  * Assembly interface for creating pipelines, used to support both {@link PipelineBuilder} and {@link PipelineRunner}.
  *
@@ -39,5 +37,5 @@ public interface PipelineAssembly<Collector, Self extends PipelineAssembly<Colle
 	 * @param handler
 	 * @return
 	 */
-	Self with(Function<Encounter<Collector>, Handler> handler);
+	Self with(HandlerFactory<Collector> handler);
 }

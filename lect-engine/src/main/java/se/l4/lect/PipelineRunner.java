@@ -1,7 +1,6 @@
 package se.l4.lect;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 /**
  * {@link PipelineAssembly Assembly} for a {@link Pipeline} to run a set of handlers over a single {@link TextSource}.
@@ -45,7 +44,7 @@ public class PipelineRunner<Collector>
 	}
 
 	@Override
-	public PipelineRunner<Collector> with(Function<Encounter<Collector>, Handler> handler)
+	public PipelineRunner<Collector> with(HandlerFactory<Collector> handler)
 	{
 		builder.with(handler);
 		return this;

@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Function;
 
 import se.l4.lect.Encounter;
 import se.l4.lect.Handler;
+import se.l4.lect.HandlerFactory;
 import se.l4.lect.LanguageEncounter;
 import se.l4.lect.LanguageFactory;
 import se.l4.lect.LanguageParser;
@@ -28,11 +28,11 @@ public class PipelineImpl<Collector>
 	implements Pipeline<Collector>
 {
 	private final LanguageFactory languageFactory;
-	private final List<Function<Encounter, Handler>> handlers;
+	private final List<HandlerFactory<?>> handlers;
 
 	public PipelineImpl(
 			LanguageFactory languageFactory,
-			List<Function<Encounter, Handler>> handlers)
+			List<HandlerFactory<?>> handlers)
 	{
 		this.languageFactory = languageFactory;
 		this.handlers = handlers;
@@ -70,16 +70,16 @@ public class PipelineImpl<Collector>
 		private Location location;
 		private boolean inParagraph;
 
-		public Runner(List<Function<Encounter, Handler>> handlers, Collector collector)
+		public Runner(List<HandlerFactory<?>> handlers, Collector collector)
 		{
 			this.collector = collector;
 
 			this.language = languageFactory.create(this);
 
 			List<Handler> instances = new ArrayList<>(handlers.size());
-			for(Function<Encounter, Handler> h : handlers)
+			for(HandlerFactory<?> h : handlers)
 			{
-				instances.add(h.apply(this));
+				instances.add(h.create((Encounter) this));
 			}
 			this.handlers = instances;
 			this.activeHandlers = instances.toArray(new Handler[instances.size()]);
