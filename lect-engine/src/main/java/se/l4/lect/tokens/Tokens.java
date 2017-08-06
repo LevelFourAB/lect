@@ -1,5 +1,7 @@
 package se.l4.lect.tokens;
 
+import java.util.List;
+
 import se.l4.lect.location.Location;
 
 /**
@@ -36,6 +38,29 @@ public class Tokens
 			end = token.getEnd();
 
 			builder.append(token.getText());
+		}
+
+		return new ImmutableToken(TokenType.UNKNOWN, start, end, builder.toString(), null);
+	}
+
+	public static Token merge(List<Token> tokens, int startIdx, int endIdx)
+	{
+		StringBuilder builder = new StringBuilder();
+		Location start = tokens.get(startIdx).getStart();
+		Location end = null;
+
+		for(int i=startIdx, n=endIdx; i<n; i++)
+		{
+			Token token = tokens.get(i);
+
+
+			if(! token.getStart().equals(end))
+			{
+				builder.append(' ');
+			}
+			builder.append(token.getText());
+
+			end = token.getEnd();
 		}
 
 		return new ImmutableToken(TokenType.UNKNOWN, start, end, builder.toString(), null);
