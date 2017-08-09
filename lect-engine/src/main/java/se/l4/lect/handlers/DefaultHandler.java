@@ -52,6 +52,9 @@ public abstract class DefaultHandler
 			case WORD:
 				word(token);
 				break;
+			case SPECIAL:
+				special(token);
+				break;
 		}
 	}
 
@@ -83,6 +86,14 @@ public abstract class DefaultHandler
 	 * @param whitespace
 	 */
 	protected void whitespace(Token token)
+	{
+	}
+
+	/**
+	 *
+	 * @param whitespace
+	 */
+	protected void special(Token token)
 	{
 	}
 }
