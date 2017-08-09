@@ -24,7 +24,7 @@ public interface Token
 	 *
 	 * @return
 	 */
-	CharSequence getText();
+	String getText();
 
 	/**
 	 * Get where this token starts.

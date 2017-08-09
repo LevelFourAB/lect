@@ -9,7 +9,7 @@ public class MutableToken
 	implements Token
 {
 	private TokenType type;
-	private CharSequence text;
+	private String text;
 	private Location start;
 	private Location end;
 
@@ -32,7 +32,7 @@ public class MutableToken
 	public void update(TokenType type, Location start, Location end, CharSequence text, Map<String, Object> otherProperties)
 	{
 		this.type = type;
-		this.text = text;
+		this.text = text.toString();
 		this.start = start;
 		this.end = end;
 
@@ -94,14 +94,14 @@ public class MutableToken
 	}
 
 	@Override
-	public CharSequence getText()
+	public String getText()
 	{
 		return text;
 	}
 
 	public MutableToken setText(CharSequence text)
 	{
-		this.text = text;
+		this.text = text.toString();
 		return this;
 	}
 
