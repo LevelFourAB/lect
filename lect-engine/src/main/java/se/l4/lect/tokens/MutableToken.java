@@ -32,7 +32,7 @@ public class MutableToken
 	public void update(TokenType type, Location start, Location end, CharSequence text, Map<String, Object> otherProperties)
 	{
 		this.type = type;
-		this.text = text.toString();
+		this.text = text == null ? null : text.toString();
 		this.start = start;
 		this.end = end;
 
