@@ -73,4 +73,10 @@ public class ImmutableToken
 	{
 		return properties;
 	}
+
+	@Override
+	public String toString()
+	{
+		return type + ": " + text + " (" + start + "-" + end + ")" + (properties == null ? "" : " " + properties);
+	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.TokenProperty;
 
 public class VerifyingSyntaxTreeEncounter
 	implements TextSourceEncounter
@@ -99,6 +100,16 @@ public class VerifyingSyntaxTreeEncounter
 		}
 
 		locationBuffer = null;
+	}
+
+	@Override
+	public <T> void setAttribute(TokenProperty<T> attribute, T value)
+	{
+	}
+
+	@Override
+	public void clearAttribute(TokenProperty<?> attribute)
+	{
 	}
 
 	@Override

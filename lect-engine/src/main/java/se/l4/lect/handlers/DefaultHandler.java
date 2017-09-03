@@ -3,6 +3,7 @@ package se.l4.lect.handlers;
 import se.l4.lect.Handler;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenProperty;
 
 /**
  * Implementation of {@link Handler} that provides a starting point for implementing custom handlers.
@@ -35,6 +36,16 @@ public abstract class DefaultHandler
 
 	@Override
 	public void endSentence(Location location)
+	{
+	}
+
+	@Override
+	public void startAttribute(Location location, TokenProperty<?> property, Object value)
+	{
+	}
+
+	@Override
+	public void endAttribute(Location location, TokenProperty<?> property)
 	{
 	}
 

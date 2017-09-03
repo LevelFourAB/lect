@@ -2,7 +2,10 @@ package se.l4.lect.internal;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import se.l4.lect.Encounter;
@@ -17,6 +20,7 @@ import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.handlers.MultiStageHandler;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenProperty;
 
 /**
  * Implementation of {@link Pipeline}.
@@ -64,6 +68,9 @@ public class PipelineImpl<Collector>
 
 		private final LanguageParser language;
 		private final List<Handler> handlers;
+
+		private LinkedList<AttributeDeclaration> attributes;
+		private List<AttributeDeclaration> activeAttributes;
 
 		private Handler[] activeHandlers;
 
@@ -161,6 +168,9 @@ public class PipelineImpl<Collector>
 		public void endParagraph()
 		{
 			language.flush();
+			endAttributes(location, true);
+			if(attributes != null) attributes.clear();
+//			attributes.clear();
 
 			inParagraph = false;
 
@@ -184,6 +194,116 @@ public class PipelineImpl<Collector>
 		}
 
 		@Override
+		public <T> void setAttribute(TokenProperty<T> attribute, T value)
+		{
+			if(attributes == null)
+			{
+				attributes = new LinkedList<>();
+				activeAttributes = new LinkedList<>();
+			}
+			else
+			{
+				clearAttribute(attribute);
+			}
+
+			attributes.add(new AttributeDeclaration(attribute, value, location));
+		}
+
+		@Override
+		public void clearAttribute(TokenProperty<?> attribute)
+		{
+			if(attributes == null) return;
+
+			ListIterator<AttributeDeclaration> it = attributes.listIterator(attributes.size());
+			while(it.hasPrevious())
+			{
+				AttributeDeclaration decl = it.previous();
+				if(decl.attribute.equals(attribute))
+				{
+					if(decl.end == null)
+					{
+						decl.end = location.copy();
+					}
+					break;
+				}
+			}
+		}
+
+		private void endAttributes(Location location, boolean clearAll)
+		{
+			if(activeAttributes == null || activeAttributes.isEmpty()) return;
+
+			Iterator<AttributeDeclaration> it = activeAttributes.iterator();
+			while(it.hasNext())
+			{
+				AttributeDeclaration decl = it.next();
+				if(decl.end.isSameOrBefore(location))
+				{
+					// This attribute has ended
+					for(int i=0, n=activeHandlers.length; i<n; i++)
+					{
+						activeHandlers[i].endAttribute(location, decl.attribute);
+					}
+
+					it.remove();
+				}
+				else if(clearAll)
+				{
+					// Clear all is active, end all attributes
+					for(int i=0, n=activeHandlers.length; i<n; i++)
+					{
+						activeHandlers[i].endAttribute(location, decl.attribute);
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		private void emitActiveAttributes(Location location)
+		{
+			if(activeAttributes == null || activeAttributes.isEmpty()) return;
+
+			Iterator<AttributeDeclaration> it = activeAttributes.iterator();
+			while(it.hasNext())
+			{
+				AttributeDeclaration decl = it.next();
+				for(int i=0, n=activeHandlers.length; i<n; i++)
+				{
+					activeHandlers[i].startAttribute(location, decl.attribute, decl.value);
+				}
+			}
+		}
+
+		private void startAttributes(Location location)
+		{
+			if(attributes == null || attributes.isEmpty()) return;
+
+			Iterator<AttributeDeclaration> it = attributes.iterator();
+			while(it.hasNext())
+			{
+				AttributeDeclaration decl = it.next();
+				if(decl.start.isSameOrBefore(location))
+				{
+					// This attribute started before or at this token, make it active
+					activeAttributes.add(decl);
+					it.remove();
+
+					for(int i=0, n=activeHandlers.length; i<n; i++)
+					{
+						activeHandlers[i].startAttribute(location, decl.attribute, decl.value);
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		@Override
 		public void text(CharSequence text, Location end)
 		{
 			language.text(text, location, end);
@@ -200,6 +320,9 @@ public class PipelineImpl<Collector>
 				activeHandlers[i].startSentence(location);
 			}
 
+			// After starting a sentence output all of the active attributes again
+			emitActiveAttributes(location);
+
 			this.location = old;
 		}
 
@@ -208,6 +331,9 @@ public class PipelineImpl<Collector>
 		{
 			Location old = this.location;
 			this.location = location;
+
+			// End all of the active attributes
+			endAttributes(location, true);
 
 			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
@@ -220,10 +346,38 @@ public class PipelineImpl<Collector>
 		@Override
 		public void token(Token token)
 		{
+			// End attributes that come before this token
+			endAttributes(token.getStart(), false);
+
+			// Start attributes that come before the end of this token
+			startAttributes(token.getEnd());
+
 			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
 				activeHandlers[i].token(token);
 			}
+		}
+	}
+
+	private static class AttributeDeclaration
+	{
+		private final TokenProperty<?> attribute;
+		private final Object value;
+
+		private Location start;
+		private Location end;
+
+		public AttributeDeclaration(TokenProperty<?> attribute, Object value, Location start)
+		{
+			this.attribute = attribute;
+			this.value = value;
+			this.start = start.copy();
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Attr{" + attribute.getId() + ", start=" + start + ", end=" + end + ", value=" + value + "}";
 		}
 	}
 }

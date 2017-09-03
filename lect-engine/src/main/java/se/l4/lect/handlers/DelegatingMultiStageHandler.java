@@ -3,6 +3,7 @@ package se.l4.lect.handlers;
 import se.l4.lect.Handler;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenProperty;
 
 /**
  * {@link MultiStageHandler} that delegates to a {@link Handler} for each stage.
@@ -49,6 +50,18 @@ public abstract class DelegatingMultiStageHandler
 	public void endSentence(Location location)
 	{
 		handler.endSentence(location);
+	}
+
+	@Override
+	public void startAttribute(Location location, TokenProperty<?> property, Object value)
+	{
+		handler.startAttribute(location, property, value);
+	}
+
+	@Override
+	public void endAttribute(Location location, TokenProperty<?> property)
+	{
+		handler.endAttribute(location, property);
 	}
 
 	@Override

@@ -36,6 +36,50 @@ public interface Location
 	Location moveTextIndex(int amount);
 
 	/**
+	 * Get if this location comes after another location.
+	 *
+	 * @param other
+	 * @return
+	 */
+	default boolean isAfter(Location other)
+	{
+		return compareTo(other) > 0;
+	}
+
+	/**
+	 * Get if this location is the same or after another location.
+	 *
+	 * @param other
+	 * @return
+	 */
+	default boolean isSameOrAfter(Location other)
+	{
+		return compareTo(other) >= 0;
+	}
+
+	/**
+	 * Get if this location comes before another location.
+	 *
+	 * @param other
+	 * @return
+	 */
+	default boolean isBefore(Location other)
+	{
+		return compareTo(other) < 0;
+	}
+
+	/**
+	 * Get if this location is the same or before another location.
+	 *
+	 * @param other
+	 * @return
+	 */
+	default boolean isSameOrBefore(Location other)
+	{
+		return compareTo(other) <= 0;
+	}
+
+	/**
 	 * Quickly create a new {@link MutableTextLocation}.
 	 *
 	 * @param line

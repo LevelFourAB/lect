@@ -2,6 +2,7 @@ package se.l4.lect;
 
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.Token;
+import se.l4.lect.tokens.TokenProperty;
 
 /**
  * Handler that receives streaming events when processing a Lect syntax tree.
@@ -35,6 +36,21 @@ public interface Handler
 	 * The end of a sentence has been found.
 	 */
 	void endSentence(Location location);
+
+	/**
+	 * An attribute has been set by the source.
+	 *
+	 * @param property
+	 * @param value
+	 */
+	void startAttribute(Location location, TokenProperty<?> property, Object value);
+
+	/**
+	 * An attribute has been cleared.
+	 *
+	 * @param property
+	 */
+	void endAttribute(Location location, TokenProperty<?> property);
 
 	/**
 	 * Token has been found, can either be whitespace, symbol or word.

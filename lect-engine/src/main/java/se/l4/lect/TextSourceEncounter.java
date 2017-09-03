@@ -3,6 +3,7 @@ package se.l4.lect;
 import java.util.Locale;
 
 import se.l4.lect.location.Location;
+import se.l4.lect.tokens.TokenProperty;
 
 public interface TextSourceEncounter
 {
@@ -63,4 +64,19 @@ public interface TextSourceEncounter
 	 *   the location at which the text ends
 	 */
 	void text(CharSequence text, Location end);
+
+	/**
+	 * Set an attribute at the current location.
+	 *
+	 * @param attribute
+	 * @param value
+	 */
+	<T> void setAttribute(TokenProperty<T> attribute, T value);
+
+	/**
+	 * Clear an attribute.
+	 *
+	 * @param attribute
+	 */
+	void clearAttribute(TokenProperty<?> attribute);
 }
