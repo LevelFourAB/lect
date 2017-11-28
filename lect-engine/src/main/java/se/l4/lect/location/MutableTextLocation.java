@@ -9,6 +9,7 @@ package se.l4.lect.location;
 public class MutableTextLocation
 	implements Location, TextLocation
 {
+	private int offset;
 	private int line;
 	private int column;
 
@@ -20,10 +21,17 @@ public class MutableTextLocation
 	 * @param column
 	 *   zero-indexed column
 	 */
-	public MutableTextLocation(int line, int column)
+	public MutableTextLocation(int offset, int line, int column)
 	{
+		this.offset = offset;
 		this.line = line;
 		this.column = column;
+	}
+
+	@Override
+	public int get()
+	{
+		return offset;
 	}
 
 	@Override
@@ -39,8 +47,9 @@ public class MutableTextLocation
 	}
 
 	@Override
-	public MutableTextLocation moveTo(int line, int column)
+	public MutableTextLocation moveTo(int offset, int line, int column)
 	{
+		this.offset = offset;
 		this.line = line;
 		this.column = column;
 		return this;
@@ -48,6 +57,7 @@ public class MutableTextLocation
 
 	public TextLocation copyFrom(MutableTextLocation location)
 	{
+		this.offset = location.offset;
 		this.line = location.line;
 		this.column = location.column;
 		return this;
@@ -56,12 +66,13 @@ public class MutableTextLocation
 	@Override
 	public MutableTextLocation copy()
 	{
-		return new MutableTextLocation(line, column);
+		return new MutableTextLocation(offset, line, column);
 	}
 
 	@Override
 	public MutableTextLocation moveTextIndex(int amount)
 	{
+		this.offset += amount;
 		this.column += amount;
 		return this;
 	}
@@ -80,22 +91,26 @@ public class MutableTextLocation
 			char c = sequence.charAt(i);
 			if(c == '\r')
 			{
+				this.offset++;
 				line++;
 				column = 0;
 				if(i + 1 < n && sequence.charAt(i + 1) == '\n')
 				{
 					// Consume \n after \r
 					i++;
+					this.offset++;
 					continue;
 				}
 			}
 			else if(c == '\n' || c == '\u2028' || c == '\u2029' || c == '\u0085')
 			{
+				this.offset++;
 				line++;
 				column = 0;
 			}
 			else
 			{
+				this.offset++;
 				column++;
 			}
 		}
@@ -137,6 +152,8 @@ public class MutableTextLocation
 		if(!(obj instanceof TextLocation))
 			return false;
 		TextLocation other = (TextLocation) obj;
+		if(offset != other.get())
+			return false;
 		if(column != other.getColumn())
 			return false;
 		if(line != other.getLine())
@@ -147,6 +164,6 @@ public class MutableTextLocation
 	@Override
 	public String toString()
 	{
-		return line + ":" + column;
+		return line + ":" + column + "(@" + offset + ')';
 	}
 }

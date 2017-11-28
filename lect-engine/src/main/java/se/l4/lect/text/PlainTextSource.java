@@ -160,8 +160,8 @@ public class PlainTextSource
 		{
 			boolean lastWasCarriageReturn = false;
 
-			location = new MutableTextLocation(0, 0);
-			lastLocation = new MutableTextLocation(0, 0);
+			location = new MutableTextLocation(0, 0, 0);
+			lastLocation = new MutableTextLocation(0, 0, 0);
 			encounter.location(location);
 
 			int length;
@@ -271,7 +271,7 @@ public class PlainTextSource
 
 		private void flushLocation()
 		{
-			location.moveTo(line, column);
+			location.moveTo(index, line, column);
 			lastLocation.copyFrom(location);
 			encounter.location(location);
 		}
@@ -294,13 +294,14 @@ public class PlainTextSource
 
 				String text = builder.substring(0, offset);
 				MutableTextLocation end = location.copy().moveTo(
+					lastLocation.get() + offset,
 					lastLocation.getLine() + 1,
 					0
 				);
 				encounter.text(text, end);
 
 				// Update the location and end the paragraph
-				location.moveTo(lastLocation.getLine() + 1, 0);
+				location.moveTo(lastLocation.get() + offset, lastLocation.getLine() + 1, 0);
 				encounter.location(location);
 				encounter.endParagraph();
 

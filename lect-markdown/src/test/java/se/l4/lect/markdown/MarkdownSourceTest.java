@@ -17,9 +17,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 12),
-			Location.text(0, 12)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(12, 0, 12),
+			Location.text(12, 0, 12)
 		);
 	}
 
@@ -30,9 +30,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello world!\n").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 12),
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(12, 0, 12),
+			Location.text(13, 1, 0)
 		);
 	}
 
@@ -43,11 +43,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello *world*!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 6), // After Hello
-			Location.text(0, 7), Location.text(0, 12), // After world
-			Location.text(0, 13), Location.text(0, 14), // After !
-			Location.text(0, 14)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(6, 0, 6), // After Hello
+			Location.text(7, 0, 7), Location.text(12, 0, 12), // After world
+			Location.text(13, 0, 13), Location.text(14, 0, 14), // After !
+			Location.text(14, 0, 14)
 		);
 	}
 
@@ -58,11 +58,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello **world**!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 6), // After Hello + sace
-			Location.text(0, 8), Location.text(0, 13), // After world
-			Location.text(0, 15), Location.text(0, 16), // After !
-			Location.text(0, 16)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(6, 0, 6), // After Hello + space
+			Location.text(8, 0, 8), Location.text(13, 0, 13), // After world
+			Location.text(15, 0, 15), Location.text(16, 0, 16), // After !
+			Location.text(16, 0, 16)
 		);
 	}
 
@@ -74,11 +74,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello `world`!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 6), // After Hello
-			Location.text(0, 7), Location.text(0, 12), // After world
-			Location.text(0, 13), Location.text(0, 14), // After !
-			Location.text(0, 14)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(6, 0, 6), // After Hello
+			Location.text(7, 0, 7), Location.text(12, 0, 12), // After world
+			Location.text(13, 0, 13), Location.text(14, 0, 14), // After !
+			Location.text(14, 0, 14)
 		);
 	}
 
@@ -89,11 +89,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello\nworld!").parse(mock);
 		mock.verifyParagraph("Hello\nworld!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0),
-			Location.text(1, 0), Location.text(1, 6), // After world!
-			Location.text(1, 6)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0),
+			Location.text(6, 1, 0), Location.text(12, 1, 6), // After world!
+			Location.text(12, 1, 6)
 		);
 	}
 
@@ -104,11 +104,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello  \nworld!").parse(mock);
 		mock.verifyParagraph("Hello\nworld!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0),
-			Location.text(1, 0), Location.text(1, 6), // After world!
-			Location.text(1, 6)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(8, 1, 0),
+			Location.text(8, 1, 0), Location.text(14, 1, 6), // After world!
+			Location.text(14, 1, 6)
 		);
 	}
 
@@ -119,11 +119,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hell&ouml; world!").parse(mock);
 		mock.verifyParagraph("Hellö world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 4), // After Hell
-			Location.text(0, 4), Location.text(0, 10), // After &ouml;
-			Location.text(0, 10), Location.text(0, 17), // After space + world!
-			Location.text(0, 17)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(4, 0, 4), // After Hell
+			Location.text(4, 0, 4), Location.text(10, 0, 10), // After &ouml;
+			Location.text(10, 0, 10), Location.text(17, 0, 17), // After space + world!
+			Location.text(17, 0, 17)
 		);
 	}
 
@@ -134,11 +134,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello <em>world</em>!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 6), // After Hell
-			Location.text(0, 10), Location.text(0, 15), // After &ouml;
-			Location.text(0, 20), Location.text(0, 21), // After !
-			Location.text(0, 21)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(6, 0, 6), // After Hell
+			Location.text(10, 0, 10), Location.text(15, 0, 15), // After &ouml;
+			Location.text(20, 0, 20), Location.text(21, 0, 21), // After !
+			Location.text(21, 0, 21)
 		);
 	}
 
@@ -149,9 +149,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("<http://example.org>").parse(mock);
 		mock.verifyParagraph("http://example.org",
-			Location.text(0, 0),
-			Location.text(0, 1), Location.text(0, 19),
-			Location.text(0, 20)
+			Location.text(0, 0, 0),
+			Location.text(1, 0, 1), Location.text(19, 0, 19),
+			Location.text(20, 0, 20)
 		);
 	}
 
@@ -162,9 +162,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("[Hello world!](http://example.org)").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 1), Location.text(0, 13),
-			Location.text(0, 34)
+			Location.text(0, 0, 0),
+			Location.text(1, 0, 1), Location.text(13, 0, 13),
+			Location.text(34, 0, 34)
 		);
 	}
 
@@ -175,14 +175,14 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("Hello world!\n\nWith cookies").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 12),
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(12, 0, 12),
+			Location.text(13, 1, 0)
 		);
 		mock.verifyParagraph("With cookies",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 12),
-			Location.text(2, 12)
+			Location.text(14, 2, 0),
+			Location.text(14, 2, 0), Location.text(26, 2, 12),
+			Location.text(26, 2, 12)
 		);
 	}
 
@@ -193,9 +193,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("# Hello world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(0, 14)
+			Location.text(0, 0, 0),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(14, 0, 14)
 		);
 	}
 
@@ -206,9 +206,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("# Hello world! #").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(0, 16)
+			Location.text(0, 0, 0),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(16, 0, 16)
 		);
 	}
 
@@ -219,9 +219,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("> Hello world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 2),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(0, 14)
+			Location.text(2, 0, 2),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(14, 0, 14)
 		);
 	}
 
@@ -232,11 +232,11 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("> Hello\n> world!").parse(mock);
 		mock.verifyParagraph("Hello\nworld!",
-			Location.text(0, 2),
-			Location.text(0, 2), Location.text(0, 7), // After Hello
-			Location.text(0, 7), Location.text(1, 0), // After \n
-			Location.text(1, 2), Location.text(1, 8), // After world!
-			Location.text(1, 8)
+			Location.text(2, 0, 2),
+			Location.text(2, 0, 2), Location.text(7, 0, 7), // After Hello
+			Location.text(7, 0, 7), Location.text(8, 1, 0), // After \n
+			Location.text(10, 1, 2), Location.text(16, 1, 8), // After world!
+			Location.text(16, 1, 8)
 		);
 	}
 
@@ -247,9 +247,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("* Hello world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 2),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(0, 14)
+			Location.text(2, 0, 2),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(14, 0, 14)
 		);
 	}
 
@@ -260,14 +260,14 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("* Hello world!\n* With cookies").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 2),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(1, 0)
+			Location.text(2, 0, 2),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(15, 1, 0)
 		);
 		mock.verifyParagraph("With cookies",
-			Location.text(1, 2),
-			Location.text(1, 2), Location.text(1, 14),
-			Location.text(1, 14)
+			Location.text(17, 1, 2),
+			Location.text(17, 1, 2), Location.text(29, 1, 14),
+			Location.text(29, 1, 14)
 		);
 	}
 
@@ -278,14 +278,14 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("* Hello world!\n\n* With cookies").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 2),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(1, 0)
+			Location.text(2, 0, 2),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(15, 1, 0)
 		);
 		mock.verifyParagraph("With cookies",
-			Location.text(2, 2),
-			Location.text(2, 2), Location.text(2, 14),
-			Location.text(2, 14)
+			Location.text(18, 2, 2),
+			Location.text(18, 2, 2), Location.text(30, 2, 14),
+			Location.text(30, 2, 14)
 		);
 	}
 
@@ -296,9 +296,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("- [ ] Hello world!").withFlavor(MarkdownFlavor.GITHUB).parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 6),
-			Location.text(0, 6), Location.text(0, 18),
-			Location.text(0, 18)
+			Location.text(6, 0, 6),
+			Location.text(6, 0, 6), Location.text(18, 0, 18),
+			Location.text(18, 0, 18)
 		);
 	}
 
@@ -309,9 +309,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("~~Hello world!~~").withFlavor(MarkdownFlavor.GITHUB).parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 2), Location.text(0, 14),
-			Location.text(0, 16)
+			Location.text(0, 0, 0),
+			Location.text(2, 0, 2), Location.text(14, 0, 14),
+			Location.text(16, 0, 16)
 		);
 	}
 
@@ -322,9 +322,9 @@ public class MarkdownSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		MarkdownSource.forString("~Hello world!~").withFlavor(MarkdownFlavor.GITHUB).parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 1), Location.text(0, 13),
-			Location.text(0, 14)
+			Location.text(0, 0, 0),
+			Location.text(1, 0, 1), Location.text(13, 0, 13),
+			Location.text(14, 0, 14)
 		);
 	}
 }

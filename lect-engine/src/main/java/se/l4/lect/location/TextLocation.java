@@ -8,7 +8,7 @@ package se.l4.lect.location;
  *
  */
 public interface TextLocation
-	extends Location
+	extends Location, OffsetLocation
 {
 
 	/**
@@ -40,7 +40,7 @@ public interface TextLocation
 	 * @param column
 	 * @return
 	 */
-	TextLocation moveTo(int line, int column);
+	TextLocation moveTo(int offset, int line, int column);
 
 	/**
 	 * Move the text index according to the given sequence of characters. Returns itself if mutable or a copy if

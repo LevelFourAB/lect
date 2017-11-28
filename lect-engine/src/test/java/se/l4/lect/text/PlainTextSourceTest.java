@@ -17,9 +17,9 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello world!").parse(mock);
 		mock.verifyParagraph("Hello world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 12), // After entire line
-			Location.text(0, 12)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(12, 0, 12), // After entire line
+			Location.text(12, 0, 12)
 		);
 	}
 
@@ -30,11 +30,11 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\nworld!").parse(mock);
 		mock.verifyParagraph("Hello\nworld!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0), // After \n
-			Location.text(1, 0), Location.text(1, 6), // After world!
-			Location.text(1, 6)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0), // After \n
+			Location.text(6, 1, 0), Location.text(12, 1, 6), // After world!
+			Location.text(12, 1, 6)
 		);
 	}
 
@@ -45,11 +45,11 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\r\nworld!").parse(mock);
 		mock.verifyParagraph("Hello\r\nworld!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0), // After \r\n
-			Location.text(1, 0), Location.text(1, 6), // After world!
-			Location.text(1, 6)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(7, 1, 0), // After \r\n
+			Location.text(7, 1, 0), Location.text(13, 1, 6), // After world!
+			Location.text(13, 1, 6)
 		);
 	}
 
@@ -60,12 +60,12 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\n world!").parse(mock);
 		mock.verifyParagraph("Hello\n world!",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
 			//Location.text(1, 0), // After \n (TODO?)
-			Location.text(0, 5), Location.text(1, 1), // After space
-			Location.text(1, 1), Location.text(1, 7), // After world!
-			Location.text(1, 7)
+			Location.text(5, 0, 5), Location.text(7, 1, 1), // After space
+			Location.text(7, 1, 1), Location.text(13, 1, 7), // After world!
+			Location.text(13, 1, 7)
 		);
 	}
 
@@ -76,20 +76,20 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\n\nCookies").parse(mock);
 		mock.verifyParagraph("Hello\n",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After hello
-			Location.text(0, 5), Location.text(1, 0), // Line break after \n
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0), // Line break after \n
+			Location.text(6, 1, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(6, 1, 0),
+			Location.text(6, 1, 0), Location.text(7, 2, 0), // After \n
+			Location.text(7, 2, 0)
 		);
 		mock.verifyParagraph("Cookies",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 7), // After Cookies
-			Location.text(2, 7)
+			Location.text(7, 2, 0),
+			Location.text(7, 2, 0), Location.text(14, 2, 7), // After Cookies
+			Location.text(14, 2, 7)
 		);
 	}
 
@@ -100,25 +100,25 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString(" Hello\n\nCookies").parse(mock);
 		mock.verifyWhitespace(" ",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 1), // After space
-			Location.text(0, 1)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(1, 0, 1), // After space
+			Location.text(1, 0, 1)
 		);
 		mock.verifyParagraph("Hello\n",
-			Location.text(0, 1),
-			Location.text(0, 1), Location.text(0, 6), // After Hello
-			Location.text(0, 6), Location.text(1, 0), // After \n
-			Location.text(1, 0)
+			Location.text(1, 0, 1),
+			Location.text(1, 0, 1), Location.text(6, 0, 6), // After Hello
+			Location.text(6, 0, 6), Location.text(7, 1, 0), // After \n
+			Location.text(7, 1, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(7, 1, 0),
+			Location.text(7, 1, 0), Location.text(8, 2, 0), // After \n
+			Location.text(8, 2, 0)
 		);
 		mock.verifyParagraph("Cookies",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 7), // After Cookies
-			Location.text(2, 7)
+			Location.text(8, 2, 0),
+			Location.text(8, 2, 0), Location.text(15, 2, 7), // After Cookies
+			Location.text(15, 2, 7)
 		);
 	}
 
@@ -129,25 +129,25 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString(" \nHello\n\nCookies").parse(mock);
 		mock.verifyWhitespace(" \n",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(1, 0), // After \n
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(2, 1, 0), // After \n
+			Location.text(2, 1, 0)
 		);
 		mock.verifyParagraph("Hello\n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(1, 5), // After Hello
-			Location.text(1, 5), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(2, 1, 0),
+			Location.text(2, 1, 0), Location.text(7, 1, 5), // After Hello
+			Location.text(7, 1, 5), Location.text(8, 2, 0), // After \n
+			Location.text(8, 2, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(3, 0), // After \n
-			Location.text(3, 0)
+			Location.text(8, 2, 0),
+			Location.text(8, 2, 0), Location.text(9, 3, 0), // After \n
+			Location.text(9, 3, 0)
 		);
 		mock.verifyParagraph("Cookies",
-			Location.text(3, 0),
-			Location.text(3, 0), Location.text(3, 7), // After Cookies
-			Location.text(3, 7)
+			Location.text(9, 3, 0),
+			Location.text(9, 3, 0), Location.text(16, 3, 7), // After Cookies
+			Location.text(16, 3, 7)
 		);
 	}
 
@@ -158,20 +158,20 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\n \nCookies").parse(mock);
 		mock.verifyParagraph("Hello\n",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0), // After \n
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0), // After \n
+			Location.text(6, 1, 0)
 		);
 		mock.verifyWhitespace(" \n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(6, 1, 0),
+			Location.text(6, 1, 0), Location.text(8, 2, 0), // After \n
+			Location.text(8, 2, 0)
 		);
 		mock.verifyParagraph("Cookies",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 7), // After Cookies
-			Location.text(2, 7)
+			Location.text(8, 2, 0),
+			Location.text(8, 2, 0), Location.text(15, 2, 7), // After Cookies
+			Location.text(15, 2, 7)
 		);
 	}
 
@@ -182,21 +182,21 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\n\nCookies\n").parse(mock);
 		mock.verifyParagraph("Hello\n",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0), // After \n
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0), // After \n
+			Location.text(6, 1, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(6, 1, 0),
+			Location.text(6, 1, 0), Location.text(7, 2, 0), // After \n
+			Location.text(7, 2, 0)
 		);
 		mock.verifyParagraph("Cookies\n",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 7), // After Cookies
-			Location.text(2, 7), Location.text(3, 0), // After \n
-			Location.text(3, 0)
+			Location.text(7, 2, 0),
+			Location.text(7, 2, 0), Location.text(14, 2, 7), // After Cookies
+			Location.text(14, 2, 7), Location.text(15, 3, 0), // After \n
+			Location.text(15, 3, 0)
 		);
 	}
 
@@ -207,26 +207,26 @@ public class PlainTextSourceTest
 		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
 		PlainTextSource.forString("Hello\n\nCookies\n\n").parse(mock);
 		mock.verifyParagraph("Hello\n",
-			Location.text(0, 0),
-			Location.text(0, 0), Location.text(0, 5), // After Hello
-			Location.text(0, 5), Location.text(1, 0), // After \n
-			Location.text(1, 0)
+			Location.text(0, 0, 0),
+			Location.text(0, 0, 0), Location.text(5, 0, 5), // After Hello
+			Location.text(5, 0, 5), Location.text(6, 1, 0), // After \n
+			Location.text(6, 1, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(1, 0),
-			Location.text(1, 0), Location.text(2, 0), // After \n
-			Location.text(2, 0)
+			Location.text(6, 1, 0),
+			Location.text(6, 1, 0), Location.text(7, 2, 0), // After \n
+			Location.text(7, 2, 0)
 		);
 		mock.verifyParagraph("Cookies\n",
-			Location.text(2, 0),
-			Location.text(2, 0), Location.text(2, 7), // After Cookies
-			Location.text(2, 7), Location.text(3, 0), // After \n
-			Location.text(3, 0)
+			Location.text(7, 2, 0),
+			Location.text(7, 2, 0), Location.text(14, 2, 7), // After Cookies
+			Location.text(14, 2, 7), Location.text(15, 3, 0), // After \n
+			Location.text(15, 3, 0)
 		);
 		mock.verifyWhitespace("\n",
-			Location.text(3, 0),
-			Location.text(3, 0), Location.text(4, 0), // After \n
-			Location.text(4, 0)
+			Location.text(15, 3, 0),
+			Location.text(15, 3, 0), Location.text(16, 4, 0), // After \n
+			Location.text(16, 4, 0)
 		);
 	}
 }

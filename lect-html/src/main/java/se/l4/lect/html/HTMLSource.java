@@ -151,8 +151,8 @@ public class HTMLSource
 
 			state = State.UNKNOWN;
 
-			start = new MutableTextLocation(0, 0);
-			end = new MutableTextLocation(0, 0);
+			start = new MutableTextLocation(0, 0, 0);
+			end = new MutableTextLocation(0, 0, 0);
 
 			encounter.location(start);
 
@@ -325,7 +325,7 @@ public class HTMLSource
 							// Collapse into a single space character
 							if(c == '\r')
 							{
-								this.end.moveTo(this.end.getLine() + 1, 0);
+								this.end.moveTo(this.end.get() + 1, this.end.getLine() + 1, 0);
 
 								// Carriage return needs to consume any following \n and move the location
 								if(i + 1 < n && chars.charAt(i+1) == '\n')
@@ -337,7 +337,7 @@ public class HTMLSource
 							}
 							else if(c == '\n')
 							{
-								this.end.moveTo(this.end.getLine() + 1, 0);
+								this.end.moveTo(this.end.get() + 1, this.end.getLine() + 1, 0);
 							}
 							else
 							{
@@ -425,13 +425,13 @@ public class HTMLSource
 		private void updateStart(Segment s)
 		{
 			RowColumnVector rv = source.getRowColumnVector(s.getBegin());
-			start.moveTo(rv.getRow() - 1, rv.getColumn() - 1);
+			start.moveTo(s.getBegin(), rv.getRow() - 1, rv.getColumn() - 1);
 		}
 
 		private void updateEnd(Segment s)
 		{
 			RowColumnVector rv = source.getRowColumnVector(s.getEnd());
-			end.moveTo(rv.getRow() - 1, rv.getColumn() - 1);
+			end.moveTo(s.getEnd(), rv.getRow() - 1, rv.getColumn() - 1);
 		}
 	}
 }

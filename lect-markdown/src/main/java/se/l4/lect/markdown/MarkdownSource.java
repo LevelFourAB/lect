@@ -174,8 +174,8 @@ public class MarkdownSource
 		{
 			this.encounter = encounter;
 
-			start = new MutableTextLocation(0, 0);
-			end = new MutableTextLocation(0, 0);
+			start = new MutableTextLocation(0, 0, 0);
+			end = new MutableTextLocation(0, 0, 0);
 
 			encounter.location(start);
 

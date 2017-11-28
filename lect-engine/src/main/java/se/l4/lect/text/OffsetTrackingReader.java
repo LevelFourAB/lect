@@ -101,7 +101,7 @@ public class OffsetTrackingReader
 	 */
 	public TextLocation offsetToLocation(int offset)
 	{
-		TextLocation loc = new MutableTextLocation(0, 0);
+		TextLocation loc = new MutableTextLocation(0, 0, 0);
 		offsetToLocation(offset, loc);
 		return loc;
 	}
@@ -123,6 +123,6 @@ public class OffsetTrackingReader
 			column = offset - lineStartOffsets[line];
 		}
 
-		target.moveTo(line, column);
+		target.moveTo(offset, line, column);
 	}
 }

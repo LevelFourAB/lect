@@ -86,9 +86,9 @@ public interface Location
 	 * @param column
 	 * @return
 	 */
-	static TextLocation text(int line, int column)
+	static TextLocation text(int offset, int line, int column)
 	{
-		return new MutableTextLocation(line, column);
+		return new MutableTextLocation(offset, line, column);
 	}
 
 	/**
