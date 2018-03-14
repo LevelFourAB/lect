@@ -61,6 +61,10 @@ public class PipelineImpl<Collector>
 		}
 	}
 
+	/**
+	 * Runner that takes care to take the source parts and turm them into
+	 * events and tokens.
+	 */
 	private class Runner
 		implements TextSourceEncounter, LanguageEncounter, Encounter<Collector>
 	{
@@ -77,21 +81,29 @@ public class PipelineImpl<Collector>
 		private Location location;
 		private boolean inParagraph;
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Runner(List<HandlerFactory<?>> handlers, Collector collector)
 		{
 			this.collector = collector;
 
 			this.language = languageFactory.create(this);
 
+			// Create all of the handlers that should be run for the source
 			List<Handler> instances = new ArrayList<>(handlers.size());
 			for(HandlerFactory<?> h : handlers)
 			{
 				instances.add(h.create((Encounter) this));
 			}
 			this.handlers = instances;
+
+			// Turn the active handlers into an array to make iteration of them a bit faster
 			this.activeHandlers = instances.toArray(new Handler[instances.size()]);
 		}
 
+		/**
+		 * Go through and see which handlers should be active for the next
+		 * pass over the source.
+		 */
 		private void resolveActive()
 		{
 			List<Handler> active = new ArrayList<>();
@@ -99,20 +111,35 @@ public class PipelineImpl<Collector>
 			{
 				if(h instanceof MultiStageHandler)
 				{
+					/*
+					 * MultiStageHandlers might need to pass through the source
+					 * several times.
+					 */
 					if(((MultiStageHandler) h).hasMoreStages())
 					{
 						active.add(h);
 					}
 				}
 			}
+
+			// Either store as an array or as a null if no handlers are active
 			this.activeHandlers = active.isEmpty() ? null : active.toArray(new Handler[active.size()]);
 		}
 
+		/**
+		 * Get if there any more handlers that need to run.
+		 * 
+		 * @return
+		 *   if there are any active handlers
+		 */
 		private boolean hasMore()
 		{
 			return this.activeHandlers != null;
 		}
 
+		/**
+		 * Indicate that we are starting processing.
+		 */
 		private void start()
 		{
 			for(int i=0, n=activeHandlers.length; i<n; i++)
@@ -154,10 +181,16 @@ public class PipelineImpl<Collector>
 		@Override
 		public void startParagraph()
 		{
+			/*
+			 * Flush the language parser so it can output tokens between
+			 * paragraphs such as whitespace.
+			 */
 			language.flush();
 
+			// Indicate that we are within a paragraph
 			inParagraph = true;
 
+			// Tell all the handlers about the new paragraph
 			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
 				activeHandlers[i].startParagraph(location);
@@ -167,13 +200,20 @@ public class PipelineImpl<Collector>
 		@Override
 		public void endParagraph()
 		{
+			/*
+			 * Flush the language parser so it can output the tokens within
+			 * the paragraph.
+			 */
 			language.flush();
+
+			// End all attributes started within the paragraph
 			endAttributes(location, true);
 			if(attributes != null) attributes.clear();
-//			attributes.clear();
 
+			// Indicate that we are no longer in a paragraph
 			inParagraph = false;
 
+			// Tell all the handlers about the paragraph being ended
 			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
 				activeHandlers[i].endParagraph(location);
@@ -183,13 +223,19 @@ public class PipelineImpl<Collector>
 		@Override
 		public void done()
 		{
+			/**
+			 * Flush the language parser to output the last few tokens. This
+			 * may emit some extra whitespace tokens.
+			 */
 			language.flush();
 
+			// Tell all the handlers that we are done
 			for(int i=0, n=activeHandlers.length; i<n; i++)
 			{
 				activeHandlers[i].done();
 			}
 
+			// Resolve the handlers to run in the next step
 			resolveActive();
 		}
 
@@ -229,6 +275,14 @@ public class PipelineImpl<Collector>
 			}
 		}
 
+		/**
+		 * End attributes that are no longer active after the given location.
+		 * 
+		 * @param location
+		 *   the current location
+		 * @param clearAll
+		 *   if all the attributes should be cleared
+		 */
 		private void endAttributes(Location location, boolean clearAll)
 		{
 			if(activeAttributes == null || activeAttributes.isEmpty()) return;
@@ -262,6 +316,9 @@ public class PipelineImpl<Collector>
 			}
 		}
 
+		/**
+		 * Tell the handlers about the active attributes at the given location.
+		 */
 		private void emitActiveAttributes(Location location)
 		{
 			if(activeAttributes == null || activeAttributes.isEmpty()) return;
@@ -277,6 +334,9 @@ public class PipelineImpl<Collector>
 			}
 		}
 
+		/**
+		 * Activate attributes that intersect the given location.
+		 */
 		private void startAttributes(Location location)
 		{
 			if(attributes == null || attributes.isEmpty()) return;

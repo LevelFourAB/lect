@@ -9,7 +9,8 @@ import se.l4.lect.location.MutableTextOffsetLocation;
 import se.l4.lect.location.TextOffsetLocation;
 
 /**
- * {@link Reader} that tracks offsets and allows mapping between offset and line and column.
+ * {@link Reader} that tracks offsets and allows mapping between offset and
+ * line and column.
  *
  * @author Andreas Holstenson
  *
@@ -107,7 +108,8 @@ public class OffsetTrackingReader
 	}
 
 	/**
-	 * Resolve the {@link MutableTextOffsetLocation} of a character offset and store it in the given target.
+	 * Resolve the {@link MutableTextOffsetLocation} of a character offset and
+	 * store it in the given target.
 	 *
 	 * @param offset
 	 * @param target
@@ -118,7 +120,10 @@ public class OffsetTrackingReader
 		int column = 0;
 		if(line < 0)
 		{
-			// The offset was not exactly the start of a line, so figure out the nearest line and then the column
+			/*
+			 * The offset was not exactly the start of a line, so figure out
+			 * the nearest line and then the column
+			 */
 			line = -(line + 1) - 1;
 			column = offset - lineStartOffsets[line];
 		}

@@ -1,7 +1,8 @@
 package se.l4.lect.location;
 
 /**
- * Mutable {@link TextLocation} for use in cases where line and column is important.
+ * Mutable {@link TextLocation} for use in cases where line and column is
+ * important.
  *
  * @author Andreas Holstenson
  *

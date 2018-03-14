@@ -5,7 +5,8 @@ import java.io.IOException;
 import se.l4.lect.internal.PipelineBuilderImpl;
 
 /**
- * Pipeline over a {@link TextSource} that will run {@link Handler}s on the text in the source.
+ * Pipeline over a {@link TextSource} that will run {@link Handler}s on the
+ * text in the source.
  *
  * @author Andreas Holstenson
  *

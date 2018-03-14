@@ -3,7 +3,8 @@ package se.l4.lect;
 import java.io.IOException;
 
 /**
- * {@link PipelineAssembly Assembly} for a {@link Pipeline} to run a set of handlers over a single {@link TextSource}.
+ * {@link PipelineAssembly Assembly} for a {@link Pipeline} to run a set of
+ * handlers over a single {@link TextSource}.
  *
  * @author Andreas Holstenson
  *

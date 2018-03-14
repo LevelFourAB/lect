@@ -7,7 +7,8 @@ import java.util.Iterator;
 import se.l4.lect.Handler;
 
 /**
- * {@link MultiStageHandler} that takes a collection of {@link Handler}s to run after each other.
+ * {@link MultiStageHandler} that takes a collection of {@link Handler}s to run
+ * after each other.
  *
  * @author Andreas Holstenson
  *

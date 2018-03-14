@@ -3,8 +3,9 @@ package se.l4.lect.location;
 import se.l4.lect.TextSource;
 
 /**
- * Virtual representation of the location of something in a {@link TextSource}. This interface exists so that sources
- * may potentially include location info that are not just suitable for plain text.
+ * Virtual representation of the location of something in a {@link TextSource}.
+ * This interface exists so that sources may potentially include location info
+ * that are not just suitable for plain text.
  *
  * @author Andreas Holstenson
  *
@@ -13,7 +14,8 @@ public interface Location
 	extends Comparable<Location>
 {
 	/**
-	 * Return a string representation of this location suitable for debugging output, such as in log messages.
+	 * Return a string representation of this location suitable for debugging
+	 * output, such as in log messages.
 	 *
 	 * @return
 	 */

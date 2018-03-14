@@ -5,6 +5,18 @@ import java.util.Locale;
 import se.l4.lect.location.Location;
 import se.l4.lect.tokens.TokenProperty;
 
+/**
+ * Encounter given to {@link TextSource}s when they should parse their content.
+ * Sources should use {@link #location(Location)} to update the location of
+ * things before calling methods such as {@link #startParagraph()}, 
+ * {@link #text(CharSequence, Location)} and {@link #endParagraph()}.
+ * 
+ * <p>
+ * Sources may set attributes on tokens emitted via {@link #setAttribute(TokenProperty, Object)}
+ * and {@link #clearAttribute(TokenProperty)}.
+ * 
+ * @author Andreas Holstenson
+ */
 public interface TextSourceEncounter
 {
 	/**
@@ -51,15 +63,18 @@ public interface TextSourceEncounter
 	void done();
 
 	/**
-	 * Add some text. If the text is outside a paragraph this method will only accept whitespace. If it is within
-	 * a paragraph the text will automatically be processed by the {@link LanguageParser} and split into sentences
-	 * and words, symbols and whitespace.
+	 * Add some text. If the text is outside a paragraph this method will only
+	 * accept whitespace. If it is within a paragraph the text will
+	 * automatically be processed by the {@link LanguageParser} and split into
+	 * sentences and tokens such as words, symbols and whitespace.
 	 *
 	 * <p>
-	 * All of the text in a paragraph does not need to be added at once, it is possible to add it in chunks. For
-	 * example a HTML parser will decode entities and will want update the source location as it does this.
+	 * All of the text in a paragraph does not need to be added at once, it is
+	 * possible to add it in chunks. For example a HTML parser will decode
+	 * entities and will want update the source location as it does this.
 	 *
 	 * @param text
+	 *   the text to add
 	 * @param end
 	 *   the location at which the text ends
 	 */

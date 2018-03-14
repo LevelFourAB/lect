@@ -7,8 +7,9 @@ import se.l4.lect.tokens.MutableToken;
 import se.l4.lect.tokens.TokenType;
 
 /**
- * Abstract implementation of {@link LanguageParser} that allows an implementation to handle a single
- * {@link CharSequence} without worrying about mapping to the correct location or original text in the source.
+ * Abstract implementation of {@link LanguageParser} that allows an 
+ * implementation to handle a single {@link CharSequence} without worrying
+ * about mapping to the correct location or original text in the source.
  *
  * @author Andreas Holstenson
  *

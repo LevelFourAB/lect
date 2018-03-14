@@ -4,6 +4,13 @@ import java.util.Map;
 
 import se.l4.lect.location.Location;
 
+/**
+ * Implementation of {@link Token} that is immutable. Immutable tokens are
+ * always returned by {@link #copy()} and can be safely stored and passed
+ * between threads.
+ * 
+ * @author Andreas Holstenson
+ */
 public class ImmutableToken
 	implements Token
 {
@@ -13,7 +20,12 @@ public class ImmutableToken
 	private final Location end;
 	private final Map<String, Object> properties;
 
-	public ImmutableToken(TokenType type, Location start, Location end, CharSequence text, Map<String, Object> properties)
+	public ImmutableToken(
+		TokenType type,
+		Location start,
+		Location end,
+		CharSequence text,
+		Map<String, Object> properties)
 	{
 		this.type = type;
 		this.properties = properties;

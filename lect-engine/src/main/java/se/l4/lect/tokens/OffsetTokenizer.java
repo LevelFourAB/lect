@@ -71,10 +71,20 @@ public abstract class OffsetTokenizer
 		return token;
 	}
 
+	/**
+	 * Find the next token.
+	 * 
+	 * @param previousEnd
+	 *   the offset at which the previous token ended
+	 * @return
+	 *   {@code true} if a token was found, {@code false} if no more tokens
+	 *   are available.
+	 */
 	protected abstract boolean findNextToken(int previousEnd);
 
 	/**
-	 * Get the token that has been set by the last call to {@link #setNextToken(TokenType, int, CharSequence)}.
+	 * Get the token that has been set by the last call to
+	 * {@link #setNextToken(TokenType, int, CharSequence)}.
 	 *
 	 * @return
 	 */
@@ -83,6 +93,10 @@ public abstract class OffsetTokenizer
 		return pendingToken;
 	}
 
+	/**
+	 * Set the next token. Should be called by {@link #findNextToken(int)} to
+	 * update information about the token that has been found.
+	 */
 	protected void setNextToken(TokenType type, int start, CharSequence text)
 	{
 		if(text.length() == 0)
@@ -95,6 +109,11 @@ public abstract class OffsetTokenizer
 		pendingToken.update(type, this.pendingStart, this.pendingEnd, text);
 	}
 
+	/**
+	 * Enhance the next token. Can be called after
+	 * {@link #setNextToken(TokenType, int, CharSequence)} to enhance the token
+	 * with properties.
+	 */
 	protected <T> void enhanceNextToken(TokenProperty<T> property, T value)
 	{
 		pendingToken.set(property, value);

@@ -3,8 +3,9 @@ package se.l4.lect.tokens;
 import se.l4.lect.Handler;
 
 /**
- * Matcher created from a {@link TokenPattern} that will match the sequence the pattern describes. Matchers keep track
- * of their matching state and are designed for easy use together with {@link Handler}:
+ * Matcher created from a {@link TokenPattern} that will match the sequence the
+ * pattern describes. Matchers keep track of their matching state and are
+ * designed for easy use together with {@link Handler}:
  *
  * <pre>
  * new DefaultHandler() {
@@ -29,8 +30,9 @@ import se.l4.lect.Handler;
 public interface TokenMatcher
 {
 	/**
-	 * Add a token to this matcher returning whether a match has now been found. Tokens can be added whenever they
-	 * are encountered and the matcher will automatically keep track where it is.
+	 * Add a token to this matcher returning whether a match has now been found.
+	 * Tokens can be added whenever they are encountered and the matcher will
+	 * automatically keep track where it is.
 	 *
 	 * @param token
 	 * @return
@@ -39,8 +41,9 @@ public interface TokenMatcher
 	boolean add(Token token);
 
 	/**
-	 * Indicate that this is the end of the current match sequence. This method should be called to properly match
-	 * against {@code $} if used. In many cases this would be called at the end of a sentence by a {@link Handler}.
+	 * Indicate that this is the end of the current match sequence. This method
+	 * should be called to properly match against {@code $} if used. In many
+	 * cases this would be called at the end of a sentence by a {@link Handler}.
 	 *
 	 * @return
 	 *   if the pattern now matches
@@ -48,8 +51,8 @@ public interface TokenMatcher
 	boolean end();
 
 	/**
-	 * Reset the matching, for when tokens are no longer logically connected, such as when new sentence has been
-	 * started.
+	 * Reset the matching, for when tokens are no longer logically connected,
+	 * such as when new sentence has been started.
 	 */
 	void reset();
 

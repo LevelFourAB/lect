@@ -5,7 +5,8 @@ import java.io.IOException;
 import se.l4.lect.internal.EmptyTextSource;
 
 /**
- * Abstraction over sources of text, used to support different formats such as plain text and HTML.
+ * Abstraction over sources of text, used to support different formats such as
+ * plain text and HTML.
  *
  * @author Andreas Holstenson
  *

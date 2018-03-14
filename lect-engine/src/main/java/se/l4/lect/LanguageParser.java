@@ -23,12 +23,17 @@ public interface LanguageParser
 	 * Add some text that should be parsed.
 	 *
 	 * @param text
+	 *   the text that should be parsed
+	 * @param start
+	 *   start of the text
+	 * @param end
+	 *   end of the text
 	 */
 	void text(CharSequence text, Location start, Location end);
 
 	/**
-	 * Indicate that the current paragraph-level content is finished and that parsed sentences and words need to be
-	 * flushed.
+	 * Indicate that the current paragraph-level content is finished and that
+	 * parsed sentences and words need to be flushed.
 	 */
 	void flush();
 }

@@ -4,8 +4,9 @@ import se.l4.lect.Handler;
 import se.l4.lect.LanguageParser;
 
 /**
- * Extended language data for a {@link Token} that a {@link LanguageParser} or {@link Handler} may enhance a token
- * with. Most of these are made available for use {@link TokenType#WORD words}, but it is up to the parser or handler
+ * Extended language data for a {@link Token} that a {@link LanguageParser} or
+ * {@link Handler} may enhance a token with. Most of these are made available
+ * for use {@link TokenType#WORD words}, but it is up to the parser or handler
  * to decide when they are used.
  *
  * @author Andreas Holstenson

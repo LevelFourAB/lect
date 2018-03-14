@@ -10,8 +10,9 @@ import se.l4.lect.tokens.Tokenizer;
 import se.l4.lect.tokens.TokenizerFactory;
 
 /**
- * Implementation of {@link LanguageParser} that uses {@link Tokenizer}s to split text into sentences and tokens.
- * The tokenizers used should use {@link OffsetLocation} for its tokens so that the language can correctly map
+ * Implementation of {@link LanguageParser} that uses {@link Tokenizer}s to
+ * split text into sentences and tokens. The tokenizers used should use
+ * {@link OffsetLocation} for its tokens so that the language can correctly map
  * the locations of the tokens to the actual location in the {@link TextSource}.
  *
  * @author Andreas Holstenson
@@ -88,11 +89,11 @@ public class TokenizingLanguage
 	 * @param locale
 	 *   the {@link Locale} that the parser is for
 	 * @param paragraphTokenizers
-	 *   the tokenizer used to tokenize a paragraph into sentences. The tokenizer must use {@link OffsetLocation} for
-	 *   its tokens.
+	 *   the tokenizer used to tokenize a paragraph into sentences. The
+	 *   tokenizer must use {@link OffsetLocation} for its tokens.
 	 * @param sentenceTokenizers
-	 *   the tokenizer used to tokenize a sentence into individual tokens. The tokenizer must use {@link OffsetLocation}
-	 *   for its tokens.
+	 *   the tokenizer used to tokenize a sentence into individual tokens. The
+	 *   tokenizer must use {@link OffsetLocation} for its tokens.
 	 * @param encounter
 	 *   the encounter that should receive results
 	 * @return
@@ -113,11 +114,11 @@ public class TokenizingLanguage
 	 * @param locale
 	 *   the {@link Locale} that the parser is for
 	 * @param paragraphTokenizers
-	 *   the tokenizer used to tokenize a paragraph into sentences. The tokenizer must use {@link OffsetLocation} for
-	 *   its tokens.
+	 *   the tokenizer used to tokenize a paragraph into sentences. The
+	 *   tokenizer must use {@link OffsetLocation} for its tokens.
 	 * @param sentenceTokenizers
-	 *   the tokenizer used to tokenize a sentence into individual tokens. The tokenizer must use {@link OffsetLocation}
-	 *   for its tokens.
+	 *   the tokenizer used to tokenize a sentence into individual tokens. The
+	 *   tokenizer must use {@link OffsetLocation} for its tokens.
 	 * @return
 	 *   function that creates a {@link TokenizingLanguage} for a given {@link LanguageEncounter}
 	 */

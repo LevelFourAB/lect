@@ -1,8 +1,8 @@
 package se.l4.lect.location;
 
 /**
- * {@link Location} for text, where line and column is the important thing to keep track of. This location uses
- * zero-indexed lines and columns.
+ * {@link Location} for text, where line and column is the important thing to
+ * keep track of. This location uses zero-indexed lines and columns.
  *
  * @author Andreas Holstenson
  *

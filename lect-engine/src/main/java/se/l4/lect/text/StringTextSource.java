@@ -8,8 +8,9 @@ import se.l4.lect.location.MutableOffsetLocation;
 import se.l4.lect.location.OffsetLocation;
 
 /**
- * Source that treats a {@link String} as a single paragraph. Used when working with text that is already split into
- * paragraphs. This {@link TextSource} emits {@link OffsetLocation}s.
+ * Source that treats a {@link String} as a single paragraph. Used when
+ * working with text that is already split into paragraphs. This
+ * {@link TextSource} emits {@link OffsetLocation}s.
  *
  * @author Andreas Holstenson
  *

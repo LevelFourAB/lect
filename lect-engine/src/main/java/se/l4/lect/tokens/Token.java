@@ -63,7 +63,8 @@ public interface Token
 	Map<String, Object> getProperties();
 
 	/**
-	 * Get a copy of this token that can be used
+	 * Get a copy of this token as an {@link ImmutableToken}.
+	 * 
 	 * @return
 	 */
 	Token copy();

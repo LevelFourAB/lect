@@ -42,7 +42,8 @@ public class PlainTextSource
 	}
 
 	/**
-	 * Create a new source that will use the given {@link IoSupplier} to open a {@link Reader}.
+	 * Create a new source that will use the given {@link IoSupplier} to open a
+	 * {@link Reader}.
 	 *
 	 * @param supplier
 	 * @return
@@ -53,7 +54,8 @@ public class PlainTextSource
 	}
 
 	/**
-	 * Create a new source for the given {@link InputStream} using the specified character set to decode it.
+	 * Create a new source for the given {@link InputStream} using the
+	 * specified character set to decode it.
 	 *
 	 * @param stream
 	 * @param charset
@@ -65,8 +67,9 @@ public class PlainTextSource
 	}
 
 	/**
-	 * Create a new source that uses the given {@link IoSupplier} to resolve the text content. The given {@link Charset}
-	 * will be used to decode the stream.
+	 * Create a new source that uses the given {@link IoSupplier} to resolve
+	 * the text content. The given {@link Charset} will be used to decode the
+	 * stream.
 	 *
 	 * @param stream
 	 * @param charset
@@ -89,8 +92,8 @@ public class PlainTextSource
 	}
 
 	/**
-	 * Create a new source using the given {@link Bytes} to resolve the text content. The given {@link Charset} will
-	 * be used to decode the content.
+	 * Create a new source using the given {@link Bytes} to resolve the text
+	 * content. The given {@link Charset} will be used to decode the content.
 	 *
 	 * @param bytes
 	 * @param charset
@@ -111,6 +114,9 @@ public class PlainTextSource
 		}
 	}
 
+	/**
+	 * Check if the builder only contains whitespace.
+	 */
 	private static boolean isWhitespace(StringBuilder builder)
 	{
 		for(int i=0, n=builder.length(); i<n; i++)
@@ -124,6 +130,9 @@ public class PlainTextSource
 		return true;
 	}
 
+	/**
+	 * The state of the plain-text parser.
+	 */
 	private enum State
 	{
 		TEXT,
@@ -131,6 +140,9 @@ public class PlainTextSource
 		PENDING_PARAGRAPH
 	}
 
+	/**
+	 * Inner parser used to perform the actual parsing of the {@link Readable}.
+	 */
 	private static class Parser
 	{
 		private final Readable readable;
@@ -281,8 +293,9 @@ public class PlainTextSource
 			if(state == State.PENDING_PARAGRAPH && encounter.inParagraph())
 			{
 				/*
-				 * Pending paragraphs need some special handling as the first newline should be part of the previous
-				 * paragraph and anything else should be outside of the paragraph.
+				 * Pending paragraphs need some special handling as the first
+				 * newline should be part of the previous paragraph and
+				 * anything else should be outside of the paragraph.
 				 */
 				int offset = 1;
 				char c = builder.charAt(0);

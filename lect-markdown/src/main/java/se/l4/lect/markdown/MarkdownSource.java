@@ -70,7 +70,8 @@ public class MarkdownSource
 	}
 
 	/**
-	 * Create a new source that will use the given {@link IoSupplier} to open a {@link Reader}.
+	 * Create a new source that will use the given {@link IoSupplier} to open a
+	 * {@link Reader}.
 	 *
 	 * @param supplier
 	 * @return
@@ -81,7 +82,8 @@ public class MarkdownSource
 	}
 
 	/**
-	 * Create a new source for the given {@link InputStream} using the specified character set to decode it.
+	 * Create a new source for the given {@link InputStream} using the
+	 * specified character set to decode it.
 	 *
 	 * @param stream
 	 * @param charset
@@ -93,8 +95,9 @@ public class MarkdownSource
 	}
 
 	/**
-	 * Create a new source that uses the given {@link IoSupplier} to resolve the text content. The given {@link Charset}
-	 * will be used to decode the stream.
+	 * Create a new source that uses the given {@link IoSupplier} to resolve
+	 * the text content. The given {@link Charset}* will be used to decode the
+	 * stream.
 	 *
 	 * @param stream
 	 * @param charset
@@ -117,8 +120,8 @@ public class MarkdownSource
 	}
 
 	/**
-	 * Create a new source using the given {@link Bytes} to resolve the text content. The given {@link Charset} will
-	 * be used to decode the content.
+	 * Create a new source using the given {@link Bytes} to resolve the text
+	 * content. The given {@link Charset} will be used to decode the content.
 	 *
 	 * @param bytes
 	 * @param charset

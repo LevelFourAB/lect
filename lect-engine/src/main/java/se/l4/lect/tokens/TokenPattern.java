@@ -5,13 +5,16 @@ import java.util.regex.Pattern;
 import se.l4.lect.internal.tokens.TokenPatternImpl;
 
 /**
- * Pattern for matching a sequence of tokens. Patterns work similar to how a {@link Pattern regular expression pattern}
- * does, but match on {@link Token tokens} and their properties.
+ * Pattern for matching a sequence of tokens. Patterns work similar to how a
+ * {@link Pattern regular expression pattern} does, but match on
+ * {@link Token tokens} and their properties.
  *
  * <p>
- * Patterns are compiled via {@link #compile(String)} and follow a simple format. A token is matched using it's type
- * or the special type {@code any} and a sequence of tokens are separated by a space. For example
- * {@code word symbol} would match {@link TokenType#WORD word} followed by a {@link TokenType#SYMBOL symbol}.
+ * Patterns are compiled via {@link #compile(String)} and follow a simple
+ * format. A token is matched using it's type or the special type {@code any}
+ * and a sequence of tokens are separated by a space. For example
+ * {@code word symbol} would match {@link TokenType#WORD word} followed by a
+ * {@link TokenType#SYMBOL symbol}.
  *
  * <p>
  * Tokens can also match on its text or {@link TokenProperty properties}:
@@ -36,7 +39,8 @@ import se.l4.lect.internal.tokens.TokenPatternImpl;
  * </pre>
  *
  * <p>
- * By default whitespace tokens are ignored, to enable whitespace matching use {@link #WITH_WHITESPACE}:
+ * By default whitespace tokens are ignored, to enable whitespace matching use
+ * {@link #WITH_WHITESPACE}:
  *
  * <pre>
  * TokenPattern.compile("word whitespace symbol", TokenPattern.WITH_WHITESPACE);
