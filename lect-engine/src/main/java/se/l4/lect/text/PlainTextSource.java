@@ -12,7 +12,7 @@ import se.l4.commons.io.Bytes;
 import se.l4.commons.io.IoSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
-import se.l4.lect.location.MutableTextLocation;
+import se.l4.lect.location.MutableTextOffsetLocation;
 
 /**
  * Source that parses plain text into a syntax tree.
@@ -140,8 +140,8 @@ public class PlainTextSource
 		private int line;
 		private int column;
 
-		private MutableTextLocation location;
-		private MutableTextLocation lastLocation;
+		private MutableTextOffsetLocation location;
+		private MutableTextOffsetLocation lastLocation;
 
 		private State state;
 		private StringBuilder builder;
@@ -160,8 +160,8 @@ public class PlainTextSource
 		{
 			boolean lastWasCarriageReturn = false;
 
-			location = new MutableTextLocation(0, 0, 0);
-			lastLocation = new MutableTextLocation(0, 0, 0);
+			location = new MutableTextOffsetLocation(0, 0, 0);
+			lastLocation = new MutableTextOffsetLocation(0, 0, 0);
 			encounter.location(location);
 
 			int length;
@@ -293,7 +293,7 @@ public class PlainTextSource
 				}
 
 				String text = builder.substring(0, offset);
-				MutableTextLocation end = location.copy().moveTo(
+				MutableTextOffsetLocation end = location.copy().moveTo(
 					lastLocation.get() + offset,
 					lastLocation.getLine() + 1,
 					0

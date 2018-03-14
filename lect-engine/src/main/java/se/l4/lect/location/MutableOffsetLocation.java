@@ -33,10 +33,22 @@ public class MutableOffsetLocation
 	}
 
 	@Override
-	public Location moveTextIndex(int amount)
+	public MutableOffsetLocation moveTextIndex(int amount)
 	{
 		this.index += amount;
 		return this;
+	}
+
+	@Override
+	public MutableOffsetLocation moveTextIndex(CharSequence sequence)
+	{
+		return moveTextIndex(sequence.length());
+	}
+
+	@Override
+	public MutableOffsetLocation moveTextIndex(CharSequence sequence, int offset, int length)
+	{
+		return moveTextIndex(length);
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
 
-import se.l4.lect.location.MutableTextLocation;
-import se.l4.lect.location.TextLocation;
+import se.l4.lect.location.MutableTextOffsetLocation;
+import se.l4.lect.location.TextOffsetLocation;
 
 /**
  * {@link Reader} that tracks offsets and allows mapping between offset and line and column.
@@ -94,25 +94,25 @@ public class OffsetTrackingReader
 	}
 
 	/**
-	 * Resolve the {@link MutableTextLocation} of a character offset.
+	 * Resolve the {@link MutableTextOffsetLocation} of a character offset.
 	 *
 	 * @param offset
 	 * @return
 	 */
-	public TextLocation offsetToLocation(int offset)
+	public TextOffsetLocation offsetToLocation(int offset)
 	{
-		TextLocation loc = new MutableTextLocation(0, 0, 0);
+		TextOffsetLocation loc = new MutableTextOffsetLocation(0, 0, 0);
 		offsetToLocation(offset, loc);
 		return loc;
 	}
 
 	/**
-	 * Resolve the {@link MutableTextLocation} of a character offset and store it in the given target.
+	 * Resolve the {@link MutableTextOffsetLocation} of a character offset and store it in the given target.
 	 *
 	 * @param offset
 	 * @param target
 	 */
-	public void offsetToLocation(int offset, TextLocation target)
+	public void offsetToLocation(int offset, TextOffsetLocation target)
 	{
 		int line = Arrays.binarySearch(lineStartOffsets, 0, this.line + 1, offset);
 		int column = 0;

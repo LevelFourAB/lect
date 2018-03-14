@@ -8,7 +8,7 @@ package se.l4.lect.location;
  *
  */
 public interface TextLocation
-	extends Location, OffsetLocation
+	extends Location
 {
 
 	/**
@@ -33,18 +33,18 @@ public interface TextLocation
 	TextLocation copy();
 
 	/**
-	 * Move the line and column of this location, returning either itself if mutable or a copy if this instance is
-	 * immutable.
+	 * Move the line and column of this location, returning either itself if 
+	 * utable or a copy if this instance is immutable.
 	 *
 	 * @param line
 	 * @param column
 	 * @return
 	 */
-	TextLocation moveTo(int offset, int line, int column);
+	TextLocation moveTo(int line, int column);
 
 	/**
-	 * Move the text index according to the given sequence of characters. Returns itself if mutable or a copy if
-	 * the instance is immutable.
+	 * Move the text index according to the given sequence of characters.
+	 * Returns itself if mutable or a copy if the instance is immutable.
 	 *
 	 * @param sequence
 	 * @return
@@ -52,8 +52,8 @@ public interface TextLocation
 	TextLocation moveTextIndex(CharSequence sequence);
 
 	/**
-	 * Move the text index according to the given sequence of characters. Returns itself if mutable or a copy if
-	 * the instance is immutable.
+	 * Move the text index according to the given sequence of characters.
+	 * Returns itself if mutable or a copy if the instance is immutable.
 	 *
 	 * @param sequence
 	 * @param offset

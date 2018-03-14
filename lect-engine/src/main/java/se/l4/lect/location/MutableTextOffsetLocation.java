@@ -6,9 +6,10 @@ package se.l4.lect.location;
  * @author Andreas Holstenson
  *
  */
-public class MutableTextLocation
-	implements TextLocation
+public class MutableTextOffsetLocation
+	implements TextOffsetLocation
 {
+	private int offset;
 	private int line;
 	private int column;
 
@@ -20,10 +21,17 @@ public class MutableTextLocation
 	 * @param column
 	 *   zero-indexed column
 	 */
-	public MutableTextLocation(int line, int column)
+	public MutableTextOffsetLocation(int offset, int line, int column)
 	{
+		this.offset = offset;
 		this.line = line;
 		this.column = column;
+	}
+
+	@Override
+	public int get()
+	{
+		return offset;
 	}
 
 	@Override
@@ -39,56 +47,76 @@ public class MutableTextLocation
 	}
 
 	@Override
-	public MutableTextLocation moveTo(int line, int column)
+	public MutableTextOffsetLocation moveTo(int offset, int line, int column)
 	{
+		this.offset = offset;
 		this.line = line;
 		this.column = column;
 		return this;
 	}
 
-	public TextLocation copyFrom(TextLocation location)
+	@Override
+	public MutableTextOffsetLocation moveTo(int line, int column)
 	{
-		this.line = location.getLine();
-		this.column = location.getColumn();
+		throw new UnsupportedOperationException();
+	}
+
+	public MutableTextOffsetLocation copyFrom(MutableTextOffsetLocation location)
+	{
+		this.offset = location.offset;
+		this.line = location.line;
+		this.column = location.column;
 		return this;
 	}
 
 	@Override
-	public MutableTextLocation copy()
+	public MutableTextOffsetLocation copy()
 	{
-		return new MutableTextLocation(line, column);
+		return new MutableTextOffsetLocation(offset, line, column);
 	}
 
 	@Override
-	public MutableTextLocation moveTextIndex(CharSequence sequence)
+	public MutableTextOffsetLocation moveTextIndex(int amount)
+	{
+		this.offset += amount;
+		this.column += amount;
+		return this;
+	}
+
+	@Override
+	public MutableTextOffsetLocation moveTextIndex(CharSequence sequence)
 	{
 		return moveTextIndex(sequence, 0, sequence.length());
 	}
 
 	@Override
-	public MutableTextLocation moveTextIndex(CharSequence sequence, int offset, int length)
+	public MutableTextOffsetLocation moveTextIndex(CharSequence sequence, int offset, int length)
 	{
 		for(int i=offset, n=offset + length; i<n; i++)
 		{
 			char c = sequence.charAt(i);
 			if(c == '\r')
 			{
+				this.offset++;
 				line++;
 				column = 0;
 				if(i + 1 < n && sequence.charAt(i + 1) == '\n')
 				{
 					// Consume \n after \r
 					i++;
+					this.offset++;
 					continue;
 				}
 			}
 			else if(c == '\n' || c == '\u2028' || c == '\u2029' || c == '\u0085')
 			{
+				this.offset++;
 				line++;
 				column = 0;
 			}
 			else
 			{
+				this.offset++;
 				column++;
 			}
 		}
@@ -140,6 +168,6 @@ public class MutableTextLocation
 	@Override
 	public String toString()
 	{
-		return line + ":" + column;
+		return line + ":" + column + "(@" + offset + ')';
 	}
 }

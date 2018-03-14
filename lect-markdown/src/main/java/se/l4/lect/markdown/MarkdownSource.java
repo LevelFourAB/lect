@@ -36,8 +36,8 @@ import se.l4.commons.io.Bytes;
 import se.l4.commons.io.IoSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
-import se.l4.lect.location.MutableTextLocation;
-import se.l4.lect.location.TextLocation;
+import se.l4.lect.location.MutableTextOffsetLocation;
+import se.l4.lect.location.TextOffsetLocation;
 import se.l4.lect.text.OffsetTrackingReader;
 
 /**
@@ -167,15 +167,15 @@ public class MarkdownSource
 		private final TextSourceEncounter encounter;
 		private OffsetTrackingReader reader;
 
-		private MutableTextLocation start;
-		private MutableTextLocation end;
+		private MutableTextOffsetLocation start;
+		private MutableTextOffsetLocation end;
 
 		public Handler(Reader reader, TextSourceEncounter encounter)
 		{
 			this.encounter = encounter;
 
-			start = new MutableTextLocation(0, 0, 0);
-			end = new MutableTextLocation(0, 0, 0);
+			start = new MutableTextOffsetLocation(0, 0, 0);
+			end = new MutableTextOffsetLocation(0, 0, 0);
 
 			encounter.location(start);
 
@@ -196,7 +196,7 @@ public class MarkdownSource
 			encounter.done();
 		}
 
-		private void updateLocation(TextLocation target, int offset)
+		private void updateLocation(TextOffsetLocation target, int offset)
 		{
 			reader.offsetToLocation(offset, target);
 		}

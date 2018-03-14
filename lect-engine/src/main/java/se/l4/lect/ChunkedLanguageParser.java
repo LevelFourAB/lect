@@ -48,7 +48,7 @@ public abstract class ChunkedLanguageParser
 
 	public void text(String text, String original, Location start)
 	{
-		text(text, start, start.copy().moveTextIndex(original.length()));
+		text(text, start, start.copy().moveTextIndex(original));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public abstract class ChunkedLanguageParser
 			start = head.next.start;
 			if(head.next.consumed > 0)
 			{
-				start = start.copy().moveTextIndex(head.next.consumed);
+				start = start.copy().moveTextIndex(head.next.text, 0, head.next.consumed);
 			}
 		}
 
@@ -124,7 +124,7 @@ public abstract class ChunkedLanguageParser
 				{
 					// Only consumed part of the node, guess the end of the node
 					// TODO: This should smooth out over the entire length and not just save the difference for the last token found
-					end = node.start.copy().moveTextIndex(node.consumed);
+					end = node.start.copy().moveTextIndex(node.text, 0, node.consumed);
 				}
 
 				break;

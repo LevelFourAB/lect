@@ -28,14 +28,6 @@ public interface Location
 	Location copy();
 
 	/**
-	 * Create a version of this {@link Location} that has moved a number of positions in a text.
-	 *
-	 * @param amount
-	 * @return
-	 */
-	Location moveTextIndex(int amount);
-
-	/**
 	 * Get if this location comes after another location.
 	 *
 	 * @param other
@@ -80,7 +72,27 @@ public interface Location
 	}
 
 	/**
-	 * Quickly create a new {@link MutableTextLocation}.
+	 * Move the text index according to the given sequence of characters. 
+	 * Returns itself if mutable or a copy if the instance is immutable.
+	 *
+	 * @param sequence
+	 * @return
+	 */
+	Location moveTextIndex(CharSequence sequence);
+
+	/**
+	 * Move the text index according to the given sequence of characters.
+	 * Returns itself if mutable or a copy if the instance is immutable.
+	 *
+	 * @param sequence
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
+	Location moveTextIndex(CharSequence sequence, int offset, int length);
+
+	/**
+	 * Quickly create a new {@link MutableTextOffsetLocation}.
 	 *
 	 * @param line
 	 * @param column
@@ -88,7 +100,7 @@ public interface Location
 	 */
 	static TextLocation text(int offset, int line, int column)
 	{
-		return new MutableTextLocation(offset, line, column);
+		return new MutableTextOffsetLocation(offset, line, column);
 	}
 
 	/**

@@ -19,7 +19,7 @@ import se.l4.commons.io.Bytes;
 import se.l4.commons.io.IoSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
-import se.l4.lect.location.MutableTextLocation;
+import se.l4.lect.location.MutableTextOffsetLocation;
 
 /**
  * {@link TextSource} that parses HTML.
@@ -142,8 +142,8 @@ public class HTMLSource
 		private State[] stateHistory;
 		private boolean lastWasSpace;
 
-		private MutableTextLocation start;
-		private MutableTextLocation end;
+		private MutableTextOffsetLocation start;
+		private MutableTextOffsetLocation end;
 
 		public Handler(TextSourceEncounter encounter)
 		{
@@ -151,8 +151,8 @@ public class HTMLSource
 
 			state = State.UNKNOWN;
 
-			start = new MutableTextLocation(0, 0, 0);
-			end = new MutableTextLocation(0, 0, 0);
+			start = new MutableTextOffsetLocation(0, 0, 0);
+			end = new MutableTextOffsetLocation(0, 0, 0);
 
 			encounter.location(start);
 
