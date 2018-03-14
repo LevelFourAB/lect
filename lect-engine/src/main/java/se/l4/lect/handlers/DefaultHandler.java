@@ -6,8 +6,10 @@ import se.l4.lect.tokens.Token;
 import se.l4.lect.tokens.TokenProperty;
 
 /**
- * Implementation of {@link Handler} that provides a starting point for implementing custom handlers.
- *
+ * Implementation of {@link Handler} that provides a starting point for
+ * implementing custom handlers. This handler provides methods for handling
+ * different types of tokens without having to check their type.
+ * 
  * @author Andreas Holstenson
  *
  */
@@ -66,6 +68,8 @@ public abstract class DefaultHandler
 			case SPECIAL:
 				special(token);
 				break;
+			case UNKNOWN:
+				break;
 		}
 	}
 
@@ -75,36 +79,54 @@ public abstract class DefaultHandler
 	}
 
 	/**
-	 * A word has been found in a sentence.
+	 * A word has been found in a sentence. Tokens should be copied if their
+	 * contents should outlive the scope of this method.
 	 *
-	 * @param word
+	 * @param token
+	 *   the token representing the word.
 	 */
 	protected void word(Token token)
 	{
 	}
 
 	/**
-	 * A sequence of one or more symbols has been found in a sentence.
+	 * A sequence of one or more symbols has been found in a sentence. Tokens
+	 * should be copied if their contents should outlive the scope of this
+	 * method.
 	 *
-	 * @param symbol
+	 * @param token
+	 *   the token representing the symbol.
 	 */
 	protected void symbol(Token token)
 	{
 	}
 
 	/**
-	 *
-	 * @param whitespace
+	 * Whitespace either within our outside a sentence. Tokens should be copied
+	 * if their contents should outlive the scope of this method.
+	 * 
+	 * @param token
 	 */
 	protected void whitespace(Token token)
 	{
 	}
 
 	/**
-	 *
-	 * @param whitespace
+	 * Special token has been found. Tokens should be copied if their contents
+	 * should outlive the scope of this method.
+	 * 
+	 * @param token
 	 */
 	protected void special(Token token)
+	{
+	}
+
+	/**
+	 * Unknown token has been found, uncommon case as most language
+	 * implementations will not emit unknown tokens. Tokens should be copied
+	 * if their contents should outlive the scope of this method.
+	 */
+	protected void unknown(Token token)
 	{
 	}
 }
