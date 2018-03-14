@@ -334,7 +334,7 @@ public class HTMLSourceTest
 		);
 		mock.verifyParagraph("world!",
 			Location.text(20, 0, 20),
-			Location.text(20, 0, 20), Location.text(25, 0, 25), // After world!
+			Location.text(20, 0, 20), Location.text(26, 0, 26), // After world!
 			Location.text(26, 0, 26)
 		);
 	}
@@ -356,6 +356,35 @@ public class HTMLSourceTest
 			Location.text(9, 0, 9),
 			Location.text(16, 0, 16), Location.text(21, 0, 21), // After Hello
 			Location.text(22, 0, 22)
+		);
+	}
+
+	@Test
+	public void testAttributeInParagraphStartTagWithBreaks()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<span title=\"Hello\">\nworld!</span>")
+			.withStandardAttributes()
+			.parse(mock);
+
+		mock.verifyWhitespace(" ",
+			Location.text(20, 0, 20),
+			Location.text(20, 0, 20),
+			Location.text(21, 1, 0),
+			Location.text(6, 0, 6)
+		);
+
+		mock.verifyParagraph("Hello",
+			Location.text(6, 0, 6),
+			Location.text(13, 0, 13), Location.text(18, 0, 18), // After Hello
+			Location.text(19, 0, 19)
+		);
+
+		mock.verifyParagraph("world!",
+			Location.text(20, 0, 20),
+			Location.text(21, 1, 0), Location.text(27, 1, 6), // After world!
+			Location.text(27, 1, 6)
 		);
 	}
 }

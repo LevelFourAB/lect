@@ -523,7 +523,8 @@ public class HTMLSource
 		{
 			if(attributes.isEmpty()) return;
 
-			MutableTextOffsetLocation temp = start.copy();
+			MutableTextOffsetLocation startTemp = start.copy();
+			MutableTextOffsetLocation endTemp = end.copy();
 
 			for(Attribute attr : attributes)
 			{
@@ -551,7 +552,8 @@ public class HTMLSource
 
 			attributes.clear();
 	
-			start.copyFrom(temp);
+			start.copyFrom(startTemp);
+			end.copyFrom(endTemp);
 		}
 
 	}
