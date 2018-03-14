@@ -6,9 +6,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+import net.htmlparser.jericho.Attribute;
+import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.CharacterReference;
 import net.htmlparser.jericho.Config;
 import net.htmlparser.jericho.EndTag;
@@ -36,10 +42,12 @@ public class HTMLSource
 	}
 
 	private final IoSupplier<Reader> supplier;
+	private final Set<String> activeAttributes;
 
 	private HTMLSource(IoSupplier<Reader> supplier)
 	{
 		this.supplier = supplier;
+		this.activeAttributes = new HashSet<>();
 	}
 
 	/**
@@ -48,7 +56,7 @@ public class HTMLSource
 	 * @param reader
 	 * @return
 	 */
-	public static TextSource forReader(Reader reader)
+	public static HTMLSource forReader(Reader reader)
 	{
 		return forReader(() -> reader);
 	}
@@ -60,7 +68,7 @@ public class HTMLSource
 	 * @param supplier
 	 * @return
 	 */
-	public static TextSource forReader(IoSupplier<Reader> supplier)
+	public static HTMLSource forReader(IoSupplier<Reader> supplier)
 	{
 		return new HTMLSource(supplier);
 	}
@@ -73,7 +81,7 @@ public class HTMLSource
 	 * @param charset
 	 * @return
 	 */
-	public static TextSource forStream(InputStream stream, Charset charset)
+	public static HTMLSource forStream(InputStream stream, Charset charset)
 	{
 		return forReader(new InputStreamReader(stream, charset));
 	}
@@ -87,7 +95,7 @@ public class HTMLSource
 	 * @param charset
 	 * @return
 	 */
-	public static TextSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	public static HTMLSource forStream(IoSupplier<InputStream> stream, Charset charset)
 	{
 		return forReader(() -> new InputStreamReader(stream.get(), charset));
 	}
@@ -98,7 +106,7 @@ public class HTMLSource
 	 * @param text
 	 * @return
 	 */
-	public static TextSource forString(String text)
+	public static HTMLSource forString(String text)
 	{
 		return forReader(new StringReader(text));
 	}
@@ -111,16 +119,54 @@ public class HTMLSource
 	 * @param charset
 	 * @return
 	 */
-	public static TextSource forBytes(Bytes bytes, Charset charset)
+	public static HTMLSource forBytes(Bytes bytes, Charset charset)
 	{
 		return forStream(bytes::asInputStream, charset);
+	}
+
+	/**
+	 * Activate parsing of the standard attributes into paragraphs. This will
+	 * handle alt, title and aria-label attributes as paragraphs.
+	 * 
+	 * @return
+	 *   this instance
+	 */
+	public HTMLSource withStandardAttributes()
+	{
+		return withAttributes(
+			"title",
+			"alt",
+			"aria-label",
+			"aria-valuetext",
+			"label",
+			"value",
+			"summary"
+		);
+	}
+
+	/**
+	 * Activate parsing of some attributes.
+	 * 
+	 * @param attrs
+	 *   attributes to activate
+	 * @return
+	 *   this instance
+	 */
+	public HTMLSource withAttributes(String... attrs)
+	{
+		for(String attr : attrs)
+		{
+			activeAttributes.add(attr);
+		}
+
+		return this;
 	}
 
 	@Override
 	public void parse(TextSourceEncounter encounter)
 		throws IOException
 	{
-		new Handler(encounter).parse();
+		new Handler(activeAttributes, encounter).parse();
 	}
 
 	private enum State
@@ -136,6 +182,7 @@ public class HTMLSource
 
 	private class Handler
 	{
+		private final Set<String> activeAttributes;
 		private final TextSourceEncounter encounter;
 		private net.htmlparser.jericho.Source source;
 
@@ -148,8 +195,11 @@ public class HTMLSource
 		private MutableTextOffsetLocation start;
 		private MutableTextOffsetLocation end;
 
-		public Handler(TextSourceEncounter encounter)
+		private final List<Attribute> attributes;
+
+		public Handler(Set<String> activeAttributes, TextSourceEncounter encounter)
 		{
+			this.activeAttributes = activeAttributes;
 			this.encounter = encounter;
 
 			state = State.UNKNOWN;
@@ -161,6 +211,8 @@ public class HTMLSource
 
 			stateHistory = new State[16];
 			stateHistory[0] = state;
+
+			attributes = new ArrayList<>();
 		}
 
 		public void parse()
@@ -183,6 +235,9 @@ public class HTMLSource
 				Segment segment = it.next();
 				if(segment instanceof StartTag)
 				{
+					// Handle all the attributes on the start tag
+					handleAttributes((StartTag) segment);
+
 					depth++;
 					String name = ((StartTag) segment).getName();
 					switch(state)
@@ -403,6 +458,9 @@ public class HTMLSource
 		{
 			if(! encounter.inParagraph())
 			{
+				// Flush all of the found attributes
+				flushAttributes();
+
 				encounter.location(start);
 				encounter.startParagraph();
 			}
@@ -422,6 +480,9 @@ public class HTMLSource
 				endParagraph();
 			}
 
+			// Flush all of the found attributes
+			flushAttributes();
+
 			encounter.done();
 		}
 
@@ -436,5 +497,62 @@ public class HTMLSource
 			RowColumnVector rv = source.getRowColumnVector(s.getEnd());
 			end.moveTo(s.getEnd(), rv.getRow() - 1, rv.getColumn() - 1);
 		}
+
+		/**
+		 * Handle the attributes on the start tag. Will go through and copy
+		 * the tags for flushing later.
+		 */
+		private void handleAttributes(StartTag s)
+		{
+			Attributes attrs = s.getAttributes();
+			if(attrs == null) return;
+
+			for(Attribute attr : attrs)
+			{
+				if(activeAttributes.contains(attr.getName()))
+				{
+					attributes.add(attr);
+				}
+			}
+		}
+
+		/**
+		 * Flush all of the attributes in their own paragraphs.
+		 */
+		private void flushAttributes()
+		{
+			if(attributes.isEmpty()) return;
+
+			MutableTextOffsetLocation temp = start.copy();
+
+			for(Attribute attr : attributes)
+			{
+				// Create a mini-paragraph for the attribute
+				updateStart(attr);
+				encounter.location(start);
+				encounter.startParagraph();
+
+				// Extract the value
+				Segment value = attr.getValueSegment();
+
+				// Set the start location of the attribute value
+				updateStart(value);
+				encounter.location(start);
+
+				// Fetch the end location and add the text value
+				updateEnd(value);
+				encounter.text(attr.getValue(), end);
+
+				// End the mini-paragraph
+				updateEnd(attr);
+				encounter.location(end);
+				encounter.endParagraph();
+			}
+
+			attributes.clear();
+	
+			start.copyFrom(temp);
+		}
+
 	}
 }

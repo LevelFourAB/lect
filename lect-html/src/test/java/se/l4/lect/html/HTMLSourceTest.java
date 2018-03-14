@@ -318,4 +318,44 @@ public class HTMLSourceTest
 			Location.text(58, 0, 58)
 		);
 	}
+
+	@Test
+	public void testAttributeInParagraphStartTag()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<span title=\"Hello\">world!</span>")
+			.withStandardAttributes()
+			.parse(mock);
+		mock.verifyParagraph("Hello",
+			Location.text(6, 0, 6),
+			Location.text(13, 0, 13), Location.text(18, 0, 18), // After Hello
+			Location.text(19, 0, 19)
+		);
+		mock.verifyParagraph("world!",
+			Location.text(20, 0, 20),
+			Location.text(20, 0, 20), Location.text(25, 0, 25), // After world!
+			Location.text(26, 0, 26)
+		);
+	}
+
+	@Test
+	public void testAttributeWithinParagraph()
+		throws IOException
+	{
+		VerifyingSyntaxTreeEncounter mock = new VerifyingSyntaxTreeEncounter(Locale.ENGLISH);
+		HTMLSource.forString("<p><span title=\"Hello\">world!</span></p>")
+			.withStandardAttributes()
+			.parse(mock);
+		mock.verifyParagraph("world!",
+			Location.text(0, 0, 0),
+			Location.text(23, 0, 23), Location.text(29, 0, 29), // After world!
+			Location.text(36, 0, 36)
+		);
+		mock.verifyParagraph("Hello",
+			Location.text(9, 0, 9),
+			Location.text(16, 0, 16), Location.text(21, 0, 21), // After Hello
+			Location.text(22, 0, 22)
+		);
+	}
 }
