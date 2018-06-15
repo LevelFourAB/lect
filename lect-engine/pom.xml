@@ -13,6 +13,11 @@
 	
 	<artifactId>lect-engine</artifactId>
 	<name>${project.artifactId}</name>
+
+	<description>
+		Engine for building the natural language pipelines with support for
+		different file formats.
+	</description>
 	
 	<dependencies>
 		<dependency>

@@ -13,6 +13,10 @@
 	
 	<artifactId>lect-markdown</artifactId>
 	<name>${project.artifactId}</name>
+
+	<description>
+		Support for Markdown as an input format of a Lect pipeline.
+	</description>
 	
 	<properties>
 		<flexmark-version>0.22.2</flexmark-version>

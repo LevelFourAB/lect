@@ -13,6 +13,10 @@
 	
 	<artifactId>lect-html</artifactId>
 	<name>${project.artifactId}</name>
+
+	<description>
+		Support for HTML as an input format of a Lect pipeline.
+	</description>
 	
 	<dependencies>
 		<dependency>
