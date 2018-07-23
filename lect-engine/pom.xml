@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>lect-base</artifactId>
 		<groupId>se.l4.lect</groupId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 

@@ -5,7 +5,7 @@
 
 	<groupId>se.l4.lect</groupId>
 	<artifactId>lect-base</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Lect</name>
