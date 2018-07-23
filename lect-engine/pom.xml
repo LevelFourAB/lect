@@ -1,16 +1,16 @@
-<project 
+<project
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<artifactId>lect-base</artifactId>
 		<groupId>se.l4.lect</groupId>
 		<version>0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	
+
 	<artifactId>lect-engine</artifactId>
 	<name>${project.artifactId}</name>
 
@@ -18,14 +18,14 @@
 		Engine for building the natural language pipelines with support for
 		different file formats.
 	</description>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>se.l4.commons</groupId>
-			<artifactId>commons-main</artifactId>
-			<version>0.4</version>
+			<artifactId>commons-io</artifactId>
+			<version>1.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
@@ -39,7 +39,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

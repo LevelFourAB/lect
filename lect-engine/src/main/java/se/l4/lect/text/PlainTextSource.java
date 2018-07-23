@@ -9,7 +9,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import se.l4.commons.io.Bytes;
-import se.l4.commons.io.IoSupplier;
+import se.l4.commons.io.IOSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextOffsetLocation;
@@ -23,9 +23,9 @@ import se.l4.lect.location.MutableTextOffsetLocation;
 public class PlainTextSource
 	implements TextSource
 {
-	private final IoSupplier<Reader> supplier;
+	private final IOSupplier<Reader> supplier;
 
-	private PlainTextSource(IoSupplier<Reader> supplier)
+	private PlainTextSource(IOSupplier<Reader> supplier)
 	{
 		this.supplier = supplier;
 	}
@@ -48,7 +48,7 @@ public class PlainTextSource
 	 * @param supplier
 	 * @return
 	 */
-	public static TextSource forReader(IoSupplier<Reader> supplier)
+	public static TextSource forReader(IOSupplier<Reader> supplier)
 	{
 		return new PlainTextSource(supplier);
 	}
@@ -75,7 +75,7 @@ public class PlainTextSource
 	 * @param charset
 	 * @return
 	 */
-	public static TextSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	public static TextSource forStream(IOSupplier<InputStream> stream, Charset charset)
 	{
 		return forReader(() -> new InputStreamReader(stream.get(), charset));
 	}

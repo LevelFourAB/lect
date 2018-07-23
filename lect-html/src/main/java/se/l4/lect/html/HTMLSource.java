@@ -22,7 +22,7 @@ import net.htmlparser.jericho.RowColumnVector;
 import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.StartTag;
 import se.l4.commons.io.Bytes;
-import se.l4.commons.io.IoSupplier;
+import se.l4.commons.io.IOSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextOffsetLocation;
@@ -41,10 +41,10 @@ public class HTMLSource
 		Config.ConvertNonBreakingSpaces = false;
 	}
 
-	private final IoSupplier<Reader> supplier;
+	private final IOSupplier<Reader> supplier;
 	private final Set<String> activeAttributes;
 
-	private HTMLSource(IoSupplier<Reader> supplier)
+	private HTMLSource(IOSupplier<Reader> supplier)
 	{
 		this.supplier = supplier;
 		this.activeAttributes = new HashSet<>();
@@ -68,7 +68,7 @@ public class HTMLSource
 	 * @param supplier
 	 * @return
 	 */
-	public static HTMLSource forReader(IoSupplier<Reader> supplier)
+	public static HTMLSource forReader(IOSupplier<Reader> supplier)
 	{
 		return new HTMLSource(supplier);
 	}
@@ -95,7 +95,7 @@ public class HTMLSource
 	 * @param charset
 	 * @return
 	 */
-	public static HTMLSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	public static HTMLSource forStream(IOSupplier<InputStream> stream, Charset charset)
 	{
 		return forReader(() -> new InputStreamReader(stream.get(), charset));
 	}
@@ -127,7 +127,7 @@ public class HTMLSource
 	/**
 	 * Activate parsing of the standard attributes into paragraphs. This will
 	 * handle alt, title and aria-label attributes as paragraphs.
-	 * 
+	 *
 	 * @return
 	 *   this instance
 	 */
@@ -146,7 +146,7 @@ public class HTMLSource
 
 	/**
 	 * Activate parsing of some attributes.
-	 * 
+	 *
 	 * @param attrs
 	 *   attributes to activate
 	 * @return
@@ -551,7 +551,7 @@ public class HTMLSource
 			}
 
 			attributes.clear();
-	
+
 			start.copyFrom(startTemp);
 			end.copyFrom(endTemp);
 		}

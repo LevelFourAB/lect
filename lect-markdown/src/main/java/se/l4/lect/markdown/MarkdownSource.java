@@ -33,7 +33,7 @@ import com.vladsch.flexmark.util.html.Html5Entities;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
 import se.l4.commons.io.Bytes;
-import se.l4.commons.io.IoSupplier;
+import se.l4.commons.io.IOSupplier;
 import se.l4.lect.TextSource;
 import se.l4.lect.TextSourceEncounter;
 import se.l4.lect.location.MutableTextOffsetLocation;
@@ -49,10 +49,10 @@ import se.l4.lect.text.OffsetTrackingReader;
 public class MarkdownSource
 	implements TextSource
 {
-	private final IoSupplier<Reader> supplier;
+	private final IOSupplier<Reader> supplier;
 	private CustomMarkdownFlavor flavor;
 
-	private MarkdownSource(IoSupplier<Reader> supplier)
+	private MarkdownSource(IOSupplier<Reader> supplier)
 	{
 		this.supplier = supplier;
 		flavor = MarkdownFlavor.COMMONMARK;
@@ -76,7 +76,7 @@ public class MarkdownSource
 	 * @param supplier
 	 * @return
 	 */
-	public static MarkdownSource forReader(IoSupplier<Reader> supplier)
+	public static MarkdownSource forReader(IOSupplier<Reader> supplier)
 	{
 		return new MarkdownSource(supplier);
 	}
@@ -103,7 +103,7 @@ public class MarkdownSource
 	 * @param charset
 	 * @return
 	 */
-	public static MarkdownSource forStream(IoSupplier<InputStream> stream, Charset charset)
+	public static MarkdownSource forStream(IOSupplier<InputStream> stream, Charset charset)
 	{
 		return forReader(() -> new InputStreamReader(stream.get(), charset));
 	}
