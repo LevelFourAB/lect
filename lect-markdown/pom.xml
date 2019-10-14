@@ -19,7 +19,7 @@
 	</description>
 	
 	<properties>
-		<flexmark-version>0.22.2</flexmark-version>
+		<flexmark-version>0.50.40</flexmark-version>
 	</properties>
 	
 	<dependencies>
